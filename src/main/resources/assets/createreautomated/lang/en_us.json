@@ -1,15 +1,7 @@
 {
-  "itemGroup.createreautomated": "Example Mod Tab",
-  "block.createreautomated.example_block": "Example Block",
-  "item.createreautomated.example_item": "Example Item",
+  "block.createreautomated.extractor": "Extractor",
   "item.createreautomated.bismuth": "Bismuth",
-
   "createreautomated.configuration.title": "Create Re-Automated Configs",
   "createreautomated.configuration.section.createreautomated.common.toml": "Create Re-Automated Configs",
-  "createreautomated.configuration.section.createreautomated.common.toml.title": "Create Re-Automated Configs",
-  "createreautomated.configuration.items": "Item List",
-  "createreautomated.configuration.logDirtBlock": "Log Dirt Block",
-  "createreautomated.configuration.magicNumberIntroduction": "Magic Number Text",
-  "createreautomated.configuration.magicNumber": "Magic Number"
-
+  "createreautomated.configuration.section.createreautomated.common.toml.title": "Create Re-Automated Configs"
 }
