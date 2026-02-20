@@ -19,7 +19,7 @@ public class ModBlockTagProvider extends BlockTagsProvider {
 
     @Override
     protected void addTags(@Nonnull HolderLookup.Provider provider) {
-        tag(BlockTags.MINEABLE_WITH_AXE)
+        tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(ModBlocks.EXTRACTOR.get());
     }
 }
