@@ -20,8 +20,8 @@ public class CreateReAutomated {
     public CreateReAutomated(@Nonnull IEventBus modEventBus, @Nonnull ModContainer modContainer) {
         ModCreativeModeTab.register(modEventBus);
 
-        ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
+        ModItems.register(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }

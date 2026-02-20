@@ -1,7 +1,6 @@
 package com.github.zgraund.createreautomated.item;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
-import com.github.zgraund.createreautomated.block.ModBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -24,7 +23,7 @@ public class ModCreativeModeTab {
                     .title(Component.literal("lo leviamo?"))
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(ModItems.BISMUTH);
-                        output.accept(ModBlocks.bottom);
+                        output.accept(ModItems.EXTRACTOR);
                     })
                     .build()
     );
