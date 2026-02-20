@@ -12,12 +12,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -48,7 +50,7 @@ public class ExtractorBlock extends Block {
                                      @Nonnull BlockPos pos, @Nonnull BlockPos neighborPos) {
         DoubleBlockHalf half = state.getValue(HALF);
         if (direction == half.getDirectionToOther()
-            && (!neighborState.is(this) || neighborState.getValue(HALF) != half.getOtherHalf())) {
+            && (!neighborState.is(state.getBlock()) || neighborState.getValue(HALF) != half.getOtherHalf())) {
             return Blocks.AIR.defaultBlockState();
         }
         return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
@@ -64,14 +66,26 @@ public class ExtractorBlock extends Block {
     public BlockState getStateForPlacement(@Nonnull BlockPlaceContext context) {
         BlockPos blockpos = context.getClickedPos();
         Level level = context.getLevel();
-        return blockpos.getY() < level.getMaxBuildHeight() - 1 && level.getBlockState(blockpos.above()).canBeReplaced(context)
-                ? super.getStateForPlacement(context)
-                : null;
+        if (blockpos.getY() < level.getMaxBuildHeight() - 1 && level.getBlockState(blockpos.above()).canBeReplaced(context))
+            return super.getStateForPlacement(context);
+        return null;
     }
 
+    /**
+     * Taken from {@link DoublePlantBlock#preventDropFromBottomPart}
+     */
     @Nonnull
     @Override
     public BlockState playerWillDestroy(@Nonnull Level level, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nonnull Player player) {
+        if (!level.isClientSide() && player.isCreative() && state.getValue(HALF) == DoubleBlockHalf.UPPER) {
+            BlockPos posBelow = pos.below();
+            BlockState stateBelow = level.getBlockState(posBelow);
+            if (stateBelow.is(state.getBlock()) && stateBelow.getValue(HALF) == DoubleBlockHalf.LOWER) {
+                BlockState newStateBelow = stateBelow.getFluidState().is(Fluids.WATER) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState();
+                level.setBlock(posBelow, newStateBelow, 35);
+                level.levelEvent(player, 2001, posBelow, Block.getId(stateBelow));
+            }
+        }
         return super.playerWillDestroy(level, pos, state, player);
     }
 
