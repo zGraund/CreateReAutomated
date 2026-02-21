@@ -24,6 +24,7 @@ public class ModCreativeModeTab {
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(ModItems.BISMUTH);
                         output.accept(ModItems.EXTRACTOR);
+                        output.accept(ModItems.DRILLHEAD);
                     })
                     .build()
     );

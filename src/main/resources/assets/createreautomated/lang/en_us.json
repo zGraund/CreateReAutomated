@@ -1,6 +1,7 @@
 {
   "block.createreautomated.extractor": "Extractor",
   "item.createreautomated.bismuth": "Bismuth",
+  "item.createreautomated.drill_head": "Drill Head",
   "createreautomated.configuration.title": "Create Re-Automated Configs",
   "createreautomated.configuration.section.createreautomated.common.toml": "Create Re-Automated Configs",
   "createreautomated.configuration.section.createreautomated.common.toml.title": "Create Re-Automated Configs"
