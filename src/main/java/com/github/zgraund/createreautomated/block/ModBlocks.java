@@ -2,8 +2,10 @@ package com.github.zgraund.createreautomated.block;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -15,7 +17,13 @@ public class ModBlocks {
     public static final DeferredBlock<Block> EXTRACTOR = BLOCKS.registerBlock(
             "extractor",
             ExtractorBlock::new,
-            BlockBehaviour.Properties.of().noOcclusion().strength(1f).sound(SoundType.WOOD).pushReaction(PushReaction.BLOCK)
+            BlockBehaviour.Properties.of()
+                                     .noOcclusion()
+                                     .strength(1f)
+                                     .isValidSpawn(Blocks::never)
+                                     .mapColor(MapColor.COLOR_ORANGE)
+                                     .sound(SoundType.METAL)
+                                     .pushReaction(PushReaction.BLOCK)
     );
 
     public static void register(IEventBus eventBus) {

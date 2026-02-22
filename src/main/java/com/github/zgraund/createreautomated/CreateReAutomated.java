@@ -1,5 +1,6 @@
 package com.github.zgraund.createreautomated;
 
+import com.github.zgraund.createreautomated.block.ModBlockEntities;
 import com.github.zgraund.createreautomated.block.ModBlocks;
 import com.github.zgraund.createreautomated.item.ModCreativeModeTab;
 import com.github.zgraund.createreautomated.item.ModItems;
@@ -22,6 +23,8 @@ public class CreateReAutomated {
 
         ModBlocks.register(modEventBus);
         ModItems.register(modEventBus);
+
+        ModBlockEntities.register(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
