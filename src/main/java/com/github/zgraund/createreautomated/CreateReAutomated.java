@@ -4,7 +4,9 @@ import com.github.zgraund.createreautomated.block.ModBlockEntities;
 import com.github.zgraund.createreautomated.block.ModBlocks;
 import com.github.zgraund.createreautomated.item.ModCreativeModeTab;
 import com.github.zgraund.createreautomated.item.ModItems;
+import com.github.zgraund.createreautomated.registry.ModPartialModels;
 import com.mojang.logging.LogUtils;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -17,6 +19,7 @@ import javax.annotation.Nonnull;
 public class CreateReAutomated {
     public static final String MOD_ID = "createreautomated";
     public static final Logger LOGGER = LogUtils.getLogger();
+//    private static final Registrate REGISTRATE = Registrate.create(MOD_ID);
 
     public CreateReAutomated(@Nonnull IEventBus modEventBus, @Nonnull ModContainer modContainer) {
         ModCreativeModeTab.register(modEventBus);
@@ -25,7 +28,20 @@ public class CreateReAutomated {
         ModItems.register(modEventBus);
 
         ModBlockEntities.register(modEventBus);
+        // TODO: maybe registrate?
+//        ModBlocks.register();
+
+        ModPartialModels.init();
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
+
+    @Nonnull
+    public static ResourceLocation asResource(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+    }
+
+//    public static Registrate registrate() {
+//        return REGISTRATE;
+//    }
 }

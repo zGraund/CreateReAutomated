@@ -22,7 +22,6 @@ public class ModCreativeModeTab {
                     .icon(() -> new ItemStack(Items.DEBUG_STICK))
                     .title(Component.literal("lo leviamo?"))
                     .displayItems((itemDisplayParameters, output) -> {
-                        output.accept(ModItems.BISMUTH);
                         output.accept(ModItems.EXTRACTOR);
                         output.accept(ModItems.DRILLHEAD);
                     })
