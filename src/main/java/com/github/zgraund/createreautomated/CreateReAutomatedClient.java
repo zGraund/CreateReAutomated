@@ -3,7 +3,6 @@ package com.github.zgraund.createreautomated;
 import com.github.zgraund.createreautomated.block.ExtractorRenderer;
 import com.github.zgraund.createreautomated.block.ModBlockEntities;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -17,7 +16,7 @@ import javax.annotation.Nonnull;
 @Mod(value = CreateReAutomated.MOD_ID, dist = Dist.CLIENT)
 @EventBusSubscriber(modid = CreateReAutomated.MOD_ID, value = Dist.CLIENT)
 public class CreateReAutomatedClient {
-    public CreateReAutomatedClient(IEventBus modEventBus, @Nonnull ModContainer container) {
+    public CreateReAutomatedClient(@Nonnull ModContainer container) {
         // Allows NeoForge to create a config screen for this mod's configs.
         // The config screen is accessed by going to the Mods screen > clicking on your mod > clicking on config.
         container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);

@@ -4,6 +4,7 @@ import com.github.zgraund.createreautomated.block.ModBlockEntities;
 import com.github.zgraund.createreautomated.block.ModBlocks;
 import com.github.zgraund.createreautomated.item.ModCreativeModeTab;
 import com.github.zgraund.createreautomated.item.ModItems;
+import com.github.zgraund.createreautomated.recipe.ModRecipes;
 import com.github.zgraund.createreautomated.registry.ModPartialModels;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
@@ -28,6 +29,9 @@ public class CreateReAutomated {
         ModItems.register(modEventBus);
 
         ModBlockEntities.register(modEventBus);
+
+        ModRecipes.register(modEventBus);
+
         // TODO: maybe registrate?
 //        ModBlocks.register();
 

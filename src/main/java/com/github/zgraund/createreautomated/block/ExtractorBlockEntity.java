@@ -54,7 +54,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
 
         ItemStack out = outputInv.getStackInSlot(0);
         // TODO: maybe make a canProcess() method?
-        if (Math.abs(getSpeed()) <= ExtractorBlock.MIN_SPEED.getSpeedValue() || !hasDrill() || out.getCount() >= out.getMaxStackSize())
+        if (Math.abs(getSpeed()) <= ExtractorBlock.MIN_SPEED.getSpeedValue() || !hasDrill() || out.getCount() >= outputInv.getSlotLimit(0))
             return;
 
         SoundScapes.play(SoundScapes.AmbienceGroup.CRUSHING, worldPosition, 0.1f);
