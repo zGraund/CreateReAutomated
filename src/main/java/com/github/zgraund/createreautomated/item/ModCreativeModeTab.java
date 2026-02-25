@@ -32,6 +32,7 @@ public class ModCreativeModeTab {
                         output.accept(set(new ItemStack(ModItems.EXTRACTOR.get())));
                         output.accept(ModItems.DRILLHEAD);
                         output.accept(ModItems.ORE_NODE);
+                        output.accept(ModItems.ORE_NODE_LIMITED);
                     })
                     .build()
     );

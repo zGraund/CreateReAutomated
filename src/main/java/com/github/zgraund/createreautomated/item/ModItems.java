@@ -10,6 +10,8 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import javax.annotation.Nonnull;
+
 public class ModItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(CreateReAutomated.MOD_ID);
 
@@ -23,8 +25,18 @@ public class ModItems {
     public static final DeferredItem<BlockItem> ORE_NODE = ITEMS.registerSimpleBlockItem(
             "ore_node",
             ModBlocks.ORE_NODE,
-            new Item.Properties().rarity(Rarity.UNCOMMON)
+            defaultNodeItemProperties()
     );
+    public static final DeferredItem<BlockItem> ORE_NODE_LIMITED = ITEMS.registerSimpleBlockItem(
+            "ore_node_limited",
+            ModBlocks.ORE_NODE_LIMITED,
+            defaultNodeItemProperties()
+    );
+
+    @Nonnull
+    public static Item.Properties defaultNodeItemProperties() {
+        return new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1);
+    }
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

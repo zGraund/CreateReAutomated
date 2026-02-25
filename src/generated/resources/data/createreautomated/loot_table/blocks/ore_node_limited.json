@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "createreautomated:ore_node_limited",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "natural": "false"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "block": "createreautomated:ore_node_limited",
+              "function": "minecraft:copy_state",
+              "properties": [
+                "resources"
+              ]
+            }
+          ],
+          "name": "createreautomated:ore_node_limited"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "createreautomated:blocks/ore_node_limited"
+}

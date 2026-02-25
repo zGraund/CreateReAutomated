@@ -19,10 +19,9 @@ public class ModBlockEntities {
             "extractor_be",
             () -> BlockEntityType.Builder.of(ExtractorBlockEntity::new, ModBlocks.EXTRACTOR.get()).build(null)
     );
-
     public static final Supplier<BlockEntityType<OreNodeEntity>> ORE_NODE_BE = BLOCK_ENTITY_TYPES.register(
             "ore_node_be",
-            () -> BlockEntityType.Builder.of(OreNodeEntity::new, ModBlocks.ORE_NODE.get()).build(null)
+            () -> BlockEntityType.Builder.of(OreNodeEntity::new, ModBlocks.ORE_NODE.get(), ModBlocks.ORE_NODE_LIMITED.get()).build(null)
     );
 
     public static void register(IEventBus eventBus) {

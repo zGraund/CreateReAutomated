@@ -25,24 +25,28 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags(), registries);
     }
 
+    @Nonnull
+    public static LootTable.Builder createOreNodeDrop(Block block) {
+        return LootTable.lootTable()
+                        .withPool(
+                                LootPool.lootPool()
+                                        .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
+                                                                                 .setProperties(
+                                                                                         StatePropertiesPredicate.Builder
+                                                                                                 .properties()
+                                                                                                 .hasProperty(OreNodeBlock.NATURAL, false)
+                                                                                 )
+                                        )
+                                        .setRolls(ConstantValue.exactly(1.0f))
+                                        .add(LootItem.lootTableItem(block).apply(CopyBlockState.copyState(block).copy(OreNodeBlock.RESOURCES)))
+                        );
+    }
+
     @Override
     protected void generate() {
         add(ModBlocks.EXTRACTOR.get(), block -> createSinglePropConditionTable(block, ExtractorBlock.HALF, DoubleBlockHalf.LOWER));
-        add(ModBlocks.ORE_NODE.get(), block ->
-                LootTable.lootTable()
-                         .withPool(
-                                 LootPool.lootPool()
-                                         .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.ORE_NODE.get())
-                                                                                  .setProperties(
-                                                                                          StatePropertiesPredicate.Builder
-                                                                                                  .properties()
-                                                                                                  .hasProperty(OreNodeBlock.NATURAL, false)
-                                                                                  )
-                                         )
-                                         .setRolls(ConstantValue.exactly(1.0f))
-                                         .add(LootItem.lootTableItem(block).apply(CopyBlockState.copyState(block).copy(OreNodeBlock.RESOURCES)))
-                         )
-        );
+        add(ModBlocks.ORE_NODE.get(), ModBlockLootTableProvider::createOreNodeDrop);
+        add(ModBlocks.ORE_NODE_LIMITED.get(), ModBlockLootTableProvider::createOreNodeDrop);
     }
 
     @Nonnull

@@ -22,7 +22,8 @@ public class ModBlockTagProvider extends BlockTagsProvider {
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(
                         ModBlocks.EXTRACTOR.get(),
-                        ModBlocks.ORE_NODE.get()
+                        ModBlocks.ORE_NODE.get(),
+                        ModBlocks.ORE_NODE_LIMITED.get()
                 );
     }
 }

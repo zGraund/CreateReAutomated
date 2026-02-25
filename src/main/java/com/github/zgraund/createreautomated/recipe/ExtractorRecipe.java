@@ -1,5 +1,6 @@
 package com.github.zgraund.createreautomated.recipe;
 
+import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -20,7 +21,7 @@ import javax.annotation.Nonnull;
 public record ExtractorRecipe(Ingredient drill, BlockState node, int processingTime, int durabilityLoss, ItemStack result) implements Recipe<ExtractorRecipeInput> {
     @Override
     public boolean matches(@Nonnull ExtractorRecipeInput input, @Nonnull Level level) {
-        return drill.test(input.drill()) && node == input.node();
+        return input.node().getBlock() instanceof OreNodeBlock && drill.test(input.drill()) && node == input.node();
     }
 
     @Nonnull

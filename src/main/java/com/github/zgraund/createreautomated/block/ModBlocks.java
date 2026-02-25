@@ -32,15 +32,18 @@ public class ModBlocks {
                                      .pushReaction(PushReaction.BLOCK),
             64.0
     );
-    public static final DeferredBlock<OreNodeBlock> ORE_NODE = BLOCKS.registerBlock(
-            "ore_node",
-            OreNodeBlock::new,
-            BlockBehaviour.Properties.of()
-                                     .requiresCorrectToolForDrops()
-                                     .sound(SoundType.STONE)
-                                     .pushReaction(PushReaction.BLOCK)
-                                     .strength(4f)
-    );
+    public static final DeferredBlock<OreNodeBlock> ORE_NODE = registerDefaultNode("ore_node");
+    public static final DeferredBlock<OreNodeBlock> ORE_NODE_LIMITED = registerDefaultNode("ore_node_limited", 10);
+
+    @Nonnull
+    public static DeferredBlock<OreNodeBlock> registerDefaultNode(String name) {
+        return registerDefaultNode(name, 0);
+    }
+
+    @Nonnull
+    public static DeferredBlock<OreNodeBlock> registerDefaultNode(String name, int limit) {
+        return BLOCKS.register(name, () -> new OreNodeBlock(defaultNodeProperties(), limit));
+    }
 
     @Nonnull
     public static <T extends Block> DeferredBlock<T> registerWithImpact(String name, Function<BlockBehaviour.Properties, T> blockClass,
@@ -48,6 +51,15 @@ public class ModBlocks {
         DeferredBlock<T> toReturn = BLOCKS.registerBlock(name, blockClass, properties);
         BlockStressValues.IMPACTS.registerProvider(block -> block == toReturn.get() ? () -> stress : null);
         return toReturn;
+    }
+
+    @Nonnull
+    public static BlockBehaviour.Properties defaultNodeProperties() {
+        return BlockBehaviour.Properties.of()
+                                        .requiresCorrectToolForDrops()
+                                        .sound(SoundType.STONE)
+                                        .pushReaction(PushReaction.BLOCK)
+                                        .strength(4f);
     }
 
     public static void register(IEventBus eventBus) {
