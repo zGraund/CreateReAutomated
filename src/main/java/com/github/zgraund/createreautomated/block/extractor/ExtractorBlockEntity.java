@@ -1,5 +1,6 @@
-package com.github.zgraund.createreautomated.block;
+package com.github.zgraund.createreautomated.block.extractor;
 
+import com.github.zgraund.createreautomated.block.ModBlockEntities;
 import com.github.zgraund.createreautomated.item.ModItems;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.item.ItemHelper;
@@ -34,10 +35,9 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     @Override
     public void tick() {
         super.tick();
-        if (level.isClientSide) return;
-        if (hasDrill()) {
-            progress++;
-        }
+        if (level == null) return;
+        if (!hasDrill() || isOutputFull()) return;
+
         if (progress >= 1 && level != null) {
             Item below = level.getBlockState(worldPosition.below().below()).getBlock().asItem();
             outputInv.insertItem(0, new ItemStack(below), false);
@@ -54,7 +54,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
 
         ItemStack out = outputInv.getStackInSlot(0);
         // TODO: maybe make a canProcess() method?
-        if (Math.abs(getSpeed()) <= ExtractorBlock.MIN_SPEED.getSpeedValue() || !hasDrill() || out.getCount() >= outputInv.getSlotLimit(0))
+        if (!isSpeedRequirementFulfilled() || !hasDrill() || out.getCount() >= out.getMaxStackSize())
             return;
 
         SoundScapes.play(SoundScapes.AmbienceGroup.CRUSHING, worldPosition, 0.1f);
@@ -62,6 +62,11 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
 
     public boolean hasDrill() {
         return !drillInv.getStackInSlot(0).isEmpty();
+    }
+
+    public boolean isOutputFull() {
+        ItemStack output = outputInv.getStackInSlot(0);
+        return output.getCount() >= output.getMaxStackSize();
     }
 
     @Override

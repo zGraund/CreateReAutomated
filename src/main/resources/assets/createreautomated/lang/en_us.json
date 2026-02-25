@@ -1,6 +1,11 @@
 {
   "block.createreautomated.extractor": "Extractor",
-  "item.createreautomated.drill_head": "Drill Head",
+  "block.createreautomated.ore_node": "Ore Node",
+  "block.createreautomated.ore_node.rich": "Rich",
+  "block.createreautomated.ore_node.abundant": "Abundant",
+  "block.createreautomated.ore_node.medium": "Medium",
+  "block.createreautomated.ore_node.scarce": "Scarce",
+  "item.createreautomated.drill_head.poor": "Poor",
   "createreautomated.configuration.title": "Create Re-Automated Configs",
   "createreautomated.configuration.section.createreautomated.common.toml": "Create Re-Automated Configs",
   "createreautomated.configuration.section.createreautomated.common.toml.title": "Create Re-Automated Configs"

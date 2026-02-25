@@ -1,5 +1,6 @@
 {
   "values": [
-    "createreautomated:extractor"
+    "createreautomated:extractor",
+    "createreautomated:ore_node"
   ]
 }

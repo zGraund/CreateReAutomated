@@ -1,5 +1,6 @@
-package com.github.zgraund.createreautomated.block;
+package com.github.zgraund.createreautomated.block.extractor;
 
+import com.github.zgraund.createreautomated.block.ModBlockEntities;
 import com.github.zgraund.createreautomated.item.ModItems;
 import com.mojang.serialization.MapCodec;
 import com.simibubi.create.content.kinetics.base.KineticBlock;
@@ -86,6 +87,7 @@ public class ExtractorBlock extends KineticBlock implements IBE<ExtractorBlockEn
             state = level.getBlockState(pos);
             if (!state.is(this)) return ItemInteractionResult.CONSUME;
         }
+        // TODO: cleanup
         return onBlockEntityUseItemOn(level, pos, extractor -> {
             if (player.isCrouching()) {
                 if (stack.isEmpty()) {
@@ -212,8 +214,6 @@ public class ExtractorBlock extends KineticBlock implements IBE<ExtractorBlockEn
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, @Nonnull BlockState state) {
-        // TODO: only create when state is "upper"
-        if (state.getValue(HALF) == DoubleBlockHalf.LOWER) return null;
-        return IBE.super.newBlockEntity(pos, state);
+        return state.getValue(HALF) == DoubleBlockHalf.LOWER ? null : IBE.super.newBlockEntity(pos, state);
     }
 }

@@ -1,4 +1,4 @@
-package com.github.zgraund.createreautomated.block;
+package com.github.zgraund.createreautomated.block.extractor;
 
 import com.github.zgraund.createreautomated.registry.ModPartialModels;
 import com.mojang.blaze3d.vertex.PoseStack;

@@ -1,7 +1,7 @@
 package com.github.zgraund.createreautomated.item;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
-import com.github.zgraund.createreautomated.block.ExtractorBlock;
+import com.github.zgraund.createreautomated.block.extractor.ExtractorBlock;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -31,6 +31,7 @@ public class ModCreativeModeTab {
                         output.accept(ModItems.EXTRACTOR);
                         output.accept(set(new ItemStack(ModItems.EXTRACTOR.get())));
                         output.accept(ModItems.DRILLHEAD);
+                        output.accept(ModItems.ORE_NODE);
                     })
                     .build()
     );

@@ -1,7 +1,7 @@
 package com.github.zgraund.createreautomated;
 
-import com.github.zgraund.createreautomated.block.ExtractorRenderer;
 import com.github.zgraund.createreautomated.block.ModBlockEntities;
+import com.github.zgraund.createreautomated.block.extractor.ExtractorRenderer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
