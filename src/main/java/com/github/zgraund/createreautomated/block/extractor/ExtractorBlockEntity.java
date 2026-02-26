@@ -33,7 +33,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         }
     };
     protected final ItemStackHandler outputInv = new ItemStackHandler(1);
-    protected int progress;
+    private int progress;
     private ExtractorRecipe lastRecipe;
 
     public ExtractorBlockEntity(BlockPos pos, BlockState state) {
@@ -47,7 +47,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         if (!fulfillPreConditions()) return;
 
         BlockState blockState = getNodeBelow();
-        if (!(blockState.getBlock() instanceof OreNodeBlock)) return;
+        if (!(blockState.getBlock() instanceof OreNodeBlock nodeBlock)) return;
 
         ExtractorRecipeInput input = new ExtractorRecipeInput(drillInv.getStackInSlot(0), blockState);
         if (lastRecipe == null || !lastRecipe.matches(input, level)) {
@@ -70,14 +70,12 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
 
         if (progress <= 0) {
             BlockEntity blockEntity = level.getBlockEntity(getBlockPos().below(2));
-            if (blockEntity instanceof OreNodeEntity nodeEntity) {
-                // TODO: consume node below
-                nodeEntity.extract(1);
+            if ((blockEntity instanceof OreNodeEntity nodeEntity && nodeEntity.tryExtract(1)) || nodeBlock.isInfinite()) {
+                ItemStack result = lastRecipe.assemble(input, level.registryAccess());
+                outputInv.insertItem(0, result, false);
+                progress = lastRecipe.processingTime();
+                setChanged();
             }
-            ItemStack result = lastRecipe.assemble(input, level.registryAccess());
-            outputInv.insertItem(0, result, false);
-            progress = lastRecipe.processingTime();
-            setChanged();
         }
 
         sendData();

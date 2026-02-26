@@ -5,6 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -14,14 +15,14 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Block;
 
 import javax.annotation.Nonnull;
 
-public record ExtractorRecipe(Ingredient drill, BlockState node, int processingTime, int durabilityLoss, ItemStack result) implements Recipe<ExtractorRecipeInput> {
+public record ExtractorRecipe(Ingredient drill, Block node, int processingTime, int durabilityLoss, ItemStack result) implements Recipe<ExtractorRecipeInput> {
     @Override
     public boolean matches(@Nonnull ExtractorRecipeInput input, @Nonnull Level level) {
-        return input.node().getBlock() instanceof OreNodeBlock && drill.test(input.drill()) && node == input.node();
+        return input.node().getBlock() instanceof OreNodeBlock && drill.test(input.drill()) && node == input.node().getBlock();
     }
 
     @Nonnull
@@ -56,9 +57,9 @@ public record ExtractorRecipe(Ingredient drill, BlockState node, int processingT
     public static class Serializer implements RecipeSerializer<ExtractorRecipe> {
         public static final MapCodec<ExtractorRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
                 Ingredient.CODEC_NONEMPTY.fieldOf("drill").forGetter(ExtractorRecipe::drill),
-                BlockState.CODEC.fieldOf("node").forGetter(ExtractorRecipe::node),
+                BuiltInRegistries.BLOCK.byNameCodec().fieldOf("node").forGetter(ExtractorRecipe::node),
                 Codec.INT.fieldOf("processingTime").forGetter(ExtractorRecipe::processingTime),
-                Codec.INT.fieldOf("durabilityLoss").forGetter(ExtractorRecipe::durabilityLoss),
+                Codec.INT.optionalFieldOf("durabilityLoss", 1).forGetter(ExtractorRecipe::durabilityLoss),
                 ItemStack.CODEC.fieldOf("result").forGetter(ExtractorRecipe::result)
         ).apply(inst, ExtractorRecipe::new));
         public static final StreamCodec<RegistryFriendlyByteBuf, ExtractorRecipe> STREAM_CODEC =

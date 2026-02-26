@@ -90,6 +90,15 @@ public class OreNodeBlock extends BaseEntityBlock {
             this.name = name;
         }
 
+        public static Resources fromQuantity(int quantity, int maxQuantity) {
+            float percentage = ((float) quantity / maxQuantity) * 100;
+            if (percentage >= 80) return RICH;
+            if (percentage >= 60) return ABUNDANT;
+            if (percentage >= 40) return MEDIUM;
+            if (percentage >= 20) return SCARCE;
+            return POOR;
+        }
+
         @Nonnull
         @Override
         public String getSerializedName() {
