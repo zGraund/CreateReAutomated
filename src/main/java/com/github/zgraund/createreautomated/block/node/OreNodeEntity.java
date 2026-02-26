@@ -15,16 +15,29 @@ public class OreNodeEntity extends BlockEntity {
 
     public OreNodeEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.ORE_NODE_BE.get(), pos, blockState);
+        remaining = ((OreNodeBlock) blockState.getBlock()).MAX_EXTRACTIONS;
+    }
+
+    public void extract(int quantity) {
+        remaining -= quantity;
     }
 
     @Override
     protected void applyImplicitComponents(@Nonnull DataComponentInput componentInput) {
         super.applyImplicitComponents(componentInput);
+//        remaining = componentInput.getOrDefault(DataComponents.)
     }
 
     @Override
     protected void collectImplicitComponents(@Nonnull DataComponentMap.Builder components) {
         super.collectImplicitComponents(components);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void removeComponentsFromTag(@Nonnull CompoundTag tag) {
+        super.removeComponentsFromTag(tag);
+        tag.remove("remaining");
     }
 
     @Override
@@ -41,10 +54,5 @@ public class OreNodeEntity extends BlockEntity {
 
     public int getRemaining() {
         return remaining;
-    }
-
-    public OreNodeEntity setRemaining(int remaining) {
-        this.remaining = remaining;
-        return this;
     }
 }

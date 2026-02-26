@@ -1,15 +1,21 @@
 package com.github.zgraund.createreautomated.block.extractor;
 
 import com.github.zgraund.createreautomated.block.ModBlockEntities;
+import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
+import com.github.zgraund.createreautomated.block.node.OreNodeEntity;
 import com.github.zgraund.createreautomated.item.ModItems;
+import com.github.zgraund.createreautomated.recipe.ExtractorRecipe;
+import com.github.zgraund.createreautomated.recipe.ExtractorRecipeInput;
+import com.github.zgraund.createreautomated.recipe.ModRecipes;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.item.ItemHelper;
 import com.simibubi.create.foundation.sound.SoundScapes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -17,6 +23,7 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 
 public class ExtractorBlockEntity extends KineticBlockEntity {
     protected final ItemStackHandler drillInv = new ItemStackHandler(1) {
@@ -27,6 +34,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     };
     protected final ItemStackHandler outputInv = new ItemStackHandler(1);
     protected int progress;
+    private ExtractorRecipe lastRecipe;
 
     public ExtractorBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.EXTRACTOR_BE.get(), pos, state);
@@ -36,15 +44,63 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     public void tick() {
         super.tick();
         if (level == null) return;
-        if (!hasDrill() || isOutputFull()) return;
+        if (!fulfillPreConditions()) return;
 
-        if (progress >= 1 && level != null) {
-            Item below = level.getBlockState(worldPosition.below().below()).getBlock().asItem();
-            outputInv.insertItem(0, new ItemStack(below), false);
-            progress = 0;
+        BlockState blockState = getNodeBelow();
+        if (!(blockState.getBlock() instanceof OreNodeBlock)) return;
+
+        ExtractorRecipeInput input = new ExtractorRecipeInput(drillInv.getStackInSlot(0), blockState);
+        if (lastRecipe == null || !lastRecipe.matches(input, level)) {
+            Optional<ExtractorRecipe> recipe = getRecipe(input);
+            if (recipe.isEmpty()) {
+                lastRecipe = null;
+            } else {
+                lastRecipe = recipe.get();
+                progress = lastRecipe.processingTime();
+            }
+            sendData();
+            return;
         }
+
+        progress -= getProcessingSpeed();
+        if (level.isClientSide()) {
+            //TODO: spawn particles
+            return;
+        }
+
+        if (progress <= 0) {
+            BlockEntity blockEntity = level.getBlockEntity(getBlockPos().below(2));
+            if (blockEntity instanceof OreNodeEntity nodeEntity) {
+                // TODO: consume node below
+                nodeEntity.extract(1);
+            }
+            ItemStack result = lastRecipe.assemble(input, level.registryAccess());
+            outputInv.insertItem(0, result, false);
+            progress = lastRecipe.processingTime();
+            setChanged();
+        }
+
         sendData();
-        setChanged();
+    }
+
+    public int getProcessingSpeed() {
+        return (int) Math.abs(getSpeed());
+    }
+
+    public Optional<ExtractorRecipe> getRecipe(ExtractorRecipeInput input) {
+        if (level == null) throw new IllegalStateException("ExtractorBlockEntity with null level");
+        return level.getRecipeManager()
+                    .getRecipeFor(ModRecipes.EXTRACTOR_RECIPE.get(), input, level)
+                    .map(RecipeHolder::value);
+    }
+
+    public boolean fulfillPreConditions() {
+        return hasDrill() && !isOutputFull() && isSpeedRequirementFulfilled();
+    }
+
+    public BlockState getNodeBelow() {
+        if (level == null) throw new IllegalStateException("ExtractorBlockEntity#getNodeBelow called with null level");
+        return level.getBlockState(getBlockPos().below(2));
     }
 
     @Override

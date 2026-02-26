@@ -25,7 +25,7 @@ public class OreNodeBlock extends BaseEntityBlock {
     public static final BooleanProperty NATURAL = BooleanProperty.create("natural");
     public static final MapCodec<OreNodeBlock> CODEC = simpleCodec(OreNodeBlock::new);
 
-    private final int MAX_EXTRACTIONS;
+    public final int MAX_EXTRACTIONS;
 
     public OreNodeBlock(Properties properties, int maxExtractions) {
         super(properties);
@@ -58,7 +58,7 @@ public class OreNodeBlock extends BaseEntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(@Nonnull BlockPos pos, @Nonnull BlockState state) {
-        return isInfinite() ? null : new OreNodeEntity(pos, state).setRemaining(MAX_EXTRACTIONS);
+        return isInfinite() ? null : new OreNodeEntity(pos, state);
     }
 
     public boolean isInfinite() {
