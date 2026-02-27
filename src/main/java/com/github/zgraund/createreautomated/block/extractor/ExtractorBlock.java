@@ -147,7 +147,7 @@ public class ExtractorBlock extends KineticBlock implements IBE<ExtractorBlockEn
     @Override
     public void setPlacedBy(@Nonnull Level level, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nullable LivingEntity placer, @Nonnull ItemStack stack) {
         level.setBlock(pos.above(), state.setValue(HALF, DoubleBlockHalf.UPPER), 3);
-        super.setPlacedBy(level, pos, state, placer, stack);
+        super.setPlacedBy(level, pos.above(), state, placer, stack);
     }
 
     @Nullable

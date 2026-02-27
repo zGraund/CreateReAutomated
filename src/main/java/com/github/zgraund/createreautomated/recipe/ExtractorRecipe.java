@@ -22,7 +22,14 @@ import javax.annotation.Nonnull;
 public record ExtractorRecipe(Ingredient drill, Block node, int processingTime, int durabilityLoss, ItemStack result) implements Recipe<ExtractorRecipeInput> {
     @Override
     public boolean matches(@Nonnull ExtractorRecipeInput input, @Nonnull Level level) {
-        return input.node().getBlock() instanceof OreNodeBlock && drill.test(input.drill()) && node == input.node().getBlock();
+        if (!drill.test(input.drill()))
+            return false;
+        Block block = level.getBlockState(input.nodePos()).getBlock();
+        if (node != block)
+            return false;
+        if (!(block instanceof OreNodeBlock nodeBlock))
+            return false;
+        return nodeBlock.canExtract(1, input.nodePos(), level);
     }
 
     @Nonnull

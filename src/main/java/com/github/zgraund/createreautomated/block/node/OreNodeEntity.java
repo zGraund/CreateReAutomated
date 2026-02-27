@@ -2,6 +2,7 @@ package com.github.zgraund.createreautomated.block.node;
 
 import com.github.zgraund.createreautomated.block.ModBlockEntities;
 import com.github.zgraund.createreautomated.registry.ModDataComponents;
+import com.simibubi.create.foundation.blockEntity.SyncedBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
@@ -9,12 +10,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nonnull;
 
-public class OreNodeEntity extends BlockEntity {
+public class OreNodeEntity extends SyncedBlockEntity {
     private int remaining;
     public ContainerData data = new ContainerData() {
         @Override
@@ -39,23 +39,37 @@ public class OreNodeEntity extends BlockEntity {
         remaining = ((OreNodeBlock) blockState.getBlock()).MAX_EXTRACTIONS;
     }
 
-    public boolean tryExtract(int quantity) {
-        if (level != null && level.isClientSide()) return false;
-        BlockState blockState = getBlockState();
-        if (blockState.getBlock() instanceof OreNodeBlock node) {
-            if (node.isInfinite()) return true;
-            if (remaining < quantity) return false;
-            remaining -= quantity;
-            BlockPos pos = getBlockPos();
-            OreNodeBlock.Resources newState = OreNodeBlock.Resources.fromQuantity(remaining, node.MAX_EXTRACTIONS);
-            if (newState != blockState.getValue(OreNodeBlock.RESOURCES)) {
-                level.setBlockAndUpdate(pos, blockState.setValue(OreNodeBlock.RESOURCES, newState));
-                // TODO: funny but we should probably change this
-                level.playSound(null, pos, SoundEvents.GOAT_SCREAMING_AMBIENT, SoundSource.BLOCKS);
-            }
-            setChanged();
+    public void extract(int quantity) {
+        if (level == null || level.isClientSide() || !canExtract(quantity)) return;
+
+        remaining -= quantity;
+
+        updateBlockState();
+        notifyUpdate();
+    }
+
+    public void updateBlockState() {
+        if (level == null) return;
+
+        BlockState currentState = getBlockState();
+        if (!(currentState.getBlock() instanceof OreNodeBlock node)) return;
+
+        BlockPos pos = getBlockPos();
+        OreNodeBlock.Resources newState = node.getStateFromQuantity(remaining);
+
+        if (newState != currentState.getValue(OreNodeBlock.RESOURCES)) {
+            level.setBlockAndUpdate(pos, currentState.setValue(OreNodeBlock.RESOURCES, newState));
+            // TODO: funny but we should probably change this
+            level.playSound(null, pos, SoundEvents.GOAT_SCREAMING_AMBIENT, SoundSource.BLOCKS);
         }
-        return true;
+    }
+
+    public boolean canExtract(int quantity) {
+        return remaining >= quantity;
+    }
+
+    public int getRemaining() {
+        return remaining;
     }
 
     @Override
@@ -80,16 +94,12 @@ public class OreNodeEntity extends BlockEntity {
     @Override
     protected void loadAdditional(@Nonnull CompoundTag tag, @Nonnull HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        tag.putInt("remaining", remaining);
+        remaining = tag.getInt("remaining");
     }
 
     @Override
     protected void saveAdditional(@Nonnull CompoundTag tag, @Nonnull HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
-        remaining = tag.getInt("remaining");
-    }
-
-    public int getRemaining() {
-        return remaining;
+        tag.putInt("remaining", remaining);
     }
 }

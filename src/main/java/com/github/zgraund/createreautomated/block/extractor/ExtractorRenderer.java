@@ -39,8 +39,9 @@ public class ExtractorRenderer extends KineticBlockEntityRenderer<ExtractorBlock
         standardKineticRotationTransform(cog, be, light).renderInto(ms, vb);
 
         if (be.hasDrill()) {
+            float drillOffset = be.getDrillOffset();
             SuperByteBuffer drill = CachedBuffers.partial(ModPartialModels.DRILL, blockState);
-            standardKineticRotationTransform(drill, be, light).translate(0, -0.8, 0).renderInto(ms, vb);
+            standardKineticRotationTransform(drill, be, light).translate(0, -drillOffset, 0).renderInto(ms, vb);
         }
     }
 }
