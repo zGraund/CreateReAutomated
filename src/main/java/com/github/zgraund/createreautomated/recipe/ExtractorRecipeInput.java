@@ -1,12 +1,12 @@
 package com.github.zgraund.createreautomated.recipe;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeInput;
-import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nonnull;
 
-public record ExtractorRecipeInput(ItemStack drill, BlockState node) implements RecipeInput {
+public record ExtractorRecipeInput(ItemStack drill, BlockPos nodePos) implements RecipeInput {
     @Nonnull
     @Override
     public ItemStack getItem(int index) {

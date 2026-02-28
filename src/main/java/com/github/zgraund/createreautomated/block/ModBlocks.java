@@ -57,6 +57,8 @@ public class ModBlocks {
     public static BlockBehaviour.Properties defaultNodeProperties() {
         return BlockBehaviour.Properties.of()
                                         .requiresCorrectToolForDrops()
+                                        .lightLevel(OreNodeBlock.Resources::getLightLevel)
+                                        .noOcclusion()
                                         .sound(SoundType.STONE)
                                         .pushReaction(PushReaction.BLOCK)
                                         .strength(4f);

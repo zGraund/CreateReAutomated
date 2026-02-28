@@ -64,15 +64,6 @@ public class ExtractorBlock extends KineticBlock implements IBE<ExtractorBlockEn
         this.registerDefaultState(this.defaultBlockState().setValue(HALF, DoubleBlockHalf.LOWER));
     }
 
-    // TODO:
-//    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-//        event.registerBlock(
-//                Capabilities.ItemHandler.BLOCK,
-//                ,
-//                (be, context) -> be.capability
-//        );
-//    }
-
     @Nonnull
     @Override
     protected ItemInteractionResult useItemOn(@Nonnull ItemStack stack, @Nonnull BlockState state, @Nonnull Level level, @Nonnull BlockPos pos, @Nonnull Player player,
@@ -147,7 +138,7 @@ public class ExtractorBlock extends KineticBlock implements IBE<ExtractorBlockEn
     @Override
     public void setPlacedBy(@Nonnull Level level, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nullable LivingEntity placer, @Nonnull ItemStack stack) {
         level.setBlock(pos.above(), state.setValue(HALF, DoubleBlockHalf.UPPER), 3);
-        super.setPlacedBy(level, pos, state, placer, stack);
+        super.setPlacedBy(level, pos.above(), state, placer, stack);
     }
 
     @Nullable
