@@ -64,15 +64,6 @@ public class ExtractorBlock extends KineticBlock implements IBE<ExtractorBlockEn
         this.registerDefaultState(this.defaultBlockState().setValue(HALF, DoubleBlockHalf.LOWER));
     }
 
-    // TODO:
-//    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-//        event.registerBlock(
-//                Capabilities.ItemHandler.BLOCK,
-//                ,
-//                (be, context) -> be.capability
-//        );
-//    }
-
     @Nonnull
     @Override
     protected ItemInteractionResult useItemOn(@Nonnull ItemStack stack, @Nonnull BlockState state, @Nonnull Level level, @Nonnull BlockPos pos, @Nonnull Player player,

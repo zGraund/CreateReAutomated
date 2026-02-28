@@ -54,15 +54,6 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
         return super.useWithoutItem(state, level, pos, player, hitResult);
     }
 
-//    @Nonnull
-//    @Override
-//    public ItemStack getCloneItemStack(@Nonnull BlockState state, @Nonnull HitResult target, @Nonnull LevelReader level, @Nonnull BlockPos pos, @Nonnull Player
-//    player) {
-//        ItemStack stack = super.getCloneItemStack(state, target, level, pos, player);
-//        stack.set(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY.with(RESOURCES, state.getValue(RESOURCES)));
-//        return stack;
-//    }
-
     public boolean canExtract(int quantity, BlockPos pos, BlockGetter level) {
         return getBlockEntityOptional(level, pos)
                 .map(be -> be.canExtract(quantity))

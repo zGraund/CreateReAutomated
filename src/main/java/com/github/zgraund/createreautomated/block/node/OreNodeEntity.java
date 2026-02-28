@@ -9,30 +9,12 @@ import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nonnull;
 
 public class OreNodeEntity extends SyncedBlockEntity {
     private int remaining;
-    public ContainerData data = new ContainerData() {
-        @Override
-        public int get(int index) {
-            if (index == 0) return remaining;
-            return 0;
-        }
-
-        @Override
-        public void set(int index, int value) {
-            if (index == 0) remaining = value;
-        }
-
-        @Override
-        public int getCount() {
-            return 1;
-        }
-    };
 
     public OreNodeEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.ORE_NODE_BE.get(), pos, blockState);
