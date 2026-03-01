@@ -48,7 +48,7 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
             player.sendSystemMessage(Component.literal(
                     level.getBlockEntity(pos) instanceof OreNodeEntity oreNode
                             ? "The remaining ore is: " + oreNode.getRemaining()
-                            : "The nodePos is unlimited"
+                            : "The node is unlimited"
             ));
         }
         return super.useWithoutItem(state, level, pos, player, hitResult);
@@ -58,6 +58,10 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
         return getBlockEntityOptional(level, pos)
                 .map(be -> be.canExtract(quantity))
                 .orElse(this.isInfinite());
+    }
+
+    public float getRemainingPercentage(int remaining) {
+        return (float) remaining / MAX_EXTRACTIONS;
     }
 
     public float getDrillOffset(@Nonnull BlockState state) {

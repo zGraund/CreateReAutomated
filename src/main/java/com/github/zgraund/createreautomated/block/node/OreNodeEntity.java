@@ -57,13 +57,13 @@ public class OreNodeEntity extends SyncedBlockEntity {
     @Override
     protected void applyImplicitComponents(@Nonnull DataComponentInput componentInput) {
         super.applyImplicitComponents(componentInput);
-        remaining = componentInput.getOrDefault(ModDataComponents.NODE_QUANTITY.get(), remaining);
+        remaining = componentInput.getOrDefault(ModDataComponents.NODE_REMAINING_EXTRACTIONS.get(), remaining);
     }
 
     @Override
     protected void collectImplicitComponents(@Nonnull DataComponentMap.Builder components) {
         super.collectImplicitComponents(components);
-        components.set(ModDataComponents.NODE_QUANTITY.get(), remaining);
+        components.set(ModDataComponents.NODE_REMAINING_EXTRACTIONS.get(), remaining);
     }
 
     @SuppressWarnings("deprecation")

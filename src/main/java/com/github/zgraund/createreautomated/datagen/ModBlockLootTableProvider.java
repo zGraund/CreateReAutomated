@@ -51,7 +51,7 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
                                                      .apply(CopyBlockState.copyState(block).copy(OreNodeBlock.RESOURCES))
                                                      .apply(CopyComponentsFunction
                                                              .copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
-                                                             .include(ModDataComponents.NODE_QUANTITY.get())
+                                                             .include(ModDataComponents.NODE_REMAINING_EXTRACTIONS.get())
                                                      )
                                         )
                         );

@@ -20,8 +20,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
         generateOreNodeModels(ModBlocks.ORE_NODE.get());
         generateOreNodeModels(ModBlocks.ORE_NODE_LIMITED.get());
         // FIXME: change this model location
-        simpleBlockItem(ModBlocks.ORE_NODE.get(), models().getExistingFile(modLoc("block/ore_node/ore_node_rich")));
-        simpleBlockItem(ModBlocks.ORE_NODE_LIMITED.get(), models().getExistingFile(modLoc("block/ore_node/ore_node_limited_rich")));
+//        simpleBlockItem(ModBlocks.ORE_NODE.get(), models().getExistingFile(modLoc("block/ore_node/ore_node_rich")));
+//        simpleBlockItem(ModBlocks.ORE_NODE_LIMITED.get(), models().getExistingFile(modLoc("block/ore_node/ore_node_limited_rich")));
     }
 
     public void generateOreNodeModels(OreNodeBlock block) {
@@ -29,7 +29,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
             String modelName = state.getValue(OreNodeBlock.RESOURCES).getSerializedName() + (state.getValue(OreNodeBlock.NATURAL) ? "_natural" : "");
             ModelFile model = models().cubeAll(
                     "block/ore_node/" + BuiltInRegistries.BLOCK.getKey(block).getPath() + "_" + modelName,
-                    modLoc("block/ore_node/" + modelName)
+//                    modLoc("block/ore_node/" + modelName)
+                    mcLoc("block/diamond_ore")
             );
             return ConfiguredModel.builder().modelFile(model).build();
         });
