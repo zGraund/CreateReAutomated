@@ -5,7 +5,11 @@ import com.github.zgraund.createreautomated.block.ModBlockEntities;
 import com.mojang.serialization.MapCodec;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.ParticleUtils;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -20,11 +24,12 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nonnull;
 
 public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
-    public static final EnumProperty<Resources> RESOURCES = EnumProperty.create("resources", Resources.class);
+    public static final EnumProperty<DepletionLevel> DEPLETION = EnumProperty.create("depletion", DepletionLevel.class);
     public static final BooleanProperty NATURAL = BooleanProperty.create("natural");
     public static final MapCodec<OreNodeBlock> CODEC = simpleCodec(OreNodeBlock::new);
 
@@ -33,7 +38,7 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
     public OreNodeBlock(Properties properties, int maxExtractions) {
         super(properties);
         this.MAX_EXTRACTIONS = maxExtractions;
-        this.registerDefaultState(this.defaultBlockState().setValue(RESOURCES, Resources.RICH).setValue(NATURAL, false));
+        this.registerDefaultState(this.defaultBlockState().setValue(DEPLETION, DepletionLevel.ZERO).setValue(NATURAL, false));
     }
 
     public OreNodeBlock(Properties properties) {
@@ -65,16 +70,29 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
     }
 
     public float getDrillOffset(@Nonnull BlockState state) {
-        return Resources.getDrillOffset(state);
+        return 0.85f;
     }
 
-    public Resources getStateFromQuantity(int quantity) {
-        return Resources.fromQuantity(quantity, MAX_EXTRACTIONS);
+    public DepletionLevel getStateFromQuantity(int quantity) {
+        return DepletionLevel.fromQuantity(quantity, MAX_EXTRACTIONS);
+    }
+
+    @Override
+    public void animateTick(@Nonnull BlockState state, @Nonnull Level level, @Nonnull BlockPos pos, @Nonnull RandomSource random) {
+        super.animateTick(state, level, pos, random);
+        if (state.getValue(NATURAL) && random.nextInt(10) == 0) {
+            for (Direction dir : Direction.values()) {
+                BlockPos neighbor = pos.relative(dir);
+                if (!level.getBlockState(neighbor).isSolidRender(level, neighbor)) {
+                    ParticleUtils.spawnParticleOnFace(level, pos, dir, ParticleTypes.ELECTRIC_SPARK, Vec3.ZERO, 0.57);
+                }
+            }
+        }
     }
 
     @Override
     protected void createBlockStateDefinition(@Nonnull StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(RESOURCES, NATURAL);
+        builder.add(DEPLETION, NATURAL);
     }
 
     @Override
@@ -108,55 +126,50 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
         return CODEC;
     }
 
-    public enum Resources implements StringRepresentable {
-        RICH("rich"),
-        ABUNDANT("abundant"),
-        MEDIUM("medium"),
-        SCARCE("scarce"),
-        POOR("poor");
+    public enum DepletionLevel implements StringRepresentable {
+        ZERO(0),
+        ONE(1),
+        TWO(2),
+        THREE(3),
+        FOUR(4),
+        FIVE(5),
+        SIX(6),
+        SEVEN(7),
+        EIGHT(8),
+        NINE(9),
+        TEN(10);
 
-        private final String name;
+        private final int stage;
+        private final int light;
 
-        Resources(String name) {
-            this.name = name;
+        DepletionLevel(int stage) {
+            this.stage = stage;
+            this.light = 10 - stage;
         }
 
-        public static Resources fromQuantity(int quantity, int maxQuantity) {
-            float percentage = ((float) quantity / maxQuantity) * 100;
-            if (percentage >= 80) return RICH;
-            if (percentage >= 60) return ABUNDANT;
-            if (percentage >= 40) return MEDIUM;
-            if (percentage >= 20) return SCARCE;
-            return POOR;
+        public static DepletionLevel fromQuantity(int quantity, int maxQuantity) {
+            int percentage = (100 * quantity) / maxQuantity;
+            if (percentage > 99) return ZERO;
+            if (percentage > 90) return ONE;
+            if (percentage > 80) return TWO;
+            if (percentage > 70) return THREE;
+            if (percentage > 60) return FOUR;
+            if (percentage > 50) return FIVE;
+            if (percentage > 40) return SIX;
+            if (percentage > 30) return SEVEN;
+            if (percentage > 20) return EIGHT;
+            if (percentage > 10) return NINE;
+            return TEN;
         }
 
-        // TODO: maybe put this in the enum instances?
-        public static int getLightLevel(@Nonnull BlockState state) {
-            Resources resources = state.getValue(RESOURCES);
-            return switch (resources) {
-                case RICH -> 8;
-                case ABUNDANT -> 6;
-                case MEDIUM -> 4;
-                case SCARCE -> 2;
-                default -> 0;
-            };
-        }
-
-        public static float getDrillOffset(@Nonnull BlockState state) {
-            Resources resources = state.getValue(RESOURCES);
-            return switch (resources) {
-                case RICH -> 0.8f;
-                case ABUNDANT -> 1f;
-                case MEDIUM -> 1.2f;
-                case SCARCE -> 1.4f;
-                case POOR -> 1.6f;
-            };
+        public int getLightLevel() {
+            return this.light;
         }
 
         @Nonnull
         @Override
         public String getSerializedName() {
-            return this.name;
+            return String.valueOf(this.stage);
         }
     }
 }

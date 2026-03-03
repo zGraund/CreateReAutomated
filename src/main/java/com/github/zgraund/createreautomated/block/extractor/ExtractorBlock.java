@@ -175,8 +175,7 @@ public class ExtractorBlock extends KineticBlock implements IBE<ExtractorBlockEn
     @Nonnull
     @Override
     protected VoxelShape getShape(@Nonnull BlockState state, @Nonnull BlockGetter level, @Nonnull BlockPos pos, @Nonnull CollisionContext context) {
-        if (state.getValue(HALF) == DoubleBlockHalf.LOWER) return SHAPE_LOWER;
-        return SHAPE_UPPER;
+        return state.getValue(HALF) == DoubleBlockHalf.LOWER ? SHAPE_LOWER : SHAPE_UPPER;
     }
 
     @Override

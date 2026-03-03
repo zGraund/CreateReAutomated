@@ -2,7 +2,6 @@ package com.github.zgraund.createreautomated;
 
 import com.github.zgraund.createreautomated.block.ModBlockEntities;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorRenderer;
-import com.github.zgraund.createreautomated.block.node.OreNodeRenderer;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
@@ -44,7 +43,6 @@ public class CreateReAutomatedClient {
     @SubscribeEvent
     public static void registerBER(@Nonnull EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModBlockEntities.EXTRACTOR_BE.get(), ExtractorRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.ORE_NODE_BE.get(), OreNodeRenderer::new);
 
         // TODO: create visual
 //        SimpleBlockEntityVisualizer.builder(ModBlockEntities.EXTRACTOR_BE.get())

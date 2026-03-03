@@ -24,4 +24,7 @@ runs
 run-data
 
 repo
+
+# ignore datagen while mod is in development
+src/generated
 src/generated/resources/.cache

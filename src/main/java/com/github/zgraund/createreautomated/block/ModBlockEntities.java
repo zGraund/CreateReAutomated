@@ -21,7 +21,7 @@ public class ModBlockEntities {
     );
     public static final Supplier<BlockEntityType<OreNodeEntity>> ORE_NODE_BE = BLOCK_ENTITY_TYPES.register(
             "ore_node_be",
-            () -> BlockEntityType.Builder.of(OreNodeEntity::new, ModBlocks.ORE_NODE.get(), ModBlocks.ORE_NODE_LIMITED.get()).build(null)
+            () -> BlockEntityType.Builder.of(OreNodeEntity::new, ModBlocks.ORE_NODE.get(), ModBlocks.ORE_NODE_LIMITED.get(), ModBlocks.ORE_NODE_TEST.get()).build(null)
     );
 
     public static void register(IEventBus eventBus) {

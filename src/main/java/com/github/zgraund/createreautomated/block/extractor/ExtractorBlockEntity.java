@@ -40,7 +40,7 @@ import java.util.Optional;
 
 public class ExtractorBlockEntity extends KineticBlockEntity {
     public static final float DEFAULT_DRILL_OFFSET = 0.8f;
-    public static final float RETRACTED_DRILL_OFFSET = 0.6f;
+    public static final float RETRACTED_DRILL_OFFSET = 0.55f;
     protected final ItemStackHandler drillInv = new ItemStackHandler(1) {
         @Override
         protected int getStackLimit(int slot, @Nonnull ItemStack stack) {
@@ -50,7 +50,8 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     protected final ItemStackHandler outputInv = new ItemStackHandler(1);
     private final IItemHandler capabilities = new ExtractorInventoryHandler();
     private int progress;
-    private boolean isCrafting;
+    private float animationProgress;
+    private AnimationStatus animationStatus = AnimationStatus.IDLE;
     private ExtractorRecipe lastRecipe;
 
     public ExtractorBlockEntity(BlockPos pos, BlockState state) {
@@ -79,9 +80,31 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     public void tick() {
         super.tick();
         if (level == null) return;
+
+        switch (animationStatus) {
+//            case IDLE -> animationProgress = RETRACTED_DRILL_OFFSET;
+            case DEPLOYING -> {
+                animationProgress += 0.01f;
+                float max = getNodeMaxDrillOffset();
+                if (animationProgress >= max) {
+                    animationStatus = AnimationStatus.ENGAGED;
+                    animationProgress = max;
+                }
+            }
+//            case ENGAGED -> animationProgress = getNodeMaxDrillOffset();
+            case RETRACTING -> {
+                animationProgress -= 0.01f;
+                if (animationProgress <= RETRACTED_DRILL_OFFSET) {
+                    animationStatus = AnimationStatus.IDLE;
+                    animationProgress = RETRACTED_DRILL_OFFSET;
+                }
+            }
+        }
+        sendData();
+
         if (failPreConditions()) {
-            isCrafting = false;
             lastRecipe = null;
+            animationStatus = AnimationStatus.RETRACTING;
             sendData();
             return;
         }
@@ -92,16 +115,19 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
             Optional<ExtractorRecipe> recipe = getRecipe(input);
             if (recipe.isEmpty()) {
                 lastRecipe = null;
-                isCrafting = false;
+                animationStatus = AnimationStatus.RETRACTING;
             } else {
                 lastRecipe = recipe.get();
                 progress = lastRecipe.processingTime();
+                animationStatus = AnimationStatus.DEPLOYING;
             }
             sendData();
             return;
         }
 
-        isCrafting = true;
+        if (animationStatus != AnimationStatus.ENGAGED)
+            return;
+
         progress -= (int) getProcessingSpeed();
 
         if (level.isClientSide()) {
@@ -133,7 +159,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     public void tickAudio() {
         super.tickAudio();
 
-        if (level == null || !isCrafting || failPreConditions() || lastRecipe == null)
+        if (level == null || failPreConditions() || lastRecipe == null)
             return;
         if (!shouldPlayAudioAndParticles())
             return;
@@ -159,11 +185,13 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         Vec3 center = offset.add(Vec3.atBottomCenterOf(worldPosition));
         target = VecHelper.offsetRandomly(target.subtract(offset), level.random, 1 / 128f);
         level.addParticle(data, center.x, center.y, center.z, target.x, target.y, target.z);
+
+//        BlockPos node = getNodePosition();
+//        level.addParticle(ParticleTypes.SMOKE, node.getX() + 0.4, node.getY() + 1, node.getZ() + 0.6, 0, 0.5, 0);
     }
 
     public boolean shouldPlayAudioAndParticles() {
-        float ratio = 1 - (float) progress / lastRecipe.processingTime();
-        return ratio > 0.20 && ratio < 0.80;
+        return animationStatus == AnimationStatus.ENGAGED;
     }
 
     public float getProcessingSpeed() {
@@ -193,6 +221,12 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         return getBlockPos().below(2);
     }
 
+    public float getNodeMaxDrillOffset() {
+        if (level == null) return RETRACTED_DRILL_OFFSET;
+        BlockState state = level.getBlockState(getNodePosition());
+        return state.getBlock() instanceof OreNodeBlock node ? node.getDrillOffset(state) : DEFAULT_DRILL_OFFSET;
+    }
+
     public boolean hasDrill() {
         return !drillInv.getStackInSlot(0).isEmpty();
     }
@@ -208,23 +242,20 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
 
     public float getDrillOffset(float partialTicks) {
         if (level == null) return RETRACTED_DRILL_OFFSET;
+        return animationProgress;
+//        BlockState state = level.getBlockState(getNodePosition());
+//        if (state.getBlock() instanceof OreNodeBlock node) {
+//            float maxOffset = node.getDrillOffset(state);
+//            float ratio = 1 - ((progress + partialTicks) / lastRecipe.processingTime());
+//            float range = maxOffset - RETRACTED_DRILL_OFFSET;
+//            if (ratio <= 0.20)
+//                return RETRACTED_DRILL_OFFSET + ((ratio) / 0.20f) * range;
+//            if (ratio <= 0.80)
+//                return maxOffset;
+//            return maxOffset - ((ratio - 0.80f) / 0.20f) * range;
+//        }
 
-        if (!isCrafting || lastRecipe == null)
-            return RETRACTED_DRILL_OFFSET;
-
-        BlockState state = level.getBlockState(getNodePosition());
-        if (state.getBlock() instanceof OreNodeBlock node) {
-            float maxOffset = node.getDrillOffset(state);
-            float ratio = 1 - ((progress + partialTicks) / lastRecipe.processingTime());
-            float range = maxOffset - RETRACTED_DRILL_OFFSET;
-            if (ratio <= 0.20)
-                return RETRACTED_DRILL_OFFSET + ((ratio) / 0.20f) * range;
-            if (ratio <= 0.80)
-                return maxOffset;
-            return maxOffset - ((ratio - 0.80f) / 0.20f) * range;
-        }
-
-        return DEFAULT_DRILL_OFFSET;
+//        return DEFAULT_DRILL_OFFSET;
     }
 
     @Override
@@ -239,7 +270,8 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         compound.put("DrillInventory", drillInv.serializeNBT(registries));
         compound.put("OutputInventory", outputInv.serializeNBT(registries));
         compound.putInt("Progress", progress);
-        compound.putBoolean("IsCrafting", isCrafting);
+//        compound.putFloat("Animation", animationProgress);
+//        compound.putBoolean("IsCrafting", isCrafting);
         super.write(compound, registries, clientPacket);
     }
 
@@ -248,7 +280,8 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         drillInv.deserializeNBT(registries, compound.getCompound("DrillInventory"));
         outputInv.deserializeNBT(registries, compound.getCompound("OutputInventory"));
         progress = compound.getInt("Progress");
-        isCrafting = compound.getBoolean("IsCrafting");
+//        animationProgress = compound.getFloat("Animation");
+//        animationProgress = compound.getBoolean("IsCrafting");
         super.read(compound, registries, clientPacket);
     }
 
@@ -256,6 +289,10 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     public void invalidate() {
         super.invalidate();
         invalidateCapabilities();
+    }
+
+    public enum AnimationStatus {
+        IDLE, DEPLOYING, ENGAGED, RETRACTING
     }
 
     private class ExtractorInventoryHandler extends CombinedInvWrapper {

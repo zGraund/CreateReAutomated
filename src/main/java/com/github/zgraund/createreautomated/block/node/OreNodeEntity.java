@@ -37,10 +37,10 @@ public class OreNodeEntity extends SyncedBlockEntity {
         if (!(currentState.getBlock() instanceof OreNodeBlock node)) return;
 
         BlockPos pos = getBlockPos();
-        OreNodeBlock.Resources newState = node.getStateFromQuantity(remaining);
+        OreNodeBlock.DepletionLevel newState = node.getStateFromQuantity(remaining);
 
-        if (newState != currentState.getValue(OreNodeBlock.RESOURCES)) {
-            level.setBlockAndUpdate(pos, currentState.setValue(OreNodeBlock.RESOURCES, newState));
+        if (newState != currentState.getValue(OreNodeBlock.DEPLETION)) {
+            level.setBlockAndUpdate(pos, currentState.setValue(OreNodeBlock.DEPLETION, newState));
             // TODO: funny but we should probably change this
             level.playSound(null, pos, SoundEvents.GOAT_SCREAMING_AMBIENT, SoundSource.BLOCKS);
         }

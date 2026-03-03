@@ -27,13 +27,6 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags(), registries);
     }
 
-    @Override
-    protected void generate() {
-        add(ModBlocks.EXTRACTOR.get(), block -> createSinglePropConditionTable(block, ExtractorBlock.HALF, DoubleBlockHalf.LOWER));
-        add(ModBlocks.ORE_NODE.get(), ModBlockLootTableProvider::createOreNodeDrop);
-        add(ModBlocks.ORE_NODE_LIMITED.get(), ModBlockLootTableProvider::createOreNodeDrop);
-    }
-
     @Nonnull
     public static LootTable.Builder createOreNodeDrop(Block block) {
         return LootTable.lootTable()
@@ -48,13 +41,21 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
                                                                                                               .hasProperty(OreNodeBlock.NATURAL, false)
                                                                                               )
                                                      )
-                                                     .apply(CopyBlockState.copyState(block).copy(OreNodeBlock.RESOURCES))
+                                                     .apply(CopyBlockState.copyState(block).copy(OreNodeBlock.DEPLETION))
                                                      .apply(CopyComponentsFunction
                                                              .copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
                                                              .include(ModDataComponents.NODE_REMAINING_EXTRACTIONS.get())
                                                      )
                                         )
                         );
+    }
+
+    @Override
+    protected void generate() {
+        add(ModBlocks.EXTRACTOR.get(), block -> createSinglePropConditionTable(block, ExtractorBlock.HALF, DoubleBlockHalf.LOWER));
+        add(ModBlocks.ORE_NODE.get(), ModBlockLootTableProvider::createOreNodeDrop);
+        add(ModBlocks.ORE_NODE_LIMITED.get(), ModBlockLootTableProvider::createOreNodeDrop);
+        add(ModBlocks.ORE_NODE_TEST.get(), ModBlockLootTableProvider::createOreNodeDrop);
     }
 
     @Nonnull

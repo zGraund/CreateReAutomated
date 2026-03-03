@@ -34,6 +34,7 @@ public class ModBlocks {
     );
     public static final DeferredBlock<OreNodeBlock> ORE_NODE = registerDefaultNode("ore_node");
     public static final DeferredBlock<OreNodeBlock> ORE_NODE_LIMITED = registerDefaultNode("ore_node_limited", 10);
+    public static final DeferredBlock<OreNodeBlock> ORE_NODE_TEST = registerDefaultNode("ore_node_test", 10);
 
     @Nonnull
     public static DeferredBlock<OreNodeBlock> registerDefaultNode(String name) {
@@ -57,8 +58,7 @@ public class ModBlocks {
     public static BlockBehaviour.Properties defaultNodeProperties() {
         return BlockBehaviour.Properties.of()
                                         .requiresCorrectToolForDrops()
-                                        .lightLevel(OreNodeBlock.Resources::getLightLevel)
-                                        .noOcclusion()
+                                        .lightLevel(value -> value.getValue(OreNodeBlock.DEPLETION).getLightLevel())
                                         .sound(SoundType.STONE)
                                         .pushReaction(PushReaction.BLOCK)
                                         .strength(4f);
