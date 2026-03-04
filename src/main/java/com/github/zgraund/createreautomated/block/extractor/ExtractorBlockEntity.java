@@ -1,5 +1,6 @@
 package com.github.zgraund.createreautomated.block.extractor;
 
+import com.github.zgraund.createreautomated.Config;
 import com.github.zgraund.createreautomated.block.ModBlockEntities;
 import com.github.zgraund.createreautomated.block.ModBlocks;
 import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
@@ -12,12 +13,15 @@ import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.item.ItemHelper;
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.math.VecHelper;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -36,6 +40,7 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 import java.util.Optional;
 
 public class ExtractorBlockEntity extends KineticBlockEntity {
@@ -81,31 +86,10 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         super.tick();
         if (level == null) return;
 
-        switch (animationStatus) {
-//            case IDLE -> animationProgress = RETRACTED_DRILL_OFFSET;
-            case DEPLOYING -> {
-                animationProgress += 0.01f;
-                float max = getNodeMaxDrillOffset();
-                if (animationProgress >= max) {
-                    animationStatus = AnimationStatus.ENGAGED;
-                    animationProgress = max;
-                }
-            }
-//            case ENGAGED -> animationProgress = getNodeMaxDrillOffset();
-            case RETRACTING -> {
-                animationProgress -= 0.01f;
-                if (animationProgress <= RETRACTED_DRILL_OFFSET) {
-                    animationStatus = AnimationStatus.IDLE;
-                    animationProgress = RETRACTED_DRILL_OFFSET;
-                }
-            }
-        }
-        sendData();
+        tickAnimation();
 
         if (failPreConditions()) {
-            lastRecipe = null;
-            animationStatus = AnimationStatus.RETRACTING;
-            sendData();
+            resetDrill();
             return;
         }
 
@@ -114,43 +98,69 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         if (lastRecipe == null || !lastRecipe.matches(input, level)) {
             Optional<ExtractorRecipe> recipe = getRecipe(input);
             if (recipe.isEmpty()) {
-                lastRecipe = null;
-                animationStatus = AnimationStatus.RETRACTING;
+                resetDrill();
             } else {
+                if (lastRecipe != null && lastRecipe != recipe.get())
+                    progress = 0;
                 lastRecipe = recipe.get();
-                progress = lastRecipe.processingTime();
-                animationStatus = AnimationStatus.DEPLOYING;
             }
-            sendData();
             return;
         }
 
-        if (animationStatus != AnimationStatus.ENGAGED)
+        ItemStack result = lastRecipe.assemble(input, level.registryAccess());
+        if (!canInsertResult(result)) {
+            animationStatus = AnimationStatus.RETRACTING;
             return;
+        }
 
-        progress -= (int) getProcessingSpeed();
+        if (animationStatus != AnimationStatus.ENGAGED) {
+            animationStatus = AnimationStatus.DEPLOYING;
+            return;
+        }
 
         if (level.isClientSide()) {
             spawnParticles();
             return;
         }
 
-        if (progress <= 0) {
-            ItemStack result = lastRecipe.assemble(input, level.registryAccess());
-            if (canInsertResult(result)) {
-                BlockEntity blockEntity = level.getBlockEntity(nodePos);
-                if (blockEntity instanceof OreNodeEntity nodeEntity) {
-                    nodeEntity.extract(1);
-                }
-                outputInv.insertItem(0, result, false);
-                drillInv.getStackInSlot(0).hurtAndBreak(1, (ServerLevel) level, null, item -> {});
-                progress = lastRecipe.processingTime();
-                setChanged();
-            } else {
-                progress = 0;
+        progress += (int) getProcessingSpeed();
+
+        if (progress >= lastRecipe.processingTime()) {
+            BlockEntity blockEntity = level.getBlockEntity(nodePos);
+            if (blockEntity instanceof OreNodeEntity nodeEntity) {
+                nodeEntity.extract(1);
             }
+            outputInv.insertItem(0, result, false);
+            drillInv.getStackInSlot(0).hurtAndBreak(lastRecipe.durabilityLoss(), (ServerLevel) level, null, item -> {
+                animationProgress = RETRACTED_DRILL_OFFSET;
+                resetDrill();
+                level.playSound(null, getBlockPos().below(), SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 0.5f, 1);
+            });
+            progress = 0;
+            setChanged();
         }
 
+        sendData();
+    }
+
+    public void tickAnimation() {
+        switch (animationStatus) {
+            case DEPLOYING -> {
+                animationProgress += 0.01f;
+                float max = getNodeMaxDrillOffset();
+                if (animationProgress >= max) {
+                    animationStatus = AnimationStatus.ENGAGED;
+                    animationProgress = max;
+                }
+            }
+            case RETRACTING -> {
+                animationProgress -= 0.01f;
+                if (animationProgress <= RETRACTED_DRILL_OFFSET) {
+                    animationStatus = AnimationStatus.IDLE;
+                    animationProgress = RETRACTED_DRILL_OFFSET;
+                }
+            }
+        }
         sendData();
     }
 
@@ -198,6 +208,12 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         return Math.abs(getSpeed());
     }
 
+    public void resetDrill() {
+        progress = 0;
+        lastRecipe = null;
+        animationStatus = AnimationStatus.RETRACTING;
+    }
+
     public Optional<ExtractorRecipe> getRecipe(ExtractorRecipeInput input) {
         if (level == null) throw new IllegalStateException("ExtractorBlockEntity with null level");
         return level.getRecipeManager()
@@ -237,25 +253,8 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     }
 
     public float getDrillOffset() {
-        return getDrillOffset(0);
-    }
-
-    public float getDrillOffset(float partialTicks) {
         if (level == null) return RETRACTED_DRILL_OFFSET;
         return animationProgress;
-//        BlockState state = level.getBlockState(getNodePosition());
-//        if (state.getBlock() instanceof OreNodeBlock node) {
-//            float maxOffset = node.getDrillOffset(state);
-//            float ratio = 1 - ((progress + partialTicks) / lastRecipe.processingTime());
-//            float range = maxOffset - RETRACTED_DRILL_OFFSET;
-//            if (ratio <= 0.20)
-//                return RETRACTED_DRILL_OFFSET + ((ratio) / 0.20f) * range;
-//            if (ratio <= 0.80)
-//                return maxOffset;
-//            return maxOffset - ((ratio - 0.80f) / 0.20f) * range;
-//        }
-
-//        return DEFAULT_DRILL_OFFSET;
     }
 
     @Override
@@ -270,8 +269,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         compound.put("DrillInventory", drillInv.serializeNBT(registries));
         compound.put("OutputInventory", outputInv.serializeNBT(registries));
         compound.putInt("Progress", progress);
-//        compound.putFloat("Animation", animationProgress);
-//        compound.putBoolean("IsCrafting", isCrafting);
+        compound.putFloat("Animation", animationProgress);
         super.write(compound, registries, clientPacket);
     }
 
@@ -280,8 +278,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         drillInv.deserializeNBT(registries, compound.getCompound("DrillInventory"));
         outputInv.deserializeNBT(registries, compound.getCompound("OutputInventory"));
         progress = compound.getInt("Progress");
-//        animationProgress = compound.getFloat("Animation");
-//        animationProgress = compound.getBoolean("IsCrafting");
+        animationProgress = compound.getFloat("Animation");
         super.read(compound, registries, clientPacket);
     }
 
@@ -289,6 +286,19 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     public void invalidate() {
         super.invalidate();
         invalidateCapabilities();
+    }
+
+    @Override
+    public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+        super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+        if (Config.DEBUG_EXTRACTOR_INFO.getAsBoolean()) {
+            MutableComponent component = Component.empty();
+            component.append(Component.literal("    Crafting progress: ").withStyle(ChatFormatting.GRAY));
+            int percentage = lastRecipe != null ? (progress * 100) / lastRecipe.processingTime() : 0;
+            component.append(Component.literal(percentage + "%").withStyle(ChatFormatting.DARK_GRAY));
+            tooltip.add(component);
+        }
+        return true;
     }
 
     public enum AnimationStatus {

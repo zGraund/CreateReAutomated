@@ -3,11 +3,6 @@
   "block.createreautomated.extractor.tooltip": "Node Ore Extractor",
   "block.createreautomated.extractor.tooltip.summary": "A _powerful_, but _hard_ _to_ _power_, machine that can extract _Ore Nodes_",
   "block.createreautomated.ore_node": "Ore Node",
-  "block.createreautomated.ore_node.rich": "Rich",
-  "block.createreautomated.ore_node.abundant": "Abundant",
-  "block.createreautomated.ore_node.medium": "Medium",
-  "block.createreautomated.ore_node.scarce": "Scarce",
-  "block.createreautomated.ore_node.poor": "Poor",
   "block.createreautomated.ore_node.tooltip": "Ore Node",
   "block.createreautomated.ore_node.tooltip.summary": "A _mysterious_ node too hard to extract by hand",
   "item.createreautomated.drill_head": "Drill Head",
@@ -16,5 +11,7 @@
   "createreautomated.configuration.title": "Create Re-Automated Configs",
   "createreautomated.configuration.section.createreautomated.common.toml": "Create Re-Automated Configs",
   "createreautomated.configuration.section.createreautomated.common.toml.title": "Create Re-Automated Configs",
-  "createreautomated.configuration.debugOreNode": "Debug Ore Node"
+  "createreautomated.configuration.debugOreNode":   "Debug Ore Node",
+  "createreautomated.configuration.debugExtractor": "Debug Extractor",
+  "itemGroup.createreautomated.base":               "Create Re-Automated"
 }
