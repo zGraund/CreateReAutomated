@@ -4,8 +4,10 @@ import com.github.zgraund.createreautomated.Config;
 import com.github.zgraund.createreautomated.block.ModBlockEntities;
 import com.mojang.serialization.MapCodec;
 import com.simibubi.create.foundation.block.IBE;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.ParticleUtils;
@@ -13,6 +15,10 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.BlockItemStateProperties;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -25,10 +31,17 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
+    private static final List<OreNodeBlock> ALL_NODES = new ArrayList<>();
+
     public static final EnumProperty<DepletionLevel> DEPLETION = EnumProperty.create("depletion", DepletionLevel.class);
     public static final BooleanProperty NATURAL = BooleanProperty.create("natural");
     public static final MapCodec<OreNodeBlock> CODEC = simpleCodec(OreNodeBlock::new);
@@ -39,6 +52,13 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
         super(properties);
         this.MAX_EXTRACTIONS = maxExtractions;
         this.registerDefaultState(this.defaultBlockState().setValue(DEPLETION, DepletionLevel.ZERO).setValue(NATURAL, false));
+        ALL_NODES.add(this);
+    }
+
+    @Nonnull
+    @Contract(pure = true)
+    public static @UnmodifiableView List<OreNodeBlock> getAllNodes() {
+        return Collections.unmodifiableList(ALL_NODES);
     }
 
     public OreNodeBlock(Properties properties) {
@@ -88,6 +108,24 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
                 }
             }
         }
+    }
+
+    @Override
+    public void appendHoverText(@Nonnull ItemStack stack, @Nonnull Item.TooltipContext context, @Nonnull List<Component> tooltipComponents,
+                                @Nonnull TooltipFlag tooltipFlag) {
+        BlockItemStateProperties data = stack.getComponents().get(DataComponents.BLOCK_STATE);
+        if (data != null) {
+            OreNodeBlock.DepletionLevel level = data.get(OreNodeBlock.DEPLETION);
+            if (level != null && level != OreNodeBlock.DepletionLevel.ZERO) {
+                // TODO: use translatable here
+                tooltipComponents.add(
+                        Component.literal("Depletion Level: ")
+                                 .withStyle(ChatFormatting.GRAY)
+                                 .append(Component.literal(level.getSerializedName()).withStyle(ChatFormatting.DARK_GRAY))
+                );
+            }
+        }
+        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 
     @Override

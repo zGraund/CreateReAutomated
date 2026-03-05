@@ -5,6 +5,7 @@ import com.github.zgraund.createreautomated.block.ModBlocks;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorBlock;
 import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
@@ -33,19 +34,16 @@ public class ModBlockStateProvider extends BlockStateProvider {
         for (int i = 0; i <= 9; i++) {
             models().cubeAll(destroyStage + i, modLoc(destroyStage + i)).renderType(mcLoc("cutout"));
         }
-        defaultOreNodeWithOverlay(ModBlocks.ORE_NODE, "block/diamond_ore");
-        defaultOreNodeWithOverlay(ModBlocks.ORE_NODE_LIMITED, "block/emerald_ore");
-        defaultOreNodeWithOverlay(ModBlocks.ORE_NODE_TEST, "block/gold_ore");
-        simpleBlockItem(ModBlocks.ORE_NODE.get(), models().getExistingFile(mcLoc("block/diamond_ore")));
-        simpleBlockItem(ModBlocks.ORE_NODE_LIMITED.get(), models().getExistingFile(mcLoc("block/emerald_ore")));
-        simpleBlockItem(ModBlocks.ORE_NODE_TEST.get(), models().getExistingFile(mcLoc("block/gold_ore")));
+        defaultOreNodeWithOverlay(ModBlocks.ORE_NODE, mcLoc("block/diamond_ore"));
+        defaultOreNodeWithOverlay(ModBlocks.ORE_NODE_LIMITED, mcLoc("block/emerald_ore"));
+        defaultOreNodeWithOverlay(ModBlocks.ORE_NODE_TEST, mcLoc("block/gold_ore"));
     }
 
-    public void defaultOreNodeWithOverlay(@Nonnull Supplier<? extends Block> block, String baseTexture) {
+    public void defaultOreNodeWithOverlay(@Nonnull Supplier<? extends Block> block, ResourceLocation baseTexture) {
         String destroyStage = "block/ore_node/node_destroy_stage_";
         MultiPartBlockStateBuilder nodeState = getMultipartBuilder(block.get())
                 .part()
-                .modelFile(models().getExistingFile(mcLoc(baseTexture)))
+                .modelFile(models().getExistingFile(baseTexture))
                 .addModel()
                 .end();
         for (int i = 1; i < ALL_DEPLETION_LEVELS.length; i++) {
@@ -55,5 +53,6 @@ public class ModBlockStateProvider extends BlockStateProvider {
                      .condition(OreNodeBlock.DEPLETION, ALL_DEPLETION_LEVELS[i])
                      .end();
         }
+        simpleBlockItem(block.get(), models().getExistingFile(baseTexture));
     }
 }

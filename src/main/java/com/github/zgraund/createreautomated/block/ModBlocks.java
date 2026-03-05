@@ -3,6 +3,7 @@ package com.github.zgraund.createreautomated.block;
 import com.github.zgraund.createreautomated.CreateReAutomated;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorBlock;
 import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
+import com.github.zgraund.createreautomated.item.ModItems;
 import com.simibubi.create.api.stress.BlockStressValues;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -43,14 +44,19 @@ public class ModBlocks {
 
     @Nonnull
     public static DeferredBlock<OreNodeBlock> registerDefaultNode(String name, int limit) {
-        return BLOCKS.register(name, () -> new OreNodeBlock(defaultNodeProperties(), limit));
+        DeferredBlock<OreNodeBlock> block = BLOCKS.register(name, () -> new OreNodeBlock(defaultNodeProperties(), limit));
+        ModItems.ITEMS.registerSimpleBlockItem(name, block, ModItems.defaultNodeItemProperties());
+        return block;
     }
 
     @Nonnull
     public static <T extends Block> DeferredBlock<T> registerWithImpact(String name, Function<BlockBehaviour.Properties, T> blockClass,
                                                                         BlockBehaviour.Properties properties, double stress) {
         DeferredBlock<T> toReturn = BLOCKS.registerBlock(name, blockClass, properties);
+
+        // Create block stress registry
         BlockStressValues.IMPACTS.registerProvider(block -> block == toReturn.get() ? () -> stress : null);
+
         return toReturn;
     }
 

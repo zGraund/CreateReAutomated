@@ -11,7 +11,7 @@
   "createreautomated.configuration.title": "Create Re-Automated Configs",
   "createreautomated.configuration.section.createreautomated.common.toml": "Create Re-Automated Configs",
   "createreautomated.configuration.section.createreautomated.common.toml.title": "Create Re-Automated Configs",
-  "createreautomated.configuration.debugOreNode":   "Debug Ore Node",
+  "createreautomated.configuration.debugOreNode": "Debug Ore Node",
   "createreautomated.configuration.debugExtractor": "Debug Extractor",
-  "itemGroup.createreautomated.base":               "Create Re-Automated"
+  "itemGroup.createreautomated.base": "Create Re-Automated"
 }

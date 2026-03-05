@@ -137,10 +137,9 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
                 level.playSound(null, getBlockPos().below(), SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 0.5f, 1);
             });
             progress = 0;
-            setChanged();
         }
 
-        sendData();
+        notifyUpdate();
     }
 
     public void tickAnimation() {

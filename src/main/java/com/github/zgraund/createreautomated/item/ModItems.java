@@ -2,7 +2,10 @@ package com.github.zgraund.createreautomated.item;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
 import com.github.zgraund.createreautomated.block.ModBlocks;
-import net.minecraft.world.item.BlockItem;
+import com.simibubi.create.foundation.item.ItemDescription;
+import com.simibubi.create.foundation.item.KineticStats;
+import com.simibubi.create.foundation.item.TooltipModifier;
+import net.createmod.catnip.lang.FontHelper;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -22,16 +25,6 @@ public class ModItems {
             "extractor",
             () -> new DoubleHighBlockItem(ModBlocks.EXTRACTOR.get(), new Item.Properties())
     );
-    public static final DeferredItem<BlockItem> ORE_NODE = ITEMS.registerSimpleBlockItem(
-            "ore_node",
-            ModBlocks.ORE_NODE,
-            defaultNodeItemProperties()
-    );
-    public static final DeferredItem<BlockItem> ORE_NODE_LIMITED = ITEMS.registerSimpleBlockItem(
-            "ore_node_limited",
-            ModBlocks.ORE_NODE_LIMITED,
-            defaultNodeItemProperties()
-    );
 
     @Nonnull
     public static Item.Properties defaultNodeItemProperties() {
@@ -40,5 +33,15 @@ public class ModItems {
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
+
+        // Create tooltip modifiers
+        ITEMS.getEntries().forEach(deferredItem ->
+                TooltipModifier.REGISTRY.registerProvider(item -> {
+                    TooltipModifier modifier =
+                            new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)
+                                    .andThen(TooltipModifier.mapNull(KineticStats.create(item)));
+                    return item == deferredItem.get() ? modifier : null;
+                })
+        );
     }
 }

@@ -1,6 +1,8 @@
 package com.github.zgraund.createreautomated.item;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
+import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
+import com.simibubi.create.foundation.item.ItemDescription;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -23,8 +25,12 @@ public class ModCreativeModeTab {
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(ModItems.EXTRACTOR);
                         output.accept(ModItems.DRILLHEAD);
-                        output.accept(ModItems.ORE_NODE);
-                        output.accept(ModItems.ORE_NODE_LIMITED);
+                        OreNodeBlock.getAllNodes().forEach(nodeBlock -> {
+                            // FIXME: very scuffed hack to register the key after block and item have been registered,
+                            //        need to find a better way
+                            ItemDescription.useKey(nodeBlock, "block.createreautomated.ore_node");
+                            output.accept(nodeBlock);
+                        });
                     })
                     .build()
     );
