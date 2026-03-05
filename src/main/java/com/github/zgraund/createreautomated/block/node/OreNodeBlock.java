@@ -35,10 +35,12 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.UnmodifiableView;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@ParametersAreNonnullByDefault
 public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
     private static final List<OreNodeBlock> ALL_NODES = new ArrayList<>();
 
@@ -67,8 +69,7 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
 
     @Nonnull
     @Override
-    protected InteractionResult useWithoutItem(@Nonnull BlockState state, @Nonnull Level level, @Nonnull BlockPos pos, @Nonnull Player player,
-                                               @Nonnull BlockHitResult hitResult) {
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (!level.isClientSide() && Config.DEBUG_ORE_NODE_DISPLAY.get()) {
             player.sendSystemMessage(Component.literal(
                     level.getBlockEntity(pos) instanceof OreNodeEntity oreNode
@@ -89,7 +90,7 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
         return (float) remaining / MAX_EXTRACTIONS;
     }
 
-    public float getDrillOffset(@Nonnull BlockState state) {
+    public float getDrillOffset(BlockState state) {
         return 0.85f;
     }
 
@@ -98,7 +99,7 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
     }
 
     @Override
-    public void animateTick(@Nonnull BlockState state, @Nonnull Level level, @Nonnull BlockPos pos, @Nonnull RandomSource random) {
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         super.animateTick(state, level, pos, random);
         if (state.getValue(NATURAL) && random.nextInt(10) == 0) {
             for (Direction dir : Direction.values()) {
@@ -111,8 +112,7 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
     }
 
     @Override
-    public void appendHoverText(@Nonnull ItemStack stack, @Nonnull Item.TooltipContext context, @Nonnull List<Component> tooltipComponents,
-                                @Nonnull TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         BlockItemStateProperties data = stack.getComponents().get(DataComponents.BLOCK_STATE);
         if (data != null) {
             OreNodeBlock.DepletionLevel level = data.get(OreNodeBlock.DEPLETION);
@@ -129,7 +129,7 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
     }
 
     @Override
-    protected void createBlockStateDefinition(@Nonnull StateDefinition.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(DEPLETION, NATURAL);
     }
 
@@ -144,7 +144,7 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
     }
 
     @Override
-    public BlockEntity newBlockEntity(@Nonnull BlockPos pos, @Nonnull BlockState state) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return isInfinite() ? null : new OreNodeEntity(pos, state);
     }
 
@@ -154,7 +154,7 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
 
     @Nonnull
     @Override
-    protected RenderShape getRenderShape(@Nonnull BlockState state) {
+    protected RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
     }
 
