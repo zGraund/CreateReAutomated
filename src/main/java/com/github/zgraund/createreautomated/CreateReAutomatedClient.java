@@ -2,7 +2,9 @@ package com.github.zgraund.createreautomated;
 
 import com.github.zgraund.createreautomated.block.ModBlockEntities;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorRenderer;
+import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
 import com.github.zgraund.createreautomated.ponder.ModPonderPlugin;
+import com.simibubi.create.foundation.item.ItemDescription;
 import net.createmod.ponder.foundation.PonderIndex;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -28,6 +30,11 @@ public class CreateReAutomatedClient {
     @SubscribeEvent
     public static void clientInit(FMLClientSetupEvent event) {
         PonderIndex.addPlugin(new ModPonderPlugin());
+
+        // Register nodes tooltip keys after the items have been registered
+        OreNodeBlock.getAllNodes().forEach(nodeBlock ->
+                ItemDescription.useKey(nodeBlock, "block.createreautomated.ore_node")
+        );
     }
 
     @SubscribeEvent

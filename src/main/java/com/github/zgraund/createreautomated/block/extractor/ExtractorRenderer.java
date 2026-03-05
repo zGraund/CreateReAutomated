@@ -41,7 +41,7 @@ public class ExtractorRenderer extends KineticBlockEntityRenderer<ExtractorBlock
         if (be.hasDrill()) {
             float drillOffset = be.getDrillOffset();
             SuperByteBuffer drill = CachedBuffers.partial(ModPartialModels.DRILL, blockState);
-            // TODO: don't hardcode this
+            // TODO: fix drill render when offset > 1
 //            if (drillOffset > 1f) {
 //                SuperByteBuffer shaft = CachedBuffers.partial(AllPartialModels.SHAFT, blockState);
 //                standardKineticRotationTransform(shaft, be, light).translate(0, -0.42, 0).renderInto(ms, vb);

@@ -21,7 +21,6 @@ import javax.annotation.Nonnull;
 public class CreateReAutomated {
     public static final String MOD_ID = "createreautomated";
     public static final Logger LOGGER = LogUtils.getLogger();
-//    private static final Registrate REGISTRATE = Registrate.create(MOD_ID);
 
     public CreateReAutomated(@Nonnull IEventBus modEventBus, @Nonnull ModContainer modContainer) {
         ModCreativeModeTab.register(modEventBus);
@@ -32,9 +31,6 @@ public class CreateReAutomated {
         ModBlockEntities.register(modEventBus);
 
         ModRecipes.register(modEventBus);
-
-        // TODO: maybe registrate?
-//        ModBlocks.register();
 
         ModDataComponents.register(modEventBus);
 
@@ -47,8 +43,4 @@ public class CreateReAutomated {
     public static ResourceLocation asResource(String path) {
         return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
-
-//    public static Registrate registrate() {
-//        return REGISTRATE;
-//    }
 }

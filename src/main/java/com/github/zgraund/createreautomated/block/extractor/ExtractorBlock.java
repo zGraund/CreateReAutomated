@@ -78,7 +78,7 @@ public class ExtractorBlock extends KineticBlock implements IBE<ExtractorBlockEn
             state = level.getBlockState(pos);
             if (!state.is(this)) return ItemInteractionResult.CONSUME;
         }
-        // TODO: cleanup
+
         return onBlockEntityUseItemOn(level, pos, extractor -> {
             if (player.isCrouching()) {
                 if (stack.isEmpty()) {
