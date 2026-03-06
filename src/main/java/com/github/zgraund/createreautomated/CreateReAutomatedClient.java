@@ -3,6 +3,7 @@ package com.github.zgraund.createreautomated;
 import com.github.zgraund.createreautomated.block.ModBlockEntities;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorRenderer;
 import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
+import com.github.zgraund.createreautomated.item.ModItems;
 import com.github.zgraund.createreautomated.ponder.ModPonderPlugin;
 import com.simibubi.create.foundation.item.ItemDescription;
 import net.createmod.ponder.foundation.PonderIndex;
@@ -34,6 +35,10 @@ public class CreateReAutomatedClient {
         // Register nodes tooltip keys after the items have been registered
         OreNodeBlock.getAllNodes().forEach(nodeBlock ->
                 ItemDescription.useKey(nodeBlock, "block.createreautomated.ore_node")
+        );
+        // And same with drills tooltip
+        ModItems.getAllDrills().forEach(drill ->
+                ItemDescription.useKey(drill, "item.createreautomated.drill_head")
         );
     }
 

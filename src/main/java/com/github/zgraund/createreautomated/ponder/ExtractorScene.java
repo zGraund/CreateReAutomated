@@ -41,7 +41,9 @@ public class ExtractorScene {
         scene.idle(90);
 
         // Show Extractor power input
-        scene.world().showSection(util.select().fromTo(3, 1, 2, 5, 1, 2), Direction.DOWN);
+        scene.world().showSection(util.select().fromTo(4, 1, 2, 5, 1, 2), Direction.DOWN);
+        scene.idle(10);
+        scene.world().showSection(util.select().position(3, 1, 2), Direction.DOWN);
         scene.idle(10);
         scene.world().showSection(util.select().fromTo(3, 2, 2, 3, 3, 2), Direction.DOWN);
         scene.idle(10);
