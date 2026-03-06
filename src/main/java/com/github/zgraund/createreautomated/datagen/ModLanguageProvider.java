@@ -39,9 +39,9 @@ public class ModLanguageProvider extends LanguageProvider {
         tooltip("block", ModBlocks.EXTRACTOR, "Node Ore Extractor");
         summary("block", ModBlocks.EXTRACTOR, "A _powerful_, but _hard_ _to_ _power_, machine that can extract _Ore Nodes_");
 
-        simpleItem(ModItems.DRILLHEAD);
-        tooltip("item", ModItems.DRILLHEAD, "A drill head for an extractor");
-        summary("item", ModItems.DRILLHEAD, "This drill can be used in an _Extractor_ to excavate an _Ore_ _Node_");
+        ModItems.getAllDrills().forEach(drill -> addItem(drill, nameFromId(drill.getId())));
+        add("item", "drill_head.tooltip", "A drill head for an extractor");
+        add("item", "drill_head.tooltip.summary", "This drill can be used in an _Extractor_ to excavate an _Ore_ _Node_");
 
         add("itemGroup", "base", "Create Re-Automated");
 

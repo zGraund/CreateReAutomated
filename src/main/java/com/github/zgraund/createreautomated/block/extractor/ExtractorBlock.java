@@ -1,7 +1,7 @@
 package com.github.zgraund.createreautomated.block.extractor;
 
 import com.github.zgraund.createreautomated.block.ModBlockEntities;
-import com.github.zgraund.createreautomated.item.ModItems;
+import com.github.zgraund.createreautomated.registry.ModTags;
 import com.mojang.serialization.MapCodec;
 import com.simibubi.create.content.kinetics.base.KineticBlock;
 import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
@@ -68,7 +68,7 @@ public class ExtractorBlock extends KineticBlock implements IBE<ExtractorBlockEn
     @Override
     protected ItemInteractionResult useItemOn(@Nonnull ItemStack stack, @Nonnull BlockState state, @Nonnull Level level, @Nonnull BlockPos pos, @Nonnull Player player,
                                               @Nonnull InteractionHand hand, @Nonnull BlockHitResult hitResult) {
-        if (!stack.isEmpty() && !stack.is(ModItems.DRILLHEAD))
+        if (!stack.isEmpty() && !stack.is(ModTags.Items.DRILL_ANY))
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         if (level.isClientSide())
             return ItemInteractionResult.SUCCESS;

@@ -5,10 +5,10 @@ import com.github.zgraund.createreautomated.block.ModBlockEntities;
 import com.github.zgraund.createreautomated.block.ModBlocks;
 import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
 import com.github.zgraund.createreautomated.block.node.OreNodeEntity;
-import com.github.zgraund.createreautomated.item.ModItems;
 import com.github.zgraund.createreautomated.recipe.ExtractorRecipe;
 import com.github.zgraund.createreautomated.recipe.ExtractorRecipeInput;
 import com.github.zgraund.createreautomated.recipe.ModRecipes;
+import com.github.zgraund.createreautomated.registry.ModTags;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.item.ItemHelper;
 import net.createmod.catnip.animation.AnimationTickHolder;
@@ -318,7 +318,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
             if (getHandlerFromIndex(getIndexForSlot(slot)) == outputInv)
                 return false;
-            return stack.is(ModItems.DRILLHEAD) && super.isItemValid(slot, stack);
+            return stack.is(ModTags.Items.DRILL_ANY) && super.isItemValid(slot, stack);
         }
 
         @Nonnull

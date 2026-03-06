@@ -77,7 +77,7 @@ public class ExtractorScene {
 
         scene.idle(70);
 
-        ItemStack drillStack = new ItemStack(ModItems.DRILLHEAD.get());
+        ItemStack drillStack = new ItemStack(ModItems.DIAMOND_DRILL.get());
         scene.overlay()
              .showControls(util.vector().blockSurface(extBot, Direction.NORTH), Pointing.RIGHT, 60)
              .withItem(drillStack)

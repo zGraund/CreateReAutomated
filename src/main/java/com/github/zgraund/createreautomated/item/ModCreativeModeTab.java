@@ -23,7 +23,7 @@ public class ModCreativeModeTab {
                     .title(Component.translatable("itemGroup.createreautomated.base"))
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(ModItems.EXTRACTOR);
-                        output.accept(ModItems.DRILLHEAD);
+                        ModItems.getAllDrills().forEach(output::accept);
                         OreNodeBlock.getAllNodes().forEach(output::accept);
                     })
                     .build()
