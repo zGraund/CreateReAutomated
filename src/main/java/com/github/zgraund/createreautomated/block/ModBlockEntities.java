@@ -22,7 +22,7 @@ public class ModBlockEntities {
     );
     public static final Supplier<BlockEntityType<OreNodeEntity>> ORE_NODE_BE = BLOCK_ENTITY_TYPES.register(
             "ore_node_be",
-            () -> BlockEntityType.Builder.of(OreNodeEntity::new, OreNodeBlock.getAllNodes().toArray(new OreNodeBlock[0])).build(null)
+            () -> BlockEntityType.Builder.of(OreNodeEntity::new, OreNodeBlock.toArray()).build(null)
     );
 
     public static void register(IEventBus eventBus) {

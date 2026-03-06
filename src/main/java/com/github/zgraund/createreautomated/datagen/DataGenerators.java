@@ -1,6 +1,8 @@
 package com.github.zgraund.createreautomated.datagen;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
+import com.github.zgraund.createreautomated.ponder.ModPonderPlugin;
+import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -10,6 +12,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import javax.annotation.Nonnull;
@@ -21,6 +24,9 @@ import java.util.concurrent.CompletableFuture;
 public class DataGenerators {
     @SubscribeEvent
     public static void gatherData(@Nonnull GatherDataEvent event) {
+        if (!event.getMods().contains(CreateReAutomated.MOD_ID))
+            return;
+
         DataGenerator generator = event.getGenerator();
         PackOutput packOutput = generator.getPackOutput();
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
@@ -36,5 +42,10 @@ public class DataGenerators {
         generator.addProvider(event.includeClient(), new ModBlockStateProvider(packOutput, existingFileHelper));
 
         generator.addProvider(event.includeServer(), new ModRecipeProvider(packOutput, lookupProvider));
+
+        PonderIndex.addPlugin(new ModPonderPlugin());
+        LanguageProvider languageProvider = new ModLanguageProvider(packOutput);
+        generator.addProvider(event.includeClient(), languageProvider);
+        PonderIndex.getLangAccess().provideLang(CreateReAutomated.MOD_ID, languageProvider::add);
     }
 }

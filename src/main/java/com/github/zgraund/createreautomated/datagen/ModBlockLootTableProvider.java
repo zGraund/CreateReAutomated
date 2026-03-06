@@ -53,9 +53,7 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
     @Override
     protected void generate() {
         add(ModBlocks.EXTRACTOR.get(), block -> createSinglePropConditionTable(block, ExtractorBlock.HALF, DoubleBlockHalf.LOWER));
-        add(ModBlocks.ORE_NODE.get(), ModBlockLootTableProvider::createOreNodeDrop);
-        add(ModBlocks.ORE_NODE_LIMITED.get(), ModBlockLootTableProvider::createOreNodeDrop);
-        add(ModBlocks.ORE_NODE_TEST.get(), ModBlockLootTableProvider::createOreNodeDrop);
+        OreNodeBlock.getAllNodes().forEach(nodeBlock -> add(nodeBlock, ModBlockLootTableProvider::createOreNodeDrop));
     }
 
     @Nonnull

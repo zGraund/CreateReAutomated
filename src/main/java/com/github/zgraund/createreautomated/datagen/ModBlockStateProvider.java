@@ -11,9 +11,9 @@ import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredBlock;
 
 import javax.annotation.Nonnull;
-import java.util.function.Supplier;
 
 public class ModBlockStateProvider extends BlockStateProvider {
     public static final OreNodeBlock.DepletionLevel[] ALL_DEPLETION_LEVELS = OreNodeBlock.DepletionLevel.values();
@@ -34,12 +34,23 @@ public class ModBlockStateProvider extends BlockStateProvider {
         for (int i = 0; i <= 9; i++) {
             models().cubeAll(destroyStage + i, modLoc(destroyStage + i)).renderType(mcLoc("cutout"));
         }
-        defaultOreNodeWithOverlay(ModBlocks.ORE_NODE, mcLoc("block/diamond_ore"));
-        defaultOreNodeWithOverlay(ModBlocks.ORE_NODE_LIMITED, mcLoc("block/emerald_ore"));
-        defaultOreNodeWithOverlay(ModBlocks.ORE_NODE_TEST, mcLoc("block/gold_ore"));
+        defaultOreNodeWithOverlay(ModBlocks.DIAMOND_NODE);
+        defaultOreNodeWithOverlay(ModBlocks.DEEPSLATE_DIAMOND_NODE);
+        defaultOreNodeWithOverlay(ModBlocks.GOLD_NODE);
+        defaultOreNodeWithOverlay(ModBlocks.DEEPSLATE_GOLD_NODE);
+        defaultOreNodeWithOverlay(ModBlocks.NETHER_GOLD_NODE);
+        defaultOreNodeWithOverlay(ModBlocks.COPPER_NODE);
+        defaultOreNodeWithOverlay(ModBlocks.DEEPSLATE_COPPER_NODE);
+        defaultOreNodeWithOverlay(ModBlocks.IRON_NODE);
+        defaultOreNodeWithOverlay(ModBlocks.DEEPSLATE_IRON_NODE);
     }
 
-    public void defaultOreNodeWithOverlay(@Nonnull Supplier<? extends Block> block, ResourceLocation baseTexture) {
+    public void defaultOreNodeWithOverlay(@Nonnull DeferredBlock<? extends Block> block) {
+        models().cubeAll("block/" + block.getId().getPath(), block.getId().withPrefix("block/"));
+        defaultOreNodeWithOverlay(block, block.getId().withPrefix("block/"));
+    }
+
+    public void defaultOreNodeWithOverlay(@Nonnull DeferredBlock<? extends Block> block, ResourceLocation baseTexture) {
         String destroyStage = "block/ore_node/node_destroy_stage_";
         MultiPartBlockStateBuilder nodeState = getMultipartBuilder(block.get())
                 .part()

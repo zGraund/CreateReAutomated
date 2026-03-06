@@ -34,14 +34,14 @@ public class ModRecipeProvider extends RecipeProvider {
     protected void buildRecipes(@Nonnull RecipeOutput recipeOutput) {
         new ExtractorRecipeBuilder(
                 Ingredient.of(ModItems.DRILLHEAD),
-                ModBlocks.ORE_NODE.get(),
+                ModBlocks.DIAMOND_NODE.get(),
                 secAtMaxSpeed(5),
                 1,
                 new ItemStack(Items.TRIAL_KEY)
         ).save(recipeOutput, CreateReAutomated.asResource("extract_key"));
         new ExtractorRecipeBuilder(
                 Ingredient.of(ModItems.DRILLHEAD),
-                ModBlocks.ORE_NODE_LIMITED.get(),
+                ModBlocks.DEEPSLATE_DIAMOND_NODE.get(),
                 secAtMaxSpeed(5),
                 5,
                 new ItemStack(Items.OMINOUS_TRIAL_KEY)

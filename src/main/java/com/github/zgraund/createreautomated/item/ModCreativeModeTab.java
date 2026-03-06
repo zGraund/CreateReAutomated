@@ -24,9 +24,7 @@ public class ModCreativeModeTab {
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(ModItems.EXTRACTOR);
                         output.accept(ModItems.DRILLHEAD);
-                        OreNodeBlock.getAllNodes().forEach(nodeBlock -> {
-                            output.accept(nodeBlock);
-                        });
+                        OreNodeBlock.getAllNodes().forEach(output::accept);
                     })
                     .build()
     );

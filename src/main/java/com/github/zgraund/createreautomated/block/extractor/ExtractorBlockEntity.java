@@ -174,7 +174,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
             return;
 
         // TODO: test tick rate of audio
-        if ((AnimationTickHolder.getTicks() % Math.floor(256 / (getProcessingSpeed() / 1))) == 0)
+        if ((AnimationTickHolder.getTicks() % Math.floor(256 / (getProcessingSpeed() / 2))) == 0)
             level.playLocalSound(getNodePosition(), SoundEvents.STONE_HIT, SoundSource.BLOCKS, 0.5f, 0.1f, true);
     }
 
@@ -239,7 +239,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     public float getNodeMaxDrillOffset() {
         if (level == null) return RETRACTED_DRILL_OFFSET;
         BlockState state = level.getBlockState(getNodePosition());
-        return state.getBlock() instanceof OreNodeBlock node ? node.getDrillOffset(state) : DEFAULT_DRILL_OFFSET;
+        return state.getBlock() instanceof OreNodeBlock node ? node.getDrillOffset() : DEFAULT_DRILL_OFFSET;
     }
 
     public boolean hasDrill() {
@@ -298,6 +298,11 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
             tooltip.add(component);
         }
         return true;
+    }
+
+    public void setVirtualDrill(ItemStack stack) {
+        if (!isVirtual()) return;
+        drillInv.setStackInSlot(0, stack);
     }
 
     public enum AnimationStatus {

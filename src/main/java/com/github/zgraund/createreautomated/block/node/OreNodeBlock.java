@@ -21,6 +21,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.BlockItemStateProperties;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -30,6 +31,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.UnmodifiableView;
@@ -63,6 +65,11 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
         return Collections.unmodifiableList(ALL_NODES);
     }
 
+    @Nonnull
+    public static OreNodeBlock[] toArray() {
+        return ALL_NODES.toArray(new OreNodeBlock[0]);
+    }
+
     public OreNodeBlock(Properties properties) {
         this(properties, 0);
     }
@@ -86,11 +93,7 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
                 .orElse(this.isInfinite());
     }
 
-    public float getRemainingPercentage(int remaining) {
-        return (float) remaining / MAX_EXTRACTIONS;
-    }
-
-    public float getDrillOffset(BlockState state) {
+    public float getDrillOffset() {
         return 0.85f;
     }
 
@@ -126,6 +129,14 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
             }
         }
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+    }
+
+    @Nonnull
+    @Override
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+        ItemStack stack = super.getCloneItemStack(state, target, level, pos, player);
+        stack.set(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY.with(OreNodeBlock.DEPLETION, state.getValue(OreNodeBlock.DEPLETION)));
+        return stack;
     }
 
     @Override
