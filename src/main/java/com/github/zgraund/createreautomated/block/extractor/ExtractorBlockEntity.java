@@ -16,11 +16,13 @@ import net.createmod.catnip.math.VecHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -40,6 +42,7 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -296,6 +299,14 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
             int percentage = lastRecipe != null ? (progress * 100) / lastRecipe.processingTime() : 0;
             component.append(Component.literal(percentage + "%").withStyle(ChatFormatting.DARK_GRAY));
             tooltip.add(component);
+            List<String> s = lastRecipe.nodeSet()
+                                       .stream()
+                                       .map(Holder::getRegisteredName)
+                                       .toList();
+            Component s1 = ComponentUtils.formatList(s);
+            Component recipe = Component.literal(Arrays.toString(lastRecipe.drill().getItems()));
+            tooltip.add(s1);
+            tooltip.add(recipe);
         }
         return true;
     }
