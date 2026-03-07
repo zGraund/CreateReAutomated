@@ -28,66 +28,54 @@ import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 public class ModRecipeProvider extends RecipeProvider {
+    private RecipeOutput output;
+
     public ModRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries);
     }
 
     @Override
     protected void buildRecipes(@Nonnull RecipeOutput recipeOutput) {
-        drillRecipe(recipeOutput, ModItems.STONE_DRILL, Items.COBBLESTONE);
-        drillRecipe(recipeOutput, ModItems.COPPER_DRILL, Items.COPPER_INGOT);
-        drillRecipe(recipeOutput, ModItems.IRON_DRILL, Items.IRON_INGOT);
-        drillRecipe(recipeOutput, ModItems.DIAMOND_DRILL, Items.DIAMOND);
-        // TODO: give names
-        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, ModItems.DIAMOND_BIT, RecipeCategory.MISC, Items.DIAMOND);
-        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, ModItems.GOLD_BIT, RecipeCategory.MISC, Items.GOLD_NUGGET);
-        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, ModItems.IRON_BIT, RecipeCategory.MISC, Items.IRON_NUGGET);
-        nineBlockStorageRecipes(recipeOutput, RecipeCategory.MISC, ModItems.COPPER_BIT, RecipeCategory.MISC, AllItems.COPPER_NUGGET);
+        this.output = recipeOutput;
 
-        new ExtractorRecipeBuilder(
+        drillRecipe(ModItems.STONE_DRILL, Items.COBBLESTONE);
+        drillRecipe(ModItems.COPPER_DRILL, Items.COPPER_INGOT);
+        drillRecipe(ModItems.IRON_DRILL, Items.IRON_INGOT);
+        drillRecipe(ModItems.DIAMOND_DRILL, Items.DIAMOND);
+
+        bitsPacking(ModItems.DIAMOND_BIT, Items.DIAMOND);
+        bitsPacking(ModItems.GOLD_BIT, Items.GOLD_NUGGET);
+        bitsPacking(ModItems.IRON_BIT, Items.IRON_NUGGET);
+        bitsPacking(ModItems.COPPER_BIT, AllItems.COPPER_NUGGET);
+
+        simpleExtractorRecipe(
                 Ingredient.of(ModItems.DIAMOND_DRILL),
-                fromBlocks(
-                        ModBlocks.DIAMOND_NODE,
-                        ModBlocks.DEEPSLATE_DIAMOND_NODE
-                ),
+                fromBlocks(ModBlocks.DIAMOND_NODE, ModBlocks.DEEPSLATE_DIAMOND_NODE),
                 secAtMaxSpeed(10),
                 1,
-                new ItemStack(ModItems.DIAMOND_BIT.get())
-        ).save(recipeOutput, CreateReAutomated.asResource("extracting/diamond_bit"));
-//        new ExtractorRecipeBuilder(
-//                Ingredient.of(ModItems.DIAMOND_DRILL),
-//                ModBlocks.DEEPSLATE_DIAMOND_NODE.get(),
-//                secAtMaxSpeed(10),
-//                1,
-//                new ItemStack(ModItems.DIAMOND_BIT.get())
-//        ).save(recipeOutput, CreateReAutomated.asResource("extracting/diamond_bit_deepslate"));
+                new ItemStack(ModItems.DIAMOND_BIT.get()),
+                "diamond_bit"
+        );
 
-        new ExtractorRecipeBuilder(
+        simpleExtractorRecipe(
                 Ingredient.of(ModTags.Items.DRILL_TIER_2),
-                fromBlocks(
-                        ModBlocks.GOLD_NODE,
-                        ModBlocks.DEEPSLATE_GOLD_NODE
-                ),
+                fromBlocks(ModBlocks.GOLD_NODE, ModBlocks.DEEPSLATE_GOLD_NODE),
                 secAtMaxSpeed(5),
                 1,
-                new ItemStack(ModItems.GOLD_BIT.get(), 1)
-        ).save(recipeOutput, CreateReAutomated.asResource("extracting/gold_bit"));
-//        new ExtractorRecipeBuilder(
-//                Ingredient.of(ModTags.Items.DRILL_TIER_2),
-//                ModBlocks.DEEPSLATE_GOLD_NODE.get(),
-//                secAtMaxSpeed(5),
-//                1,
-//                new ItemStack(ModItems.GOLD_BIT.get(), 1)
-//        ).save(recipeOutput, CreateReAutomated.asResource("extracting/gold_bit_deepslate"));
-        new ExtractorRecipeBuilder(
+                new ItemStack(ModItems.GOLD_BIT.get(), 1),
+                "gold_bit"
+        );
+
+        simpleExtractorRecipe(
                 Ingredient.of(ModTags.Items.DRILL_TIER_2),
                 fromBlocks(ModBlocks.NETHER_GOLD_NODE),
                 secAtMaxSpeed(10),
                 1,
-                new ItemStack(ModItems.GOLD_BIT.get(), 1)
-        ).save(recipeOutput, CreateReAutomated.asResource("extracting/nether_gold_bit"));
+                new ItemStack(ModItems.GOLD_BIT.get(), 1),
+                "nether_gold_bit"
+        );
 
-        new ExtractorRecipeBuilder(
+        simpleExtractorRecipe(
                 Ingredient.of(ModTags.Items.DRILL_TIER_2),
                 fromBlocks(
                         ModBlocks.IRON_NODE,
@@ -95,17 +83,11 @@ public class ModRecipeProvider extends RecipeProvider {
                 ),
                 secAtMaxSpeed(5),
                 1,
-                new ItemStack(ModItems.IRON_BIT.get(), 3)
-        ).save(recipeOutput, CreateReAutomated.asResource("extracting/iron_bit"));
-//        new ExtractorRecipeBuilder(
-//                Ingredient.of(ModTags.Items.DRILL_TIER_2),
-//                ModBlocks.DEEPSLATE_IRON_NODE.get(),
-//                secAtMaxSpeed(5),
-//                1,
-//                new ItemStack(ModItems.IRON_BIT.get(), 3)
-//        ).save(recipeOutput, CreateReAutomated.asResource("extracting/iron_bit_deepslate"));
+                new ItemStack(ModItems.IRON_BIT.get(), 3),
+                "iron_bit"
+        );
 
-        new ExtractorRecipeBuilder(
+        simpleExtractorRecipe(
                 Ingredient.of(ModTags.Items.DRILL_TIER_2),
                 fromBlocks(
                         ModBlocks.COPPER_NODE,
@@ -113,50 +95,61 @@ public class ModRecipeProvider extends RecipeProvider {
                 ),
                 secAtMaxSpeed(5),
                 1,
-                new ItemStack(ModItems.COPPER_BIT.get(), 6)
-        ).save(recipeOutput, CreateReAutomated.asResource("extracting/copper_bit"));
-
-//        new ExtractorRecipeBuilder(
-//                Ingredient.of(ModTags.Items.DRILL_TIER_2),
-//                fromTag(BlockTags.MINEABLE_WITH_PICKAXE),
-//                secAtMaxSpeed(5),
-//                1,
-//                new ItemStack(ModItems.COPPER_BIT.get(), 6)
-//        ).save(recipeOutput, CreateReAutomated.asResource("extracting/all_the_blocks"));
-//        new ExtractorRecipeBuilder(
-//                Ingredient.of(ModTags.Items.DRILL_TIER_2),
-//                ModBlocks.DEEPSLATE_COPPER_NODE.get(),
-//                secAtMaxSpeed(5),
-//                1,
-//                new ItemStack(ModItems.COPPER_BIT.get(), 6)
-//        ).save(recipeOutput, CreateReAutomated.asResource("extracting/copper_bit_deepslate"));
+                new ItemStack(ModItems.COPPER_BIT.get(), 6),
+                "copper_bit"
+        );
     }
 
     @SuppressWarnings("deprecation")
-    public HolderSet.Named<Block> fromTag(TagKey<Block> tag) {
+    protected HolderSet.Named<Block> fromTag(TagKey<Block> tag) {
         return HolderSet.emptyNamed(BuiltInRegistries.BLOCK.holderOwner(), tag);
     }
 
     @Nonnull
     @SafeVarargs
-    public final HolderSet.Direct<Block> fromBlocks(DeferredBlock<? extends Block>... blocks) {
+    protected final HolderSet.Direct<Block> fromBlocks(DeferredBlock<? extends Block>... blocks) {
         return HolderSet.direct(blocks);
     }
 
-    public int secAtMaxSpeed(int seconds) {
+    protected String idAsString(String path) {
+        return CreateReAutomated.MOD_ID + ":" + path;
+    }
+
+    protected void bitsPacking(ItemLike unpacked, ItemLike packed) {
+        String unpackedName = getItemName(unpacked);
+        String packedName = getItemName(packed);
+        nineBlockStorageRecipes(
+                this.output,
+                RecipeCategory.MISC,
+                unpacked,
+                RecipeCategory.MISC,
+                packed,
+                idAsString(packedName + "_from_bits"),
+                packedName,
+                idAsString(unpackedName),
+                unpackedName
+        );
+    }
+
+    protected int secAtMaxSpeed(int seconds) {
         return seconds * 256 * 20;
     }
 
-    public void drillRecipe(RecipeOutput recipeOutput, DeferredItem<Item> drill, ItemLike material) {
+    protected void drillRecipe(DeferredItem<Item> drill, ItemLike material) {
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, drill)
                            .define('I', Items.IRON_INGOT)
                            .define('M', material)
                            .pattern(" I ")
                            .pattern("MIM")
                            .pattern(" M ")
-                           .group("drills")
-                           .unlockedBy("has_material", has(material))
-                           .save(recipeOutput, CreateReAutomated.asResource(drill.getId().getPath()));
+                           .group(idAsString("drills"))
+                           .unlockedBy(getHasName(material), has(material))
+                           .save(this.output, CreateReAutomated.asResource(drill.getId().getPath()));
+    }
+
+    protected void simpleExtractorRecipe(Ingredient drill, HolderSet<Block> set, int durationTicks, int drillDamage, ItemStack result, String name) {
+        new ExtractorRecipeBuilder(drill, set, durationTicks, drillDamage, result)
+                .save(this.output, CreateReAutomated.asResource("extracting/" + name));
     }
 
     public record ExtractorRecipeBuilder(Ingredient drill, HolderSet<Block> node, int durationTicks, int drillDamage, ItemStack result) implements RecipeBuilder {
