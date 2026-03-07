@@ -290,7 +290,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
         super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-        if (Config.DEBUG_EXTRACTOR_INFO.getAsBoolean()) {
+        if (Config.Client.DEBUG_EXTRACTOR_INFO.getAsBoolean()) {
             MutableComponent component = Component.empty();
             component.append(Component.literal("    Crafting progress: ").withStyle(ChatFormatting.GRAY));
             int percentage = lastRecipe != null ? (progress * 100) / lastRecipe.processingTime() : 0;

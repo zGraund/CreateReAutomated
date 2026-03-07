@@ -75,7 +75,7 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
     @Nonnull
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        if (!level.isClientSide() && Config.DEBUG_ORE_NODE_DISPLAY.get()) {
+        if (!level.isClientSide() && Config.Client.DEBUG_ORE_NODE_DISPLAY.get()) {
             player.sendSystemMessage(Component.literal(
                     level.getBlockEntity(pos) instanceof OreNodeEntity oreNode
                             ? "The remaining ore is: " + oreNode.getRemaining()

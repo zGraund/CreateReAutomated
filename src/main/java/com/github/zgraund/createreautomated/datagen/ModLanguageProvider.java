@@ -53,11 +53,14 @@ public class ModLanguageProvider extends LanguageProvider {
         add("itemGroup", "base", "Create Re-Automated");
 
         // Configs
-        config("title", "Create Re-Automated Configs");
-        config("section." + CreateReAutomated.MOD_ID + ".common.toml", "Create Re-Automated Configs");
-        config("section." + CreateReAutomated.MOD_ID + ".common.toml.title", "Create Re-Automated Configs");
+        config("title", "Create Re-Automated Configurations");
+        config("section." + CreateReAutomated.MOD_ID + ".client.toml", "Create Re-Automated Client Configurations");
+        config("section." + CreateReAutomated.MOD_ID + ".client.toml.title", "Create Re-Automated Client Configurations");
+        config("section." + CreateReAutomated.MOD_ID + ".common.toml", "Create Re-Automated Common Configurations");
+        config("section." + CreateReAutomated.MOD_ID + ".common.toml.title", "Create Re-Automated Common Configurations");
         config("debugOreNode", "Debug Ore Node");
         config("debugExtractor", "Debug Extractor");
+        config("worldGen", "Enable World Generation");
     }
 
     private void add(String prefix, String suffix, String value) {
