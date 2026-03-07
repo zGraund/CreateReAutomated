@@ -113,6 +113,7 @@ public class ExtractorScene {
         // Insert drill into extractor
         scene.idle(20);
         scene.world().removeItemsFromBelt(beltStart.relative(Direction.SOUTH));
+        scene.world().flapFunnel(funnelIn, false);
         scene.world().modifyBlockEntity(extTop, ExtractorBlockEntity.class, be -> be.setVirtualDrill(drillStack));
 
         scene.idle(20);

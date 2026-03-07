@@ -21,5 +21,10 @@ public class ModItemModelProvider extends ItemModelProvider {
                         withExistingParent(drill.getId().toString(), mcLoc("item/generated"))
                                 .texture("layer0", CreateReAutomated.asResource("item/drill_head"))
                 );
+
+        basicItem(ModItems.COPPER_BIT.get());
+        basicItem(ModItems.IRON_BIT.get());
+        basicItem(ModItems.GOLD_BIT.get());
+        basicItem(ModItems.DIAMOND_BIT.get());
     }
 }

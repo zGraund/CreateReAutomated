@@ -16,7 +16,7 @@ public class ModCreativeModeTab {
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, CreateReAutomated.MOD_ID);
 
     public static final Supplier<CreativeModeTab> BASE = CREATIVE_MODE_TAB.register(
-            "base_tab",
+            "createreautomated",
             () -> CreativeModeTab
                     .builder()
                     .icon(() -> new ItemStack(ModItems.EXTRACTOR.get()))
@@ -25,6 +25,10 @@ public class ModCreativeModeTab {
                         output.accept(ModItems.EXTRACTOR);
                         ModItems.getAllDrills().forEach(output::accept);
                         OreNodeBlock.getAllNodes().forEach(output::accept);
+                        output.accept(ModItems.COPPER_BIT);
+                        output.accept(ModItems.IRON_BIT);
+                        output.accept(ModItems.GOLD_BIT);
+                        output.accept(ModItems.DIAMOND_BIT);
                     })
                     .build()
     );

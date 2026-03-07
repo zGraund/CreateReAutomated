@@ -29,6 +29,7 @@ public class ModLanguageProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
+        // Blocks
         OreNodeBlock.getAllNodes().forEach(nodeBlock ->
                 add(nodeBlock, nameFromId(BuiltInRegistries.BLOCK.getKey(nodeBlock)))
         );
@@ -39,12 +40,19 @@ public class ModLanguageProvider extends LanguageProvider {
         tooltip("block", ModBlocks.EXTRACTOR, "Node Ore Extractor");
         summary("block", ModBlocks.EXTRACTOR, "A _powerful_, but _hard_ _to_ _power_, machine that can extract _Ore Nodes_");
 
+        // Items
         ModItems.getAllDrills().forEach(drill -> addItem(drill, nameFromId(drill.getId())));
         add("item", "drill_head.tooltip", "A drill head for an extractor");
         add("item", "drill_head.tooltip.summary", "This drill can be used in an _Extractor_ to excavate an _Ore_ _Node_");
+        simpleItem(ModItems.COPPER_BIT);
+        simpleItem(ModItems.IRON_BIT);
+        simpleItem(ModItems.GOLD_BIT);
+        simpleItem(ModItems.DIAMOND_BIT);
 
+        // Misc
         add("itemGroup", "base", "Create Re-Automated");
 
+        // Configs
         config("title", "Create Re-Automated Configs");
         config("section." + CreateReAutomated.MOD_ID + ".common.toml", "Create Re-Automated Configs");
         config("section." + CreateReAutomated.MOD_ID + ".common.toml.title", "Create Re-Automated Configs");

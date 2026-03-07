@@ -28,10 +28,15 @@ public class ModItems {
             "extractor",
             () -> new DoubleHighBlockItem(ModBlocks.EXTRACTOR.get(), new Item.Properties())
     );
-    public static final DeferredItem<Item> STONE_DRILL = registerDefaultDrill("stone_drill", 32);
-    public static final DeferredItem<Item> COPPER_DRILL = registerDefaultDrill("copper_drill", 64);
-    public static final DeferredItem<Item> IRON_DRILL = registerDefaultDrill("iron_drill", 128);
     public static final DeferredItem<Item> DIAMOND_DRILL = registerDefaultDrill("diamond_drill", 256);
+    public static final DeferredItem<Item> IRON_DRILL = registerDefaultDrill("iron_drill", 128);
+    public static final DeferredItem<Item> COPPER_DRILL = registerDefaultDrill("copper_drill", 64);
+    public static final DeferredItem<Item> STONE_DRILL = registerDefaultDrill("stone_drill", 32);
+
+    public static final DeferredItem<Item> DIAMOND_BIT = ITEMS.registerSimpleItem("diamond_bit");
+    public static final DeferredItem<Item> GOLD_BIT = ITEMS.registerSimpleItem("gold_bit");
+    public static final DeferredItem<Item> IRON_BIT = ITEMS.registerSimpleItem("iron_bit");
+    public static final DeferredItem<Item> COPPER_BIT = ITEMS.registerSimpleItem("copper_bit");
 
     @Nonnull
     public static DeferredItem<Item> registerDefaultDrill(String name, int durability) {

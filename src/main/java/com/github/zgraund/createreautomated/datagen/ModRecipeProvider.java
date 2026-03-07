@@ -51,26 +51,71 @@ public class ModRecipeProvider extends RecipeProvider {
         drillRecipe(recipeOutput, ModItems.DIAMOND_DRILL, Items.DIAMOND);
 
         new ExtractorRecipeBuilder(
-                Ingredient.of(ModTags.Items.DRILL_TIER_1),
+                Ingredient.of(ModItems.DIAMOND_DRILL),
                 ModBlocks.DIAMOND_NODE.get(),
-                secAtMaxSpeed(5),
+                secAtMaxSpeed(10),
                 1,
-                new ItemStack(Items.TRIAL_KEY)
-        ).save(recipeOutput, CreateReAutomated.asResource("extracting/extract_key"));
-        new ExtractorRecipeBuilder(
-                Ingredient.of(ModTags.Items.DRILL_TIER_2),
-                ModBlocks.DEEPSLATE_DIAMOND_NODE.get(),
-                secAtMaxSpeed(5),
-                5,
-                new ItemStack(Items.OMINOUS_TRIAL_KEY)
-        ).save(recipeOutput, CreateReAutomated.asResource("extracting/extract_better_key"));
+                new ItemStack(ModItems.DIAMOND_BIT.get())
+        ).save(recipeOutput, CreateReAutomated.asResource("extracting/diamond_bit"));
         new ExtractorRecipeBuilder(
                 Ingredient.of(ModItems.DIAMOND_DRILL),
-                ModBlocks.NETHER_GOLD_NODE.get(),
+                ModBlocks.DEEPSLATE_DIAMOND_NODE.get(),
+                secAtMaxSpeed(10),
+                1,
+                new ItemStack(ModItems.DIAMOND_BIT.get())
+        ).save(recipeOutput, CreateReAutomated.asResource("extracting/diamond_bit_deepslate"));
+
+        new ExtractorRecipeBuilder(
+                Ingredient.of(ModTags.Items.DRILL_TIER_2),
+                ModBlocks.GOLD_NODE.get(),
                 secAtMaxSpeed(5),
-                5,
-                new ItemStack(Items.GOLD_NUGGET, 10)
-        ).save(recipeOutput, CreateReAutomated.asResource("extracting/gold_nuggets"));
+                1,
+                new ItemStack(ModItems.GOLD_BIT.get(), 1)
+        ).save(recipeOutput, CreateReAutomated.asResource("extracting/gold_bit"));
+        new ExtractorRecipeBuilder(
+                Ingredient.of(ModTags.Items.DRILL_TIER_2),
+                ModBlocks.DEEPSLATE_GOLD_NODE.get(),
+                secAtMaxSpeed(5),
+                1,
+                new ItemStack(ModItems.GOLD_BIT.get(), 1)
+        ).save(recipeOutput, CreateReAutomated.asResource("extracting/gold_bit_deepslate"));
+        new ExtractorRecipeBuilder(
+                Ingredient.of(ModTags.Items.DRILL_TIER_2),
+                ModBlocks.NETHER_GOLD_NODE.get(),
+                secAtMaxSpeed(10),
+                1,
+                new ItemStack(ModItems.GOLD_BIT.get(), 1)
+        ).save(recipeOutput, CreateReAutomated.asResource("extracting/gold_bit_nether"));
+
+        new ExtractorRecipeBuilder(
+                Ingredient.of(ModTags.Items.DRILL_TIER_2),
+                ModBlocks.IRON_NODE.get(),
+                secAtMaxSpeed(5),
+                1,
+                new ItemStack(ModItems.IRON_BIT.get(), 3)
+        ).save(recipeOutput, CreateReAutomated.asResource("extracting/iron_bit"));
+        new ExtractorRecipeBuilder(
+                Ingredient.of(ModTags.Items.DRILL_TIER_2),
+                ModBlocks.DEEPSLATE_IRON_NODE.get(),
+                secAtMaxSpeed(5),
+                1,
+                new ItemStack(ModItems.IRON_BIT.get(), 3)
+        ).save(recipeOutput, CreateReAutomated.asResource("extracting/iron_bit_deepslate"));
+
+        new ExtractorRecipeBuilder(
+                Ingredient.of(ModTags.Items.DRILL_TIER_2),
+                ModBlocks.COPPER_NODE.get(),
+                secAtMaxSpeed(5),
+                1,
+                new ItemStack(ModItems.COPPER_BIT.get(), 6)
+        ).save(recipeOutput, CreateReAutomated.asResource("extracting/copper_bit"));
+        new ExtractorRecipeBuilder(
+                Ingredient.of(ModTags.Items.DRILL_TIER_2),
+                ModBlocks.DEEPSLATE_COPPER_NODE.get(),
+                secAtMaxSpeed(5),
+                1,
+                new ItemStack(ModItems.COPPER_BIT.get(), 6)
+        ).save(recipeOutput, CreateReAutomated.asResource("extracting/copper_bit_deepslate"));
     }
 
     public record ExtractorRecipeBuilder(Ingredient drill, Block node, int durationTicks, int drillDamage, ItemStack result) implements RecipeBuilder {

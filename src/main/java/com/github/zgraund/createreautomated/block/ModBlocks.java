@@ -35,12 +35,12 @@ public class ModBlocks {
     );
     public static final DeferredBlock<OreNodeBlock> DIAMOND_NODE = registerDefaultNode("diamond_node", 20);
     public static final DeferredBlock<OreNodeBlock> DEEPSLATE_DIAMOND_NODE = registerDefaultNode("deepslate_diamond_node", 20);
-    public static final DeferredBlock<OreNodeBlock> COPPER_NODE = registerDefaultNode("copper_node", 100);
-    public static final DeferredBlock<OreNodeBlock> DEEPSLATE_COPPER_NODE = registerDefaultNode("deepslate_copper_node", 150);
     public static final DeferredBlock<OreNodeBlock> GOLD_NODE = registerDefaultNode("gold_node", 50);
     public static final DeferredBlock<OreNodeBlock> DEEPSLATE_GOLD_NODE = registerDefaultNode("deepslate_gold_node", 60);
     public static final DeferredBlock<OreNodeBlock> IRON_NODE = registerDefaultNode("iron_node", 200);
     public static final DeferredBlock<OreNodeBlock> DEEPSLATE_IRON_NODE = registerDefaultNode("deepslate_iron_node", 250);
+    public static final DeferredBlock<OreNodeBlock> COPPER_NODE = registerDefaultNode("copper_node", 100);
+    public static final DeferredBlock<OreNodeBlock> DEEPSLATE_COPPER_NODE = registerDefaultNode("deepslate_copper_node", 150);
     public static final DeferredBlock<OreNodeBlock> NETHER_GOLD_NODE = registerDefaultNode("nether_gold_node", 200);
 
     @Nonnull
