@@ -44,6 +44,8 @@ public class DataGenerators {
 
         generator.addProvider(event.includeServer(), new ModRecipeProvider(packOutput, lookupProvider));
 
+        generator.addProvider(event.includeServer(), new ModDataPackProvider(packOutput, lookupProvider));
+
         PonderIndex.addPlugin(new ModPonderPlugin());
         LanguageProvider languageProvider = new ModLanguageProvider(packOutput);
         generator.addProvider(event.includeClient(), languageProvider);

@@ -99,6 +99,10 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
         return DepletionLevel.fromQuantity(quantity, MAX_EXTRACTIONS);
     }
 
+    public BlockState natural() {
+        return this.defaultBlockState().setValue(NATURAL, true);
+    }
+
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         super.animateTick(state, level, pos, random);

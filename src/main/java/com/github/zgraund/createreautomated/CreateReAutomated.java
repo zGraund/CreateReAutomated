@@ -37,7 +37,7 @@ public class CreateReAutomated {
         ModPartialModels.init();
 
         modContainer.registerConfig(ModConfig.Type.CLIENT, Config.Client.SPEC);
-        modContainer.registerConfig(ModConfig.Type.SERVER, Config.Common.SPEC);
+        modContainer.registerConfig(ModConfig.Type.COMMON, Config.Common.SPEC);
     }
 
     @Nonnull
