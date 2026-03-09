@@ -6,6 +6,7 @@ import com.github.zgraund.createreautomated.item.ModCreativeModeTab;
 import com.github.zgraund.createreautomated.item.ModItems;
 import com.github.zgraund.createreautomated.recipe.ModRecipes;
 import com.github.zgraund.createreautomated.registry.ModDataComponents;
+import com.github.zgraund.createreautomated.registry.ModFeatures;
 import com.github.zgraund.createreautomated.registry.ModPartialModels;
 import com.github.zgraund.createreautomated.registry.ModPlacementModifiers;
 import com.mojang.logging.LogUtils;
@@ -35,6 +36,7 @@ public class CreateReAutomated {
 
         ModDataComponents.register(modEventBus);
 
+        ModFeatures.register(modEventBus);
         ModPlacementModifiers.register(modEventBus);
 
         ModPartialModels.init();
