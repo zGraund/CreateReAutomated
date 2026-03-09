@@ -54,9 +54,9 @@ public class ModLanguageProvider extends LanguageProvider {
 
         // Configs
         config("title", "Create Re-Automated Configurations");
-        config("section." + CreateReAutomated.MOD_ID + ".client.toml", "Create Re-Automated Client Configurations");
+        config("section." + CreateReAutomated.MOD_ID + ".client.toml", "Client Configurations");
         config("section." + CreateReAutomated.MOD_ID + ".client.toml.title", "Create Re-Automated Client Configurations");
-        config("section." + CreateReAutomated.MOD_ID + ".common.toml", "Create Re-Automated Common Configurations");
+        config("section." + CreateReAutomated.MOD_ID + ".common.toml", "Common Configurations");
         config("section." + CreateReAutomated.MOD_ID + ".common.toml.title", "Create Re-Automated Common Configurations");
         config("debugOreNode", "Debug Ore Node");
         config("debugExtractor", "Debug Extractor");
@@ -64,7 +64,7 @@ public class ModLanguageProvider extends LanguageProvider {
 
         // TODO: remove
         // Worldgen for testing
-        add("flat_world_preset.createreautomated.ore_node_test", "Node Ore test world");
+        add("generator.createreautomated.ore_node_test", "Node Ore test world");
     }
 
     private void add(String prefix, String suffix, String value) {

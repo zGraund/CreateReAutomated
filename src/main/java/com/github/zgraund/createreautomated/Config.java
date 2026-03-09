@@ -20,7 +20,6 @@ public class Config {
         private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
         public static final ModConfigSpec.BooleanValue WORLD_GENERATION = BUILDER
-                .worldRestart()
                 .comment("Whether Create-Re Automated should enable it's world generation")
                 .define("worldGen", true);
 

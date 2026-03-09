@@ -1,0 +1,87 @@
+{
+  "dimensions": {
+    "minecraft:overworld": {
+      "type": "minecraft:overworld",
+      "generator": {
+        "type": "minecraft:flat",
+        "settings": {
+          "biome": "minecraft:plains",
+          "features": true,
+          "lakes": false,
+          "layers": [
+            {
+              "block": "minecraft:bedrock",
+              "height": 1
+            },
+            {
+              "block": "minecraft:deepslate_diamond_ore",
+              "height": 16
+            },
+            {
+              "block": "minecraft:deepslate_gold_ore",
+              "height": 16
+            },
+            {
+              "block": "minecraft:deepslate_iron_ore",
+              "height": 16
+            },
+            {
+              "block": "minecraft:deepslate_copper_ore",
+              "height": 16
+            },
+            {
+              "block": "minecraft:diamond_ore",
+              "height": 32
+            },
+            {
+              "block": "minecraft:gold_ore",
+              "height": 32
+            },
+            {
+              "block": "minecraft:iron_ore",
+              "height": 32
+            },
+            {
+              "block": "minecraft:copper_ore",
+              "height": 32
+            },
+            {
+              "block": "minecraft:stone",
+              "height": 8
+            },
+            {
+              "block": "minecraft:dirt",
+              "height": 5
+            },
+            {
+              "block": "minecraft:grass_block",
+              "height": 1
+            }
+          ],
+          "structure_overrides": [ ]
+        }
+      }
+    },
+    "minecraft:the_end": {
+      "type": "minecraft:the_end",
+      "generator": {
+        "type": "minecraft:noise",
+        "biome_source": {
+          "type": "minecraft:the_end"
+        },
+        "settings": "minecraft:end"
+      }
+    },
+    "minecraft:the_nether": {
+      "type": "minecraft:the_nether",
+      "generator": {
+        "type": "minecraft:noise",
+        "biome_source": {
+          "type": "minecraft:multi_noise",
+          "preset": "minecraft:nether"
+        },
+        "settings": "minecraft:nether"
+      }
+    }
+  }
+}

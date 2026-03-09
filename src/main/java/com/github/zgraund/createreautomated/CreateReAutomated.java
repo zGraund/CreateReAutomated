@@ -7,6 +7,7 @@ import com.github.zgraund.createreautomated.item.ModItems;
 import com.github.zgraund.createreautomated.recipe.ModRecipes;
 import com.github.zgraund.createreautomated.registry.ModDataComponents;
 import com.github.zgraund.createreautomated.registry.ModPartialModels;
+import com.github.zgraund.createreautomated.registry.ModPlacementModifiers;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
@@ -33,6 +34,8 @@ public class CreateReAutomated {
         ModRecipes.register(modEventBus);
 
         ModDataComponents.register(modEventBus);
+
+        ModPlacementModifiers.register(modEventBus);
 
         ModPartialModels.init();
 

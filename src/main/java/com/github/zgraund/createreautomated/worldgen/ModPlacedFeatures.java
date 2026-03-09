@@ -21,17 +21,16 @@ public class ModPlacedFeatures {
     public static void bootstrap(@Nonnull BootstrapContext<PlacedFeature> context) {
         HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
 
-        // TODO: add config placement filter
         register(
                 context,
                 OVERWORLD_ORE_NODE_PLACED_KEY,
                 configuredFeatures.getOrThrow(ModConfiguredFeatures.OVERWORLD_ORE_NODE_KEY),
-                commonOrePlacement(
-                        50,
-                        HeightRangePlacement.uniform(
-                                VerticalAnchor.absolute(-64),
-                                VerticalAnchor.absolute(256)
-                        )
+                ConfigPlacementFilter.INSTANCE,
+                CountPlacement.of(50),
+                InSquarePlacement.spread(),
+                HeightRangePlacement.uniform(
+                        VerticalAnchor.absolute(-64),
+                        VerticalAnchor.absolute(128)
                 )
         );
     }
