@@ -61,6 +61,10 @@ public class ModLanguageProvider extends LanguageProvider {
         config("debugOreNode", "Debug Ore Node");
         config("debugExtractor", "Debug Extractor");
         config("worldGen", "Enable World Generation");
+
+        // TODO: remove
+        // Worldgen for testing
+        add("flat_world_preset.createreautomated.ore_node_test", "Node Ore test world");
     }
 
     private void add(String prefix, String suffix, String value) {
