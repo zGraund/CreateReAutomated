@@ -5,6 +5,7 @@ import com.github.zgraund.createreautomated.block.ModBlocks;
 import com.github.zgraund.createreautomated.item.ModItems;
 import com.github.zgraund.createreautomated.recipe.ExtractorRecipe;
 import com.github.zgraund.createreautomated.registry.ModTags;
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.core.HolderLookup;
@@ -37,6 +38,17 @@ public class ModRecipeProvider extends RecipeProvider {
     @Override
     protected void buildRecipes(@Nonnull RecipeOutput recipeOutput) {
         this.output = recipeOutput;
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.EXTRACTOR)
+                           .unlockedBy("has_", has(AllBlocks.BRASS_CASING))
+                           .define('I', AllItems.BRASS_INGOT)
+                           .define('C', AllBlocks.BRASS_CASING)
+                           .define('O', AllBlocks.COGWHEEL)
+                           .define('E', AllItems.ELECTRON_TUBE)
+                           .pattern("ICI")
+                           .pattern("IOI")
+                           .pattern("IEI")
+                           .save(recipeOutput);
 
         drillRecipe(ModItems.STONE_DRILL, Items.COBBLESTONE);
         drillRecipe(ModItems.COPPER_DRILL, Items.COPPER_INGOT);
