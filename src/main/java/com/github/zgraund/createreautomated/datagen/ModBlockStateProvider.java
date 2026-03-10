@@ -34,15 +34,15 @@ public class ModBlockStateProvider extends BlockStateProvider {
         for (int i = 0; i <= 9; i++) {
             models().cubeAll(destroyStage + i, modLoc(destroyStage + i)).renderType(mcLoc("cutout"));
         }
-        defaultOreNodeWithOverlay(ModBlocks.DIAMOND_NODE);
-        defaultOreNodeWithOverlay(ModBlocks.DEEPSLATE_DIAMOND_NODE);
-        defaultOreNodeWithOverlay(ModBlocks.GOLD_NODE);
-        defaultOreNodeWithOverlay(ModBlocks.DEEPSLATE_GOLD_NODE);
-        defaultOreNodeWithOverlay(ModBlocks.NETHER_GOLD_NODE);
         defaultOreNodeWithOverlay(ModBlocks.COPPER_NODE);
-        defaultOreNodeWithOverlay(ModBlocks.DEEPSLATE_COPPER_NODE);
         defaultOreNodeWithOverlay(ModBlocks.IRON_NODE);
+        defaultOreNodeWithOverlay(ModBlocks.GOLD_NODE);
+        defaultOreNodeWithOverlay(ModBlocks.DIAMOND_NODE);
+        defaultOreNodeWithOverlay(ModBlocks.DEEPSLATE_COPPER_NODE);
         defaultOreNodeWithOverlay(ModBlocks.DEEPSLATE_IRON_NODE);
+        defaultOreNodeWithOverlay(ModBlocks.DEEPSLATE_GOLD_NODE);
+        defaultOreNodeWithOverlay(ModBlocks.DEEPSLATE_DIAMOND_NODE);
+        defaultOreNodeWithOverlay(ModBlocks.NETHER_GOLD_NODE);
     }
 
     public void defaultOreNodeWithOverlay(@Nonnull DeferredBlock<? extends Block> block) {

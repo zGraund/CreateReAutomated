@@ -50,10 +50,9 @@ public class ModRecipeProvider extends RecipeProvider {
                            .pattern("IEI")
                            .save(recipeOutput);
 
-        drillRecipe(ModItems.STONE_DRILL, Items.COBBLESTONE);
-        drillRecipe(ModItems.COPPER_DRILL, Items.COPPER_INGOT);
-        drillRecipe(ModItems.IRON_DRILL, Items.IRON_INGOT);
+        drillRecipe(ModItems.NETHERITE_DRILL, Items.NETHERITE_INGOT);
         drillRecipe(ModItems.DIAMOND_DRILL, Items.DIAMOND);
+        drillRecipe(ModItems.IRON_DRILL, Items.IRON_INGOT);
 
         bitsPacking(ModItems.DIAMOND_BIT, Items.DIAMOND);
         bitsPacking(ModItems.GOLD_BIT, Items.GOLD_NUGGET);
