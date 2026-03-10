@@ -17,10 +17,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         withExistingParent(ModBlocks.EXTRACTOR.getId().toString(), modLoc("block/ore_extractor/item"));
         // TODO: add texture
         ModItems.getAllDrills()
-                .forEach(drill ->
-                        withExistingParent(drill.getId().toString(), mcLoc("item/generated"))
-                                .texture("layer0", CreateReAutomated.asResource("item/drill_head"))
-                );
+                .forEach(drill -> basicItem(drill.get()));
 
         basicItem(ModItems.COPPER_BIT.get());
         basicItem(ModItems.IRON_BIT.get());

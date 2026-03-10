@@ -23,18 +23,15 @@ public class ModItemTagProvider extends ItemTagsProvider {
         tag(ModTags.Items.DRILL_ANY).add(ModItems.getAllDrills().stream().map(DeferredItem::get).toArray(Item[]::new));
 
         tag(ModTags.Items.DRILL_TIER_1)
-                .add(ModItems.STONE_DRILL.get())
+                .add(ModItems.IRON_DRILL.get())
                 .addTags(
                         ModTags.Items.DRILL_TIER_2,
                         ModTags.Items.DRILL_TIER_3
                 );
         tag(ModTags.Items.DRILL_TIER_2)
-                .add(
-                        ModItems.COPPER_DRILL.get(),
-                        ModItems.IRON_DRILL.get()
-                )
+                .add(ModItems.DIAMOND_DRILL.get())
                 .addTags(ModTags.Items.DRILL_TIER_3);
         tag(ModTags.Items.DRILL_TIER_3)
-                .add(ModItems.DIAMOND_DRILL.get());
+                .add(ModItems.NETHERITE_DRILL.get());
     }
 }
