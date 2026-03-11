@@ -9,10 +9,13 @@ import javax.annotation.Nonnull;
 
 public class ModTags {
     public static class Items {
-        public static final TagKey<Item> DRILL_ANY = createTag("drill_any");
+        public static final TagKey<Item> ANY_DRILL = createTag("any_drill");
         public static final TagKey<Item> DRILL_TIER_1 = createTag("drill_tier_1");
         public static final TagKey<Item> DRILL_TIER_2 = createTag("drill_tier_2");
         public static final TagKey<Item> DRILL_TIER_3 = createTag("drill_tier_3");
+        public static final TagKey<Item> AT_LEAST_TIER_1 = createTag("at_least_tier_1");
+        public static final TagKey<Item> AT_LEAST_TIER_2 = createTag("at_least_tier_2");
+        public static final TagKey<Item> AT_LEAST_TIER_3 = createTag("at_least_tier_3");
 
         @Nonnull
         private static TagKey<Item> createTag(String name) {

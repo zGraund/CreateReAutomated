@@ -22,7 +22,6 @@ import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -197,9 +196,6 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         Vec3 center = offset.add(Vec3.atBottomCenterOf(worldPosition));
         target = VecHelper.offsetRandomly(target.subtract(offset), level.random, 1 / 128f);
         level.addParticle(data, center.x, center.y, center.z, target.x, target.y, target.z);
-
-//        BlockPos node = getNodePosition();
-//        level.addParticle(ParticleTypes.SMOKE, node.getX() + 0.4, node.getY() + 1, node.getZ() + 0.6, 0, 0.5, 0);
     }
 
     public boolean shouldPlayAudioAndParticles() {
@@ -217,7 +213,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     }
 
     public Optional<ExtractorRecipe> getRecipe(ExtractorRecipeInput input) {
-        if (level == null) throw new IllegalStateException("ExtractorBlockEntity with null level");
+        if (level == null) return Optional.empty();
         return level.getRecipeManager()
                     .getRecipeFor(ModRecipes.EXTRACTOR_RECIPE.get(), input, level)
                     .map(RecipeHolder::value);
@@ -228,8 +224,8 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     }
 
     public boolean failPreConditions() {
-        if (level == null) return true;
-        return level.getBlockState(getNodePosition()).isEmpty()
+        return level == null
+               || level.getBlockState(getNodePosition()).isEmpty()
                || !hasDrill()
                || isOutputFull()
                || getProcessingSpeed() < ExtractorBlock.MIN_SPEED.getSpeedValue();
@@ -294,19 +290,18 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
         super.addToGoggleTooltip(tooltip, isPlayerSneaking);
         if (Config.Client.DEBUG_EXTRACTOR_INFO.getAsBoolean()) {
-            MutableComponent component = Component.empty();
-            component.append(Component.literal("    Crafting progress: ").withStyle(ChatFormatting.GRAY));
+            MutableComponent craftingProgress = Component.empty();
+            craftingProgress.append(Component.literal("    Crafting progress: ").withStyle(ChatFormatting.GRAY));
             int percentage = lastRecipe != null ? (progress * 100) / lastRecipe.processingTime() : 0;
-            component.append(Component.literal(percentage + "%").withStyle(ChatFormatting.DARK_GRAY));
-            tooltip.add(component);
-            List<String> s = lastRecipe.nodeSet()
-                                       .stream()
-                                       .map(Holder::getRegisteredName)
-                                       .toList();
-            Component s1 = ComponentUtils.formatList(s);
-            Component recipe = Component.literal(Arrays.toString(lastRecipe.drill().getItems()));
-            tooltip.add(s1);
-            tooltip.add(recipe);
+            craftingProgress.append(Component.literal(percentage + "%").withStyle(ChatFormatting.DARK_GRAY));
+            tooltip.add(craftingProgress);
+            Component drill = Component.literal(Arrays.toString(lastRecipe.drill().getItems()));
+            tooltip.add(drill);
+            lastRecipe.nodeSet()
+                      .stream()
+                      .map(Holder::getRegisteredName)
+                      .map(s -> Component.literal("    " + s).withStyle(ChatFormatting.DARK_GRAY))
+                      .forEach(tooltip::add);
         }
         return true;
     }
@@ -329,7 +324,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
             if (getHandlerFromIndex(getIndexForSlot(slot)) == outputInv)
                 return false;
-            return stack.is(ModTags.Items.DRILL_ANY) && super.isItemValid(slot, stack);
+            return stack.is(ModTags.Items.ANY_DRILL) && super.isItemValid(slot, stack);
         }
 
         @Nonnull

@@ -20,18 +20,27 @@ public class ModItemTagProvider extends ItemTagsProvider {
     @Override
     @SuppressWarnings("unchecked")
     protected void addTags(@Nonnull HolderLookup.Provider provider) {
-        tag(ModTags.Items.DRILL_ANY).add(ModItems.getAllDrills().stream().map(DeferredItem::get).toArray(Item[]::new));
+        tag(ModTags.Items.ANY_DRILL).add(ModItems.getAllDrills().stream().map(DeferredItem::get).toArray(Item[]::new));
 
         tag(ModTags.Items.DRILL_TIER_1)
-                .add(ModItems.IRON_DRILL.get())
+                .add(ModItems.IRON_DRILL.get());
+        tag(ModTags.Items.DRILL_TIER_2)
+                .add(ModItems.DIAMOND_DRILL.get());
+        tag(ModTags.Items.DRILL_TIER_3)
+                .add(ModItems.NETHERITE_DRILL.get());
+
+        tag(ModTags.Items.AT_LEAST_TIER_1)
+                .addTags(
+                        ModTags.Items.DRILL_TIER_1,
+                        ModTags.Items.DRILL_TIER_2,
+                        ModTags.Items.DRILL_TIER_3
+                );
+        tag(ModTags.Items.AT_LEAST_TIER_2)
                 .addTags(
                         ModTags.Items.DRILL_TIER_2,
                         ModTags.Items.DRILL_TIER_3
                 );
-        tag(ModTags.Items.DRILL_TIER_2)
-                .add(ModItems.DIAMOND_DRILL.get())
+        tag(ModTags.Items.AT_LEAST_TIER_3)
                 .addTags(ModTags.Items.DRILL_TIER_3);
-        tag(ModTags.Items.DRILL_TIER_3)
-                .add(ModItems.NETHERITE_DRILL.get());
     }
 }

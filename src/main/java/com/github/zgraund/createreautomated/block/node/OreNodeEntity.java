@@ -11,8 +11,9 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.state.BlockState;
 
-import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
+@ParametersAreNonnullByDefault
 public class OreNodeEntity extends SyncedBlockEntity {
     private int remaining;
 
@@ -55,32 +56,32 @@ public class OreNodeEntity extends SyncedBlockEntity {
     }
 
     @Override
-    protected void applyImplicitComponents(@Nonnull DataComponentInput componentInput) {
+    protected void applyImplicitComponents(DataComponentInput componentInput) {
         super.applyImplicitComponents(componentInput);
         remaining = componentInput.getOrDefault(ModDataComponents.NODE_REMAINING_EXTRACTIONS.get(), remaining);
     }
 
     @Override
-    protected void collectImplicitComponents(@Nonnull DataComponentMap.Builder components) {
+    protected void collectImplicitComponents(DataComponentMap.Builder components) {
         super.collectImplicitComponents(components);
         components.set(ModDataComponents.NODE_REMAINING_EXTRACTIONS.get(), remaining);
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public void removeComponentsFromTag(@Nonnull CompoundTag tag) {
+    public void removeComponentsFromTag(CompoundTag tag) {
         super.removeComponentsFromTag(tag);
         tag.remove("remaining");
     }
 
     @Override
-    protected void loadAdditional(@Nonnull CompoundTag tag, @Nonnull HolderLookup.Provider registries) {
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         remaining = tag.getInt("remaining");
     }
 
     @Override
-    protected void saveAdditional(@Nonnull CompoundTag tag, @Nonnull HolderLookup.Provider registries) {
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         tag.putInt("remaining", remaining);
     }

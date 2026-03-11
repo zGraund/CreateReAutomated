@@ -17,7 +17,6 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.CopyBlockState;
 import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
 import javax.annotation.Nonnull;
 import java.util.Set;
@@ -32,7 +31,6 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
         return LootTable.lootTable()
                         .withPool(
                                 LootPool.lootPool()
-                                        .setRolls(ConstantValue.exactly(1.0f))
                                         .add(LootItem.lootTableItem(block)
                                                      .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
                                                                                               .setProperties(
@@ -42,9 +40,8 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
                                                                                               )
                                                      )
                                                      .apply(CopyBlockState.copyState(block).copy(OreNodeBlock.DEPLETION))
-                                                     .apply(CopyComponentsFunction
-                                                             .copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
-                                                             .include(ModDataComponents.NODE_REMAINING_EXTRACTIONS.get())
+                                                     .apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+                                                                                  .include(ModDataComponents.NODE_REMAINING_EXTRACTIONS.get())
                                                      )
                                         )
                         );
@@ -53,7 +50,7 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
     @Override
     protected void generate() {
         add(ModBlocks.EXTRACTOR.get(), block -> createSinglePropConditionTable(block, ExtractorBlock.HALF, DoubleBlockHalf.LOWER));
-        OreNodeBlock.getAllNodes().forEach(nodeBlock -> add(nodeBlock, ModBlockLootTableProvider::createOreNodeDrop));
+        ModBlocks.getAllNodes().forEach(nodeBlock -> add(nodeBlock.block().get(), ModBlockLootTableProvider::createOreNodeDrop));
     }
 
     @Nonnull

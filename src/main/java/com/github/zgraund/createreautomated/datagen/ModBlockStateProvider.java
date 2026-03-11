@@ -46,8 +46,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
     }
 
     public void defaultOreNodeWithOverlay(@Nonnull DeferredBlock<? extends Block> block) {
-        models().cubeAll("block/" + block.getId().getPath(), block.getId().withPrefix("block/"));
-        defaultOreNodeWithOverlay(block, block.getId().withPrefix("block/"));
+        ResourceLocation texture = block.getId().withPrefix("block/");
+        models().cubeAll("block/" + block.getId().getPath(), texture);
+        defaultOreNodeWithOverlay(block, texture);
     }
 
     public void defaultOreNodeWithOverlay(@Nonnull DeferredBlock<? extends Block> block, ResourceLocation baseTexture) {

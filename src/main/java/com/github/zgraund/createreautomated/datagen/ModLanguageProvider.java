@@ -2,10 +2,8 @@ package com.github.zgraund.createreautomated.datagen;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
 import com.github.zgraund.createreautomated.block.ModBlocks;
-import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
 import com.github.zgraund.createreautomated.item.ModItems;
 import net.minecraft.Util;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.common.data.LanguageProvider;
@@ -30,8 +28,8 @@ public class ModLanguageProvider extends LanguageProvider {
     @Override
     protected void addTranslations() {
         // Blocks
-        OreNodeBlock.getAllNodes().forEach(nodeBlock ->
-                add(nodeBlock, nameFromId(BuiltInRegistries.BLOCK.getKey(nodeBlock)))
+        ModBlocks.getAllNodes().forEach(nodeBlock ->
+                addBlock(nodeBlock.block(), nameFromId(nodeBlock.block().getId()))
         );
         add("block", "ore_node.tooltip", "Ore Node");
         add("block", "ore_node.tooltip.summary", "A _mysterious_ node too hard to extract by hand");

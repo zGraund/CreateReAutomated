@@ -5,6 +5,7 @@ import com.github.zgraund.createreautomated.block.ModBlockEntities;
 import com.mojang.serialization.MapCodec;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.ChatFormatting;
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
@@ -22,7 +23,6 @@ import net.minecraft.world.item.component.BlockItemStateProperties;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,18 +31,15 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.UnmodifiableView;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
-    private static final List<OreNodeBlock> ALL_NODES = new ArrayList<>();
+//    private static final List<OreNodeBlock> ALL_NODES = new ArrayList<>();
 
     public static final EnumProperty<DepletionLevel> DEPLETION = EnumProperty.create("depletion", DepletionLevel.class);
     public static final BooleanProperty NATURAL = BooleanProperty.create("natural");
@@ -54,25 +51,22 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
         super(properties);
         this.MAX_EXTRACTIONS = maxExtractions;
         this.registerDefaultState(this.defaultBlockState().setValue(DEPLETION, DepletionLevel.ZERO).setValue(NATURAL, false));
-        ALL_NODES.add(this);
+//        ALL_NODES.add(this);
     }
 
-    @Nonnull
-    @Contract(pure = true)
-    public static @UnmodifiableView List<OreNodeBlock> getAllNodes() {
-        return Collections.unmodifiableList(ALL_NODES);
-    }
-
-    @Nonnull
-    public static OreNodeBlock[] toArray() {
-        return ALL_NODES.toArray(new OreNodeBlock[0]);
-    }
+//    @Contract(pure = true)
+//    public static @UnmodifiableView List<OreNodeBlock> getAllNodes() {
+//        return Collections.unmodifiableList(ALL_NODES);
+//    }
+//
+//    public static OreNodeBlock[] toArray() {
+//        return ALL_NODES.toArray(new OreNodeBlock[0]);
+//    }
 
     public OreNodeBlock(Properties properties) {
         this(properties, 0);
     }
 
-    @Nonnull
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (!level.isClientSide() && Config.Client.DEBUG_ORE_NODE_DISPLAY.get()) {
@@ -148,6 +142,7 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
         return ModBlockEntities.ORE_NODE_BE.get();
     }
 
+    @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return isInfinite() ? null : new OreNodeEntity(pos, state);
@@ -157,13 +152,6 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
         return MAX_EXTRACTIONS <= 0;
     }
 
-    @Nonnull
-    @Override
-    protected RenderShape getRenderShape(BlockState state) {
-        return RenderShape.MODEL;
-    }
-
-    @Nonnull
     @Override
     protected MapCodec<OreNodeBlock> codec() {
         return CODEC;
@@ -209,7 +197,6 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
             return this.light;
         }
 
-        @Nonnull
         @Override
         public String getSerializedName() {
             return String.valueOf(this.stage);

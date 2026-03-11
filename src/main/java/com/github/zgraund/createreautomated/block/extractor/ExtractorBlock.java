@@ -6,6 +6,7 @@ import com.mojang.serialization.MapCodec;
 import com.simibubi.create.content.kinetics.base.KineticBlock;
 import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
 import com.simibubi.create.foundation.block.IBE;
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -21,7 +22,6 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoublePlantBlock;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -36,10 +36,12 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.stream.Stream;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class ExtractorBlock extends KineticBlock implements IBE<ExtractorBlockEntity>, ICogWheel {
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
     public static final MapCodec<ExtractorBlock> CODEC = simpleCodec(ExtractorBlock::new);
@@ -64,11 +66,10 @@ public class ExtractorBlock extends KineticBlock implements IBE<ExtractorBlockEn
         this.registerDefaultState(this.defaultBlockState().setValue(HALF, DoubleBlockHalf.LOWER));
     }
 
-    @Nonnull
     @Override
-    protected ItemInteractionResult useItemOn(@Nonnull ItemStack stack, @Nonnull BlockState state, @Nonnull Level level, @Nonnull BlockPos pos, @Nonnull Player player,
-                                              @Nonnull InteractionHand hand, @Nonnull BlockHitResult hitResult) {
-        if (!stack.isEmpty() && !stack.is(ModTags.Items.DRILL_ANY))
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand,
+                                              BlockHitResult hitResult) {
+        if (!stack.isEmpty() && !stack.is(ModTags.Items.ANY_DRILL))
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         if (level.isClientSide())
             return ItemInteractionResult.SUCCESS;
@@ -111,7 +112,7 @@ public class ExtractorBlock extends KineticBlock implements IBE<ExtractorBlockEn
     }
 
     @Override
-    public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, @Nonnull Direction face) {
+    public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
         return face.equals(Direction.UP);
     }
 
@@ -120,10 +121,8 @@ public class ExtractorBlock extends KineticBlock implements IBE<ExtractorBlockEn
         return true;
     }
 
-    @Nonnull
     @Override
-    protected BlockState updateShape(@Nonnull BlockState state, @Nonnull Direction direction, @Nonnull BlockState neighborState, @Nonnull LevelAccessor level,
-                                     @Nonnull BlockPos pos, @Nonnull BlockPos neighborPos) {
+    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         DoubleBlockHalf half = state.getValue(HALF);
         if (direction == half.getDirectionToOther()
             && (!neighborState.is(state.getBlock()) || neighborState.getValue(HALF) != half.getOtherHalf())) {
@@ -133,14 +132,14 @@ public class ExtractorBlock extends KineticBlock implements IBE<ExtractorBlockEn
     }
 
     @Override
-    public void setPlacedBy(@Nonnull Level level, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nullable LivingEntity placer, @Nonnull ItemStack stack) {
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         level.setBlock(pos.above(), state.setValue(HALF, DoubleBlockHalf.UPPER), 3);
         super.setPlacedBy(level, pos.above(), state, placer, stack);
     }
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(@Nonnull BlockPlaceContext context) {
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockPos blockpos = context.getClickedPos();
         Level level = context.getLevel();
         if (blockpos.getY() < level.getMaxBuildHeight() - 1 && level.getBlockState(blockpos.above()).canBeReplaced(context))
@@ -151,9 +150,8 @@ public class ExtractorBlock extends KineticBlock implements IBE<ExtractorBlockEn
     /**
      * Taken from {@link DoublePlantBlock#preventDropFromBottomPart}
      */
-    @Nonnull
     @Override
-    public BlockState playerWillDestroy(@Nonnull Level level, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nonnull Player player) {
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         if (!level.isClientSide() && player.isCreative() && state.getValue(HALF) == DoubleBlockHalf.UPPER) {
             BlockPos posBelow = pos.below();
             BlockState stateBelow = level.getBlockState(posBelow);
@@ -166,25 +164,17 @@ public class ExtractorBlock extends KineticBlock implements IBE<ExtractorBlockEn
         return super.playerWillDestroy(level, pos, state, player);
     }
 
-    @Nonnull
     @Override
-    protected RenderShape getRenderShape(@Nonnull BlockState state) {
-        return RenderShape.MODEL;
-    }
-
-    @Nonnull
-    @Override
-    protected VoxelShape getShape(@Nonnull BlockState state, @Nonnull BlockGetter level, @Nonnull BlockPos pos, @Nonnull CollisionContext context) {
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return state.getValue(HALF) == DoubleBlockHalf.LOWER ? SHAPE_LOWER : SHAPE_UPPER;
     }
 
     @Override
-    protected void createBlockStateDefinition(@Nonnull StateDefinition.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(HALF);
     }
 
     @Override
-    @Nonnull
     protected MapCodec<? extends Block> codec() {
         return CODEC;
     }
@@ -199,8 +189,9 @@ public class ExtractorBlock extends KineticBlock implements IBE<ExtractorBlockEn
         return ModBlockEntities.EXTRACTOR_BE.get();
     }
 
+    @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, @Nonnull BlockState state) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return state.getValue(HALF) == DoubleBlockHalf.LOWER ? null : IBE.super.newBlockEntity(pos, state);
     }
 }

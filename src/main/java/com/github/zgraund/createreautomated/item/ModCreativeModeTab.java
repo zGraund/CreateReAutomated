@@ -1,7 +1,7 @@
 package com.github.zgraund.createreautomated.item;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
-import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
+import com.github.zgraund.createreautomated.block.ModBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -24,7 +24,7 @@ public class ModCreativeModeTab {
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(ModItems.EXTRACTOR);
                         ModItems.getAllDrills().forEach(output::accept);
-                        OreNodeBlock.getAllNodes().forEach(output::accept);
+                        ModBlocks.getAllNodes().forEach(holder -> output.accept(holder.block()));
                         output.accept(ModItems.COPPER_BIT);
                         output.accept(ModItems.IRON_BIT);
                         output.accept(ModItems.GOLD_BIT);
