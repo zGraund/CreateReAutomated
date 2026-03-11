@@ -46,41 +46,41 @@ public class ModBlocks {
             64.0
     );
     public static final DeferredBlock<OreNodeBlock> COPPER_NODE =
-            registerDefaultNode("copper_node", 100, List.of(Tags.Blocks.ORES_COPPER), List.of(new BlockMatchTest(Blocks.COPPER_ORE)));
+            defaultNode("copper_node", 100, List.of(Tags.Blocks.ORES_COPPER), List.of(new BlockMatchTest(Blocks.COPPER_ORE)));
     public static final DeferredBlock<OreNodeBlock> IRON_NODE =
-            registerDefaultNode("iron_node", 200, List.of(Tags.Blocks.ORES_IRON), List.of(new BlockMatchTest(Blocks.IRON_ORE)));
+            defaultNode("iron_node", 200, List.of(Tags.Blocks.ORES_IRON), List.of(new BlockMatchTest(Blocks.IRON_ORE)));
     public static final DeferredBlock<OreNodeBlock> GOLD_NODE =
-            registerDefaultNode("gold_node", 50, List.of(Tags.Blocks.ORES_GOLD), List.of(new BlockMatchTest(Blocks.GOLD_ORE)));
+            defaultNode("gold_node", 50, List.of(Tags.Blocks.ORES_GOLD), List.of(new BlockMatchTest(Blocks.GOLD_ORE)));
     public static final DeferredBlock<OreNodeBlock> DIAMOND_NODE =
-            registerDefaultNode("diamond_node", 20, List.of(Tags.Blocks.ORES_DIAMOND), List.of(new BlockMatchTest(Blocks.DIAMOND_ORE)));
+            defaultNode("diamond_node", 20, List.of(Tags.Blocks.ORES_DIAMOND), List.of(new BlockMatchTest(Blocks.DIAMOND_ORE)));
     public static final DeferredBlock<OreNodeBlock> DEEPSLATE_COPPER_NODE =
-            registerDefaultNode("deepslate_copper_node", 150, List.of(Tags.Blocks.ORES_COPPER), List.of(new BlockMatchTest(Blocks.DEEPSLATE_COPPER_ORE)));
+            defaultNode("deepslate_copper_node", 150, List.of(Tags.Blocks.ORES_COPPER), List.of(new BlockMatchTest(Blocks.DEEPSLATE_COPPER_ORE)));
     public static final DeferredBlock<OreNodeBlock> DEEPSLATE_IRON_NODE =
-            registerDefaultNode("deepslate_iron_node", 250, List.of(Tags.Blocks.ORES_IRON), List.of(new BlockMatchTest(Blocks.DEEPSLATE_IRON_ORE)));
+            defaultNode("deepslate_iron_node", 250, List.of(Tags.Blocks.ORES_IRON), List.of(new BlockMatchTest(Blocks.DEEPSLATE_IRON_ORE)));
     public static final DeferredBlock<OreNodeBlock> DEEPSLATE_GOLD_NODE =
-            registerDefaultNode("deepslate_gold_node", 60, List.of(Tags.Blocks.ORES_GOLD), List.of(new BlockMatchTest(Blocks.DEEPSLATE_GOLD_ORE)));
+            defaultNode("deepslate_gold_node", 60, List.of(Tags.Blocks.ORES_GOLD), List.of(new BlockMatchTest(Blocks.DEEPSLATE_GOLD_ORE)));
     public static final DeferredBlock<OreNodeBlock> DEEPSLATE_DIAMOND_NODE =
-            registerDefaultNode("deepslate_diamond_node", 20, List.of(Tags.Blocks.ORES_DIAMOND), List.of(new BlockMatchTest(Blocks.DEEPSLATE_DIAMOND_ORE)));
+            defaultNode("deepslate_diamond_node", 20, List.of(Tags.Blocks.ORES_DIAMOND), List.of(new BlockMatchTest(Blocks.DEEPSLATE_DIAMOND_ORE)));
     public static final DeferredBlock<OreNodeBlock> NETHER_GOLD_NODE =
-            registerDefaultNode("nether_gold_node", 200, List.of(Tags.Blocks.ORES_GOLD), List.of(new BlockMatchTest(Blocks.NETHER_GOLD_ORE)));
+            defaultNode("nether_gold_node", 200, List.of(Tags.Blocks.ORES_GOLD), List.of(new BlockMatchTest(Blocks.NETHER_GOLD_ORE)));
 
     @Nonnull
-    public static DeferredBlock<OreNodeBlock> registerDefaultNode(String name) {
-        return registerDefaultNode(name, 0);
+    public static DeferredBlock<OreNodeBlock> defaultNode(String name) {
+        return defaultNode(name, 0);
     }
 
     @Nonnull
-    public static DeferredBlock<OreNodeBlock> registerDefaultNode(String name, int limit) {
-        return registerDefaultNode(name, limit, List.of());
+    public static DeferredBlock<OreNodeBlock> defaultNode(String name, int limit) {
+        return defaultNode(name, limit, List.of());
     }
 
     @Nonnull
-    public static DeferredBlock<OreNodeBlock> registerDefaultNode(String name, int limit, List<TagKey<Block>> tags) {
-        return registerDefaultNode(name, limit, tags, List.of());
+    public static DeferredBlock<OreNodeBlock> defaultNode(String name, int limit, List<TagKey<Block>> tags) {
+        return defaultNode(name, limit, tags, List.of());
     }
 
     @Nonnull
-    public static DeferredBlock<OreNodeBlock> registerDefaultNode(String name, int limit, List<TagKey<Block>> tags, List<RuleTest> rules) {
+    public static DeferredBlock<OreNodeBlock> defaultNode(String name, int limit, List<TagKey<Block>> tags, List<RuleTest> rules) {
         DeferredBlock<OreNodeBlock> block = BLOCKS.register(name, () -> new OreNodeBlock(defaultNodeProperties(), limit));
         ModItems.ITEMS.registerSimpleBlockItem(name, block, ModItems.defaultNodeItemProperties());
         ALL_NODES.add(new OreNodeHolder(block, tags, rules));

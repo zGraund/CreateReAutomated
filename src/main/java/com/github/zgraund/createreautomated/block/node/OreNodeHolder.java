@@ -1,5 +1,6 @@
 package com.github.zgraund.createreautomated.block.node;
 
+import com.github.zgraund.createreautomated.block.ModBlocks;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
@@ -23,5 +24,10 @@ public record OreNodeHolder(DeferredBlock<OreNodeBlock> block, List<TagKey<Block
     @Nonnull
     public @Unmodifiable Stream<OreConfiguration.TargetBlockState> getRules() {
         return worldGenRules.stream().map(ruleTest -> OreConfiguration.target(ruleTest, block.get().natural()));
+    }
+
+    @Nonnull
+    public static @Unmodifiable List<OreConfiguration.TargetBlockState> getAllRules() {
+        return ModBlocks.getAllNodes().stream().flatMap(OreNodeHolder::getRules).toList();
     }
 }

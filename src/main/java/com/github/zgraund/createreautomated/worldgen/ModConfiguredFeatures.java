@@ -1,7 +1,6 @@
 package com.github.zgraund.createreautomated.worldgen;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
-import com.github.zgraund.createreautomated.block.ModBlocks;
 import com.github.zgraund.createreautomated.block.node.OreNodeHolder;
 import com.github.zgraund.createreautomated.registry.ModFeatures;
 import net.minecraft.core.registries.Registries;
@@ -21,7 +20,7 @@ public class ModConfiguredFeatures {
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         // TODO: divide in group for rarity spawn?
-        List<OreConfiguration.TargetBlockState> rules = ModBlocks.getAllNodes().stream().flatMap(OreNodeHolder::getRules).toList();
+        List<OreConfiguration.TargetBlockState> rules = OreNodeHolder.getAllRules();
 
         register(context, OVERWORLD_ORE_NODE_KEY, ModFeatures.ORE_NODE_FEATURE.get(), new ReplaceBlockConfiguration(rules));
     }
