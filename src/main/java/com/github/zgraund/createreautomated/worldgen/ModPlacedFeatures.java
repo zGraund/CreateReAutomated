@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.*;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Unmodifiable;
 
 import javax.annotation.Nonnull;
@@ -25,29 +26,25 @@ public class ModPlacedFeatures {
                 context,
                 OVERWORLD_ORE_NODE_PLACED_KEY,
                 configuredFeatures.getOrThrow(ModConfiguredFeatures.OVERWORLD_ORE_NODE_KEY),
-                ConfigPlacementFilter.INSTANCE,
-                CountPlacement.of(50),
-                InSquarePlacement.spread(),
-                HeightRangePlacement.uniform(
-                        VerticalAnchor.absolute(-64),
-                        VerticalAnchor.absolute(128)
-                )
+                defaultNodePlacement()
         );
     }
 
     @Nonnull
-    private static @Unmodifiable List<PlacementModifier> orePlacement(PlacementModifier countPlacement, PlacementModifier heightRange) {
-        return List.of(countPlacement, InSquarePlacement.spread(), heightRange);
+    @Contract(" -> new")
+    public static @Unmodifiable List<PlacementModifier> defaultNodePlacement() {
+        return nodePlacement(50, -64, 128);
     }
 
     @Nonnull
-    private static @Unmodifiable List<PlacementModifier> commonOrePlacement(int count, PlacementModifier heightRange) {
-        return orePlacement(CountPlacement.of(count), heightRange);
-    }
-
-    @Nonnull
-    private static @Unmodifiable List<PlacementModifier> rareOrePlacement(int chance, PlacementModifier heightRange) {
-        return orePlacement(RarityFilter.onAverageOnceEvery(chance), heightRange);
+    @Contract("_, _, _ -> new")
+    public static @Unmodifiable List<PlacementModifier> nodePlacement(int count, int min, int max) {
+        return List.of(
+                ConfigPlacementFilter.INSTANCE,
+                CountPlacement.of(count),
+                InSquarePlacement.spread(),
+                HeightRangePlacement.uniform(VerticalAnchor.absolute(min), VerticalAnchor.absolute(max))
+        );
     }
 
     @Nonnull

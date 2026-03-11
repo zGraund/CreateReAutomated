@@ -22,14 +22,14 @@ public class OreNodeFeature extends Feature<ReplaceBlockConfiguration> {
         ReplaceBlockConfiguration replaceblockconfiguration = context.config();
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
-        for (OreConfiguration.TargetBlockState oreConfig$targetState : replaceblockconfiguration.targetStates) {
-            if (oreConfig$targetState.target.test(worldgenlevel.getBlockState(blockpos), context.random())) {
+        for (OreConfiguration.TargetBlockState targetState : replaceblockconfiguration.targetStates) {
+            if (targetState.target.test(worldgenlevel.getBlockState(blockpos), context.random())) {
                 int adjacentNodes = 0;
                 for (Direction direction : Direction.values()) {
-                    if (oreConfig$targetState.target.test(worldgenlevel.getBlockState(mutablePos.setWithOffset(blockpos, direction)), context.random()))
+                    if (targetState.target.test(worldgenlevel.getBlockState(mutablePos.setWithOffset(blockpos, direction)), context.random()))
                         adjacentNodes++;
                     if (adjacentNodes >= 3) {
-                        worldgenlevel.setBlock(blockpos, oreConfig$targetState.state, 2);
+                        worldgenlevel.setBlock(blockpos, targetState.state, 2);
                         return true;
                     }
                 }

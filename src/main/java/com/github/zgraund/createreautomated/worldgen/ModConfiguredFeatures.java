@@ -22,6 +22,7 @@ public class ModConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> OVERWORLD_ORE_NODE_KEY = registerKey("ore_node");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
+        // TODO: create dynamically
         // TODO: divide in group for rarity spawn?
         RuleTest diamondNode = new BlockMatchTest(Blocks.DIAMOND_ORE);
         RuleTest diamondNodeDeep = new BlockMatchTest(Blocks.DEEPSLATE_DIAMOND_ORE);

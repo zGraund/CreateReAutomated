@@ -6,6 +6,7 @@ import com.github.zgraund.createreautomated.item.ModItems;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredItem;
 
 public class ModItemModelProvider extends ItemModelProvider {
     public ModItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
@@ -15,9 +16,8 @@ public class ModItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         withExistingParent(ModBlocks.EXTRACTOR.getId().toString(), modLoc("block/ore_extractor/item"));
-        // TODO: add texture
-        ModItems.getAllDrills()
-                .forEach(drill -> basicItem(drill.get()));
+
+        ModItems.getAllDrills().stream().map(DeferredItem::get).forEach(this::basicItem);
 
         basicItem(ModItems.COPPER_BIT.get());
         basicItem(ModItems.IRON_BIT.get());
