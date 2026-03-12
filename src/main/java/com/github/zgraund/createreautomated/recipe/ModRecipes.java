@@ -16,11 +16,11 @@ public class ModRecipes {
             DeferredRegister.create(Registries.RECIPE_SERIALIZER, CreateReAutomated.MOD_ID);
 
     public static final Supplier<RecipeType<ExtractorRecipe>> EXTRACTOR_RECIPE = RECIPE_TYPES.register(
-            "extractor_recipe",
-            () -> RecipeType.simple(CreateReAutomated.asResource("extractor_recipe"))
+            "extracting",
+            () -> RecipeType.simple(CreateReAutomated.asResource("extracting"))
     );
     public static final Supplier<RecipeSerializer<ExtractorRecipe>> EXTRACTOR_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register(
-            "extractor_recipe",
+            "extracting",
             ExtractorRecipe.Serializer::new
     );
 

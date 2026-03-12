@@ -82,7 +82,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 fromBlocks(ModBlocks.NETHER_GOLD_NODE),
                 secAtMaxSpeed(10),
                 1,
-                new ItemStack(ModItems.GOLD_BIT.get(), 1),
+                new ItemStack(ModItems.GOLD_BIT.get(), 10),
                 "nether_gold_bit"
         );
 

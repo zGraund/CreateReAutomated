@@ -20,9 +20,7 @@ group = mod_group_id
 repositories {
     maven { url = "https://maven.createmod.net" } // Create, Ponder, Flywheel
     maven { url = "https://maven.ithundxr.dev/snapshots" } // Registrate
-}
-
-dependencies {
+    maven { url = "https://maven.blamejared.com/" } // JEI (since January 2023)
 }
 
 base {
@@ -122,12 +120,10 @@ dependencies {
     runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
     implementation("com.tterrag.registrate:Registrate:${registrate_version}")
 
-    // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
-    // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"
-    // compileOnly "mezz.jei:jei-${mc_version}-neoforge-api:${jei_version}"
+    compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
     // We add the full version to localRuntime, not runtimeOnly, so that we do not publish a dependency on it
-    // localRuntime "mezz.jei:jei-${mc_version}-neoforge:${jei_version}"
+    localRuntime("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
 
     // Example mod dependency using a mod jar from ./libs with a flat dir repository
     // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar

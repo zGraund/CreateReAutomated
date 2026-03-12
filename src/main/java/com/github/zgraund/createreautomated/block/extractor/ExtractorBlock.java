@@ -1,6 +1,7 @@
 package com.github.zgraund.createreautomated.block.extractor;
 
 import com.github.zgraund.createreautomated.block.ModBlockEntities;
+import com.github.zgraund.createreautomated.block.ModBlocks;
 import com.github.zgraund.createreautomated.registry.ModTags;
 import com.mojang.serialization.MapCodec;
 import com.simibubi.create.content.kinetics.base.KineticBlock;
@@ -60,6 +61,14 @@ public class ExtractorBlock extends KineticBlock implements IBE<ExtractorBlockEn
             Block.box(0, 17, 0, 16, 31, 16)
     ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
     public static final SpeedLevel MIN_SPEED = SpeedLevel.MEDIUM;
+
+    public static BlockState getTop() {
+        return getBottom().setValue(HALF, DoubleBlockHalf.UPPER);
+    }
+
+    public static BlockState getBottom() {
+        return ModBlocks.EXTRACTOR.get().defaultBlockState();
+    }
 
     public ExtractorBlock(Properties properties) {
         super(properties);

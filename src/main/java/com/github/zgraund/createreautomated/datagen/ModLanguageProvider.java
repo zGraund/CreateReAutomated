@@ -35,17 +35,18 @@ public class ModLanguageProvider extends LanguageProvider {
         add("block", "ore_node.tooltip.summary", "A _mysterious_ node too hard to extract by hand");
 
         simpleBlock(ModBlocks.EXTRACTOR);
-        tooltip("block", ModBlocks.EXTRACTOR, "Node Ore Extractor");
-        summary("block", ModBlocks.EXTRACTOR, "A _powerful_, but _hard_ _to_ _power_, machine that can extract _Ore Nodes_");
 
         // Items
         ModItems.getAllDrills().forEach(drill -> addItem(drill, nameFromId(drill.getId())));
-        add("item", "drill_head.tooltip", "A drill head for an extractor");
-        add("item", "drill_head.tooltip.summary", "This drill can be used in an _Extractor_ to excavate an _Ore_ _Node_");
+        tooltip("item", "drill_head", "A drill head for an extractor");
+        summary("item", "drill_head", "This drill can be used in an _Extractor_ to excavate an _Ore_ _Node_");
         simpleItem(ModItems.COPPER_BIT);
         simpleItem(ModItems.IRON_BIT);
         simpleItem(ModItems.GOLD_BIT);
         simpleItem(ModItems.DIAMOND_BIT);
+
+        // Recipes
+        recipe("extracting", "Extracting");
 
         // Misc
         add("itemGroup", "base", "Create Re-Automated");
@@ -77,6 +78,10 @@ public class ModLanguageProvider extends LanguageProvider {
         addItem(item, nameFromId(item.getId()));
     }
 
+    private void recipe(String type, String name) {
+        add(CreateReAutomated.MOD_ID + ".recipe." + type, name);
+    }
+
     private void config(String suffix, String value) {
         add(CreateReAutomated.MOD_ID + ".configuration." + suffix, value);
     }
@@ -85,7 +90,15 @@ public class ModLanguageProvider extends LanguageProvider {
         add(Util.makeDescriptionId(prefix, holder.getId()) + ".tooltip", tooltip);
     }
 
+    private void tooltip(String prefix, String id, String tooltip) {
+        add(prefix, id + ".tooltip", tooltip);
+    }
+
     private void summary(String prefix, @Nonnull DeferredHolder<?, ?> holder, String summary) {
         add(Util.makeDescriptionId(prefix, holder.getId()) + ".tooltip.summary", summary);
+    }
+
+    private void summary(String prefix, String id, String summary) {
+        add(prefix, id + ".tooltip.summary", summary);
     }
 }
