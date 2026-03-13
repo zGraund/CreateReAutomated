@@ -6,11 +6,12 @@ import com.simibubi.create.foundation.gui.AllGuiTextures;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
-import net.createmod.catnip.animation.AnimationTickHolder;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.HolderSet;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -29,6 +30,7 @@ public class ExtractorCategory extends CreateRecipeCategory<ExtractorRecipe> {
                .addIngredients(recipe.drill())
                .setBackground(getRenderedSlot(), -1, -1);
         builder.addInputSlot(35, 50)
+//               .setSlotName("node")
                .addItemStacks(recipe.getNodes())
                .setBackground(getRenderedSlot(), -1, -1);
         builder.addOutputSlot(121, 50)
@@ -40,8 +42,13 @@ public class ExtractorCategory extends CreateRecipeCategory<ExtractorRecipe> {
     protected void draw(ExtractorRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
         AllGuiTextures.JEI_DOWN_ARROW.render(graphics, 115, 30);
         AllGuiTextures.JEI_SHADOW.render(graphics, 61, 74);
-        HolderSet<Block> nodes = recipe.nodeSet();
-        int nodeInd = nodes.size() == 1 ? 0 : (int) ((AnimationTickHolder.getRenderTime() / 20) % nodes.size());
-        extractor.draw(graphics, 72, 56, nodes.get(nodeInd).value());
+        Block node = recipeSlotsView.getSlotViews()
+                                    .get(1)
+                                    .getDisplayedItemStack()
+                                    .map(ItemStack::getItem)
+                                    .filter(BlockItem.class::isInstance)
+                                    .map(item -> ((BlockItem) item).getBlock())
+                                    .orElse(Blocks.AIR);
+        extractor.draw(graphics, 72, 56, node);
     }
 }

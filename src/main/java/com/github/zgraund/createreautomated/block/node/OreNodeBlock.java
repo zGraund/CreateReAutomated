@@ -23,6 +23,7 @@ import net.minecraft.world.item.component.BlockItemStateProperties;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -39,32 +40,22 @@ import java.util.List;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
-//    private static final List<OreNodeBlock> ALL_NODES = new ArrayList<>();
-
     public static final EnumProperty<DepletionLevel> DEPLETION = EnumProperty.create("depletion", DepletionLevel.class);
     public static final BooleanProperty NATURAL = BooleanProperty.create("natural");
     public static final MapCodec<OreNodeBlock> CODEC = simpleCodec(OreNodeBlock::new);
 
-    public final int MAX_EXTRACTIONS;
+    public final int maxExtractions;
+    public final BlockState turnsInto;
 
-    public OreNodeBlock(Properties properties, int maxExtractions) {
+    public OreNodeBlock(Properties properties, int maxExtractions, BlockState turnsInto) {
         super(properties);
-        this.MAX_EXTRACTIONS = maxExtractions;
+        this.maxExtractions = maxExtractions;
+        this.turnsInto = turnsInto;
         this.registerDefaultState(this.defaultBlockState().setValue(DEPLETION, DepletionLevel.ZERO).setValue(NATURAL, false));
-//        ALL_NODES.add(this);
     }
 
-//    @Contract(pure = true)
-//    public static @UnmodifiableView List<OreNodeBlock> getAllNodes() {
-//        return Collections.unmodifiableList(ALL_NODES);
-//    }
-//
-//    public static OreNodeBlock[] toArray() {
-//        return ALL_NODES.toArray(new OreNodeBlock[0]);
-//    }
-
     public OreNodeBlock(Properties properties) {
-        this(properties, 0);
+        this(properties, 0, Blocks.AIR.defaultBlockState());
     }
 
     @Override
@@ -90,7 +81,7 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
     }
 
     public DepletionLevel getStateFromQuantity(int quantity) {
-        return DepletionLevel.fromQuantity(quantity, MAX_EXTRACTIONS);
+        return DepletionLevel.fromQuantity(quantity, maxExtractions);
     }
 
     public BlockState natural() {
@@ -149,7 +140,7 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
     }
 
     public boolean isInfinite() {
-        return MAX_EXTRACTIONS <= 0;
+        return maxExtractions <= 0;
     }
 
     @Override

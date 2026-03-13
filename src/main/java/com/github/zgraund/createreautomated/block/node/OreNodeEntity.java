@@ -19,7 +19,7 @@ public class OreNodeEntity extends SyncedBlockEntity {
 
     public OreNodeEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.ORE_NODE_BE.get(), pos, blockState);
-        remaining = ((OreNodeBlock) blockState.getBlock()).MAX_EXTRACTIONS;
+        remaining = ((OreNodeBlock) blockState.getBlock()).maxExtractions;
     }
 
     public void extract(int quantity) {
@@ -38,6 +38,13 @@ public class OreNodeEntity extends SyncedBlockEntity {
         if (!(currentState.getBlock() instanceof OreNodeBlock node)) return;
 
         BlockPos pos = getBlockPos();
+
+        if (this.remaining <= 0) {
+            level.setBlockAndUpdate(pos, node.turnsInto);
+            level.playSound(null, pos, node.getSoundType(currentState, level, pos, null).getBreakSound(), SoundSource.BLOCKS);
+            return;
+        }
+
         OreNodeBlock.DepletionLevel newState = node.getStateFromQuantity(remaining);
 
         if (newState != currentState.getValue(OreNodeBlock.DEPLETION)) {

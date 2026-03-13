@@ -6,6 +6,7 @@ import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
 import com.github.zgraund.createreautomated.block.node.OreNodeHolder;
 import com.github.zgraund.createreautomated.item.ModItems;
 import com.simibubi.create.api.stress.BlockStressValues;
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -23,12 +24,12 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.UnmodifiableView;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
+@MethodsReturnNonnullByDefault
 public class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(CreateReAutomated.MOD_ID);
     private static final List<OreNodeHolder> ALL_NODES = new ArrayList<>();
@@ -45,78 +46,88 @@ public class ModBlocks {
                                      .pushReaction(PushReaction.BLOCK),
             64.0
     );
+
     public static final DeferredBlock<OreNodeBlock> COPPER_NODE =
-            defaultNode("copper_node", 100, List.of(Tags.Blocks.ORES_COPPER), List.of(new BlockMatchTest(Blocks.COPPER_ORE)));
+            stoneNode("copper_node", 100, List.of(Tags.Blocks.ORES_COPPER), List.of(new BlockMatchTest(Blocks.COPPER_ORE)));
     public static final DeferredBlock<OreNodeBlock> IRON_NODE =
-            defaultNode("iron_node", 200, List.of(Tags.Blocks.ORES_IRON), List.of(new BlockMatchTest(Blocks.IRON_ORE)));
+            stoneNode("iron_node", 200, List.of(Tags.Blocks.ORES_IRON), List.of(new BlockMatchTest(Blocks.IRON_ORE)));
     public static final DeferredBlock<OreNodeBlock> GOLD_NODE =
-            defaultNode("gold_node", 50, List.of(Tags.Blocks.ORES_GOLD), List.of(new BlockMatchTest(Blocks.GOLD_ORE)));
+            stoneNode("gold_node", 50, List.of(Tags.Blocks.ORES_GOLD), List.of(new BlockMatchTest(Blocks.GOLD_ORE)));
     public static final DeferredBlock<OreNodeBlock> DIAMOND_NODE =
-            defaultNode("diamond_node", 20, List.of(Tags.Blocks.ORES_DIAMOND), List.of(new BlockMatchTest(Blocks.DIAMOND_ORE)));
+            stoneNode("diamond_node", 20, List.of(Tags.Blocks.ORES_DIAMOND), List.of(new BlockMatchTest(Blocks.DIAMOND_ORE)));
+
     public static final DeferredBlock<OreNodeBlock> DEEPSLATE_COPPER_NODE =
-            defaultNode("deepslate_copper_node", 150, List.of(Tags.Blocks.ORES_COPPER), List.of(new BlockMatchTest(Blocks.DEEPSLATE_COPPER_ORE)));
+            deepslateNode("deepslate_copper_node", 150, List.of(Tags.Blocks.ORES_COPPER), List.of(new BlockMatchTest(Blocks.DEEPSLATE_COPPER_ORE)));
     public static final DeferredBlock<OreNodeBlock> DEEPSLATE_IRON_NODE =
-            defaultNode("deepslate_iron_node", 250, List.of(Tags.Blocks.ORES_IRON), List.of(new BlockMatchTest(Blocks.DEEPSLATE_IRON_ORE)));
+            deepslateNode("deepslate_iron_node", 250, List.of(Tags.Blocks.ORES_IRON), List.of(new BlockMatchTest(Blocks.DEEPSLATE_IRON_ORE)));
     public static final DeferredBlock<OreNodeBlock> DEEPSLATE_GOLD_NODE =
-            defaultNode("deepslate_gold_node", 60, List.of(Tags.Blocks.ORES_GOLD), List.of(new BlockMatchTest(Blocks.DEEPSLATE_GOLD_ORE)));
+            deepslateNode("deepslate_gold_node", 60, List.of(Tags.Blocks.ORES_GOLD), List.of(new BlockMatchTest(Blocks.DEEPSLATE_GOLD_ORE)));
     public static final DeferredBlock<OreNodeBlock> DEEPSLATE_DIAMOND_NODE =
-            defaultNode("deepslate_diamond_node", 20, List.of(Tags.Blocks.ORES_DIAMOND), List.of(new BlockMatchTest(Blocks.DEEPSLATE_DIAMOND_ORE)));
+            deepslateNode("deepslate_diamond_node", 20, List.of(Tags.Blocks.ORES_DIAMOND), List.of(new BlockMatchTest(Blocks.DEEPSLATE_DIAMOND_ORE)));
+
     public static final DeferredBlock<OreNodeBlock> NETHER_GOLD_NODE =
-            defaultNode("nether_gold_node", 200, List.of(Tags.Blocks.ORES_GOLD), List.of(new BlockMatchTest(Blocks.NETHER_GOLD_ORE)));
+            node(
+                    "nether_gold_node",
+                    200,
+                    Blocks.NETHERRACK,
+                    List.of(Tags.Blocks.ORES_GOLD),
+                    List.of(new BlockMatchTest(Blocks.NETHER_GOLD_ORE)),
+                    netherrackNodeProperties()
+            );
 
-    @Nonnull
     public static DeferredBlock<OreNodeBlock> defaultNode(String name) {
-        return defaultNode(name, 0);
+        return node(name, 0, Blocks.AIR, List.of(), List.of(), stoneNodeProperties());
     }
 
-    @Nonnull
-    public static DeferredBlock<OreNodeBlock> defaultNode(String name, int limit) {
-        return defaultNode(name, limit, List.of());
+    public static DeferredBlock<OreNodeBlock> stoneNode(String name, int limit, List<TagKey<Block>> tags, List<RuleTest> rules) {
+        return node(name, limit, Blocks.COBBLESTONE, tags, rules, stoneNodeProperties());
     }
 
-    @Nonnull
-    public static DeferredBlock<OreNodeBlock> defaultNode(String name, int limit, List<TagKey<Block>> tags) {
-        return defaultNode(name, limit, tags, List.of());
+    public static DeferredBlock<OreNodeBlock> deepslateNode(String name, int limit, List<TagKey<Block>> tags, List<RuleTest> rules) {
+        return node(name, limit, Blocks.COBBLED_DEEPSLATE, tags, rules, deepslateNodeProperties());
     }
 
-    @Nonnull
-    public static DeferredBlock<OreNodeBlock> defaultNode(String name, int limit, List<TagKey<Block>> tags, List<RuleTest> rules) {
-        DeferredBlock<OreNodeBlock> block = BLOCKS.register(name, () -> new OreNodeBlock(defaultNodeProperties(), limit));
+    public static DeferredBlock<OreNodeBlock> node(
+            String name, int limit, Block turnsInto, List<TagKey<Block>> tags, List<RuleTest> rules, BlockBehaviour.Properties properties
+    ) {
+        DeferredBlock<OreNodeBlock> block = BLOCKS.register(name, () -> new OreNodeBlock(properties, limit, turnsInto.defaultBlockState()));
         ModItems.ITEMS.registerSimpleBlockItem(name, block, ModItems.defaultNodeItemProperties());
         ALL_NODES.add(new OreNodeHolder(block, tags, rules));
         return block;
     }
 
-    @Nonnull
-    public static <T extends Block> DeferredBlock<T> registerWithImpact(String name, Function<BlockBehaviour.Properties, T> blockClass,
-                                                                        BlockBehaviour.Properties properties, double stress) {
-        DeferredBlock<T> toReturn = BLOCKS.registerBlock(name, blockClass, properties);
-
-        // Create block stress registry
-        BlockStressValues.IMPACTS.registerProvider(block -> block == toReturn.get() ? () -> stress : null);
-
-        return toReturn;
+    public static BlockBehaviour.Properties netherrackNodeProperties() {
+        return stoneNodeProperties().sound(SoundType.NETHERRACK).strength(4f);
     }
 
-    @Nonnull
-    @Contract(pure = true)
-    public static @UnmodifiableView List<OreNodeHolder> getAllNodes() {
-        return Collections.unmodifiableList(ALL_NODES);
+    public static BlockBehaviour.Properties deepslateNodeProperties() {
+        return stoneNodeProperties().sound(SoundType.DEEPSLATE);
     }
 
-    @Nonnull
-    public static OreNodeBlock[] nodeBlocksArray() {
-        return ALL_NODES.stream().map(OreNodeHolder::block).map(DeferredHolder::get).toArray(OreNodeBlock[]::new);
-    }
-
-    @Nonnull
-    public static BlockBehaviour.Properties defaultNodeProperties() {
+    public static BlockBehaviour.Properties stoneNodeProperties() {
         return BlockBehaviour.Properties.of()
                                         .requiresCorrectToolForDrops()
                                         .lightLevel(value -> value.getValue(OreNodeBlock.DEPLETION).getLightLevel())
                                         .sound(SoundType.STONE)
                                         .pushReaction(PushReaction.BLOCK)
-                                        .strength(4f);
+                                        .strength(5f);
+    }
+
+    public static <T extends Block> DeferredBlock<T> registerWithImpact(String name, Function<BlockBehaviour.Properties, T> blockClass,
+                                                                        BlockBehaviour.Properties properties, double stress) {
+        DeferredBlock<T> toReturn = BLOCKS.registerBlock(name, blockClass, properties);
+        // Create mod block stress registry
+        BlockStressValues.IMPACTS.registerProvider(block -> block == toReturn.get() ? () -> stress : null);
+        return toReturn;
+    }
+
+    @Contract(pure = true)
+    public static @UnmodifiableView List<OreNodeHolder> getAllNodes() {
+        return Collections.unmodifiableList(ALL_NODES);
+    }
+
+    public static OreNodeBlock[] nodeBlocksArray() {
+        return ALL_NODES.stream().map(OreNodeHolder::block).map(DeferredHolder::get).toArray(OreNodeBlock[]::new);
     }
 
     public static void register(IEventBus eventBus) {
