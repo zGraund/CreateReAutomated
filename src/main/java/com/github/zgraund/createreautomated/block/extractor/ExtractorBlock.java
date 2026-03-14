@@ -78,7 +78,7 @@ public class ExtractorBlock extends KineticBlock implements IBE<ExtractorBlockEn
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand,
                                               BlockHitResult hitResult) {
-        if (!stack.isEmpty() && !stack.is(ModTags.Items.ANY_DRILL))
+        if (!stack.isEmpty() && !stack.is(ModTags.Items.DRILLS))
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         if (level.isClientSide())
             return ItemInteractionResult.SUCCESS;

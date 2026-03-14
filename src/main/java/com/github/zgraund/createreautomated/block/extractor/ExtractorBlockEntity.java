@@ -332,7 +332,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
             if (getHandlerFromIndex(getIndexForSlot(slot)) == outputInv)
                 return false;
-            return stack.is(ModTags.Items.ANY_DRILL) && super.isItemValid(slot, stack);
+            return stack.is(ModTags.Items.DRILLS) && super.isItemValid(slot, stack);
         }
 
         @Nonnull

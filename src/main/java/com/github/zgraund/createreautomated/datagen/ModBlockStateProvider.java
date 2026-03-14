@@ -31,7 +31,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
                                .build()
         );
 
-        String destroyStage = "block/ore_node/node_destroy_stage_";
+        String destroyStage = "block/node_overlays/node_destroy_stage_";
         for (int i = 0; i <= 9; i++) {
             models().cubeAll(destroyStage + i, modLoc(destroyStage + i)).renderType(mcLoc("cutout"));
         }
@@ -47,18 +47,18 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
         ModItems.getAllDrills().forEach(drill -> {
             ResourceLocation id = drill.getId();
-            models().withExistingParent(id.toString(), modLoc("block/ore_extractor/drill")).texture("0", id.withPrefix("block/"));
+            models().withExistingParent(id.withPrefix("block/drills/").toString(), modLoc("block/ore_extractor/drill")).texture("0", id.withPrefix("block/drills/"));
         });
     }
 
     public void defaultOreNodeWithOverlay(@Nonnull DeferredBlock<? extends Block> block) {
-        ResourceLocation texture = block.getId().withPrefix("block/");
-        models().cubeAll("block/" + block.getId().getPath(), texture);
+        ResourceLocation texture = block.getId().withPrefix("block/nodes/");
+        models().cubeAll("block/nodes/" + block.getId().getPath(), texture);
         defaultOreNodeWithOverlay(block, texture);
     }
 
     public void defaultOreNodeWithOverlay(@Nonnull DeferredBlock<? extends Block> block, ResourceLocation baseTexture) {
-        String destroyStage = "block/ore_node/node_destroy_stage_";
+        String destroyStage = "block/node_overlays/node_destroy_stage_";
         MultiPartBlockStateBuilder nodeState = getMultipartBuilder(block.get())
                 .part()
                 .modelFile(models().getExistingFile(baseTexture))

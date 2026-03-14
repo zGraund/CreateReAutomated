@@ -21,7 +21,7 @@ public class ModBlockTagProvider extends BlockTagsProvider {
     protected void addTags(@Nonnull HolderLookup.Provider provider) {
         ModBlocks.getAllNodes().forEach(oreNodeHolder -> {
             oreNodeHolder.addTags(this::tag);
-            tag(ModTags.Blocks.ORE_NODE).add(oreNodeHolder.block().get());
+            tag(ModTags.Blocks.ORE_NODES).add(oreNodeHolder.block().get());
         });
     }
 }
