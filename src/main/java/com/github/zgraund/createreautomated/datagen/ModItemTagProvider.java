@@ -29,6 +29,20 @@ public class ModItemTagProvider extends ItemTagsProvider {
         tag(ModTags.Items.DRILL_TIER_3)
                 .add(ModItems.NETHERITE_DRILL.get());
 
+        tag(ModTags.Items.AT_MOST_TIER_1)
+                .addTags(ModTags.Items.DRILL_TIER_1);
+        tag(ModTags.Items.AT_MOST_TIER_2)
+                .addTags(
+                        ModTags.Items.DRILL_TIER_1,
+                        ModTags.Items.DRILL_TIER_2
+                );
+        tag(ModTags.Items.AT_MOST_TIER_3)
+                .addTags(
+                        ModTags.Items.DRILL_TIER_1,
+                        ModTags.Items.DRILL_TIER_2,
+                        ModTags.Items.DRILL_TIER_3
+                );
+
         tag(ModTags.Items.AT_LEAST_TIER_1)
                 .addTags(
                         ModTags.Items.DRILL_TIER_1,

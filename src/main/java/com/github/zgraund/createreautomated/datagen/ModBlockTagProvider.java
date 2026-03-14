@@ -2,6 +2,7 @@ package com.github.zgraund.createreautomated.datagen;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
 import com.github.zgraund.createreautomated.block.ModBlocks;
+import com.github.zgraund.createreautomated.registry.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
@@ -18,6 +19,9 @@ public class ModBlockTagProvider extends BlockTagsProvider {
 
     @Override
     protected void addTags(@Nonnull HolderLookup.Provider provider) {
-        ModBlocks.getAllNodes().forEach(oreNodeHolder -> oreNodeHolder.addTags(this::tag));
+        ModBlocks.getAllNodes().forEach(oreNodeHolder -> {
+            oreNodeHolder.addTags(this::tag);
+            tag(ModTags.Blocks.ORE_NODE).add(oreNodeHolder.block().get());
+        });
     }
 }

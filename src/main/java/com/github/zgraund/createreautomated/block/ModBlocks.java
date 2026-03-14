@@ -101,7 +101,7 @@ public class ModBlocks {
     }
 
     public static BlockBehaviour.Properties deepslateNodeProperties() {
-        return stoneNodeProperties().sound(SoundType.DEEPSLATE);
+        return stoneNodeProperties().sound(SoundType.DEEPSLATE).strength(6f);
     }
 
     public static BlockBehaviour.Properties stoneNodeProperties() {

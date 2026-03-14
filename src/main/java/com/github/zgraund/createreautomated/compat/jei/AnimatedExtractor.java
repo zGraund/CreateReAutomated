@@ -2,12 +2,14 @@ package com.github.zgraund.createreautomated.compat.jei;
 
 import com.github.zgraund.createreautomated.block.ModBlocks;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorBlock;
+import com.github.zgraund.createreautomated.item.ModItems;
 import com.github.zgraund.createreautomated.registry.ModPartialModels;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.compat.jei.category.animations.AnimatedKinetics;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -17,9 +19,11 @@ public class AnimatedExtractor extends AnimatedKinetics {
     private final BlockState top = ExtractorBlock.getTop();
     private final BlockState bottom = ExtractorBlock.getBottom();
     private Block node = ModBlocks.DIAMOND_NODE.get();
+    private Item drill = ModItems.DIAMOND_DRILL.get();
 
-    public void draw(GuiGraphics graphics, int xOffset, int yOffset, Block node) {
+    public void draw(GuiGraphics graphics, int xOffset, int yOffset, Block node, Item drill) {
         this.node = node;
+        this.drill = drill;
         draw(graphics, xOffset, yOffset);
     }
 
@@ -45,7 +49,8 @@ public class AnimatedExtractor extends AnimatedKinetics {
                 .scale(scale)
                 .render(graphics);
 
-        blockElement(ModPartialModels.DRILL)
+//        blockElement(ModPartialModels.DRILL)
+        blockElement(ModPartialModels.getOrDefault(drill))
                 .atLocal(0, -0.15, 0)
                 .rotateBlock(0, getCurrentAngle() * 2, 0)
                 .scale(scale)

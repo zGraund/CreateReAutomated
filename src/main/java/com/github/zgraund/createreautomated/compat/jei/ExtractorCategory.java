@@ -9,7 +9,9 @@ import mezz.jei.api.recipe.IFocusGroup;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
@@ -49,6 +51,11 @@ public class ExtractorCategory extends CreateRecipeCategory<ExtractorRecipe> {
                                     .filter(BlockItem.class::isInstance)
                                     .map(item -> ((BlockItem) item).getBlock())
                                     .orElse(Blocks.AIR);
-        extractor.draw(graphics, 72, 56, node);
+        Item drill = recipeSlotsView.getSlotViews()
+                                    .get(0)
+                                    .getDisplayedItemStack()
+                                    .map(ItemStack::getItem)
+                                    .orElse(Items.AIR);
+        extractor.draw(graphics, 72, 56, node, drill);
     }
 }

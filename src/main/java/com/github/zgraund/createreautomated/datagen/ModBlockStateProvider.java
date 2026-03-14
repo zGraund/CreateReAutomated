@@ -4,6 +4,7 @@ import com.github.zgraund.createreautomated.CreateReAutomated;
 import com.github.zgraund.createreautomated.block.ModBlocks;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorBlock;
 import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
+import com.github.zgraund.createreautomated.item.ModItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -43,6 +44,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
         defaultOreNodeWithOverlay(ModBlocks.DEEPSLATE_GOLD_NODE);
         defaultOreNodeWithOverlay(ModBlocks.DEEPSLATE_DIAMOND_NODE);
         defaultOreNodeWithOverlay(ModBlocks.NETHER_GOLD_NODE);
+
+        ModItems.getAllDrills().forEach(drill -> {
+            ResourceLocation id = drill.getId();
+            models().withExistingParent(id.toString(), modLoc("block/ore_extractor/drill")).texture("0", id.withPrefix("block/"));
+        });
     }
 
     public void defaultOreNodeWithOverlay(@Nonnull DeferredBlock<? extends Block> block) {

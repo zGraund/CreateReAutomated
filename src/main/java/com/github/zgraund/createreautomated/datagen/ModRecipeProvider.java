@@ -60,7 +60,16 @@ public class ModRecipeProvider extends RecipeProvider {
         bitsPacking(ModItems.COPPER_BIT, AllItems.COPPER_NUGGET);
 
         simpleExtractorRecipe(
-                Ingredient.of(ModItems.DIAMOND_DRILL),
+                Ingredient.of(ModTags.Items.AT_LEAST_TIER_3),
+                fromBlocks(ModBlocks.DIAMOND_NODE, ModBlocks.DEEPSLATE_DIAMOND_NODE),
+                secAtMaxSpeed(5),
+                1,
+                new ItemStack(ModItems.DIAMOND_BIT.get(), 2),
+                "diamond_bit_extra"
+        );
+
+        simpleExtractorRecipe(
+                Ingredient.of(ModTags.Items.DRILL_TIER_2),
                 fromBlocks(ModBlocks.DIAMOND_NODE, ModBlocks.DEEPSLATE_DIAMOND_NODE),
                 secAtMaxSpeed(10),
                 1,
@@ -69,7 +78,7 @@ public class ModRecipeProvider extends RecipeProvider {
         );
 
         simpleExtractorRecipe(
-                Ingredient.of(ModTags.Items.DRILL_TIER_2),
+                Ingredient.of(ModTags.Items.AT_LEAST_TIER_2),
                 fromBlocks(ModBlocks.GOLD_NODE, ModBlocks.DEEPSLATE_GOLD_NODE),
                 secAtMaxSpeed(5),
                 1,
@@ -78,7 +87,7 @@ public class ModRecipeProvider extends RecipeProvider {
         );
 
         simpleExtractorRecipe(
-                Ingredient.of(ModTags.Items.DRILL_TIER_2),
+                Ingredient.of(ModTags.Items.AT_LEAST_TIER_2),
                 fromBlocks(ModBlocks.NETHER_GOLD_NODE),
                 secAtMaxSpeed(10),
                 1,
@@ -87,7 +96,7 @@ public class ModRecipeProvider extends RecipeProvider {
         );
 
         simpleExtractorRecipe(
-                Ingredient.of(ModTags.Items.DRILL_TIER_2),
+                Ingredient.of(ModTags.Items.AT_LEAST_TIER_1),
                 fromBlocks(
                         ModBlocks.IRON_NODE,
                         ModBlocks.DEEPSLATE_IRON_NODE
@@ -99,7 +108,7 @@ public class ModRecipeProvider extends RecipeProvider {
         );
 
         simpleExtractorRecipe(
-                Ingredient.of(ModTags.Items.DRILL_TIER_2),
+                Ingredient.of(ModTags.Items.AT_LEAST_TIER_1),
                 fromBlocks(
                         ModBlocks.COPPER_NODE,
                         ModBlocks.DEEPSLATE_COPPER_NODE

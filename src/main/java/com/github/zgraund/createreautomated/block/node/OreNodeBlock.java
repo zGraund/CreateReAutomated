@@ -2,7 +2,6 @@ package com.github.zgraund.createreautomated.block.node;
 
 import com.github.zgraund.createreautomated.Config;
 import com.github.zgraund.createreautomated.block.ModBlockEntities;
-import com.mojang.serialization.MapCodec;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.ChatFormatting;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -42,7 +41,6 @@ import java.util.List;
 public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
     public static final EnumProperty<DepletionLevel> DEPLETION = EnumProperty.create("depletion", DepletionLevel.class);
     public static final BooleanProperty NATURAL = BooleanProperty.create("natural");
-    public static final MapCodec<OreNodeBlock> CODEC = simpleCodec(OreNodeBlock::new);
 
     public final int maxExtractions;
     public final BlockState turnsInto;
@@ -141,11 +139,6 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
 
     public boolean isInfinite() {
         return maxExtractions <= 0;
-    }
-
-    @Override
-    protected MapCodec<OreNodeBlock> codec() {
-        return CODEC;
     }
 
     public enum DepletionLevel implements StringRepresentable {

@@ -26,6 +26,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -41,6 +42,7 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -59,6 +61,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     private int progress;
     private float animationProgress;
     private AnimationStatus animationStatus = AnimationStatus.IDLE;
+    @Nullable
     private ExtractorRecipe lastRecipe;
 
     public ExtractorBlockEntity(BlockPos pos, BlockState state) {
@@ -245,6 +248,10 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         return !drillInv.getStackInSlot(0).isEmpty();
     }
 
+    public Item getDrill() {
+        return drillInv.getStackInSlot(0).getItem();
+    }
+
     public boolean isOutputFull() {
         ItemStack output = outputInv.getStackInSlot(0);
         return output.getCount() >= output.getMaxStackSize();
@@ -289,18 +296,19 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
         super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-        if (Config.Client.DEBUG_EXTRACTOR_INFO.getAsBoolean()) {
+        if (Config.Client.DEBUG_EXTRACTOR_INFO.getAsBoolean() && lastRecipe != null) {
             MutableComponent craftingProgress = Component.empty();
             craftingProgress.append(Component.literal("    Crafting progress: ").withStyle(ChatFormatting.GRAY));
-            int percentage = lastRecipe != null ? (progress * 100) / lastRecipe.processingTime() : 0;
+            int percentage = (progress * 100) / lastRecipe.processingTime();
             craftingProgress.append(Component.literal(percentage + "%").withStyle(ChatFormatting.DARK_GRAY));
             tooltip.add(craftingProgress);
-            Component drill = Component.literal(Arrays.toString(lastRecipe.drill().getItems()));
-            tooltip.add(drill);
+            Arrays.stream(lastRecipe.drill().getItems())
+                  .map(s -> Component.literal("     " + s.getItem()).withStyle(ChatFormatting.DARK_GRAY))
+                  .forEach(tooltip::add);
             lastRecipe.nodeSet()
                       .stream()
                       .map(Holder::getRegisteredName)
-                      .map(s -> Component.literal("    " + s).withStyle(ChatFormatting.DARK_GRAY))
+                      .map(s -> Component.literal("     " + s).withStyle(ChatFormatting.DARK_GRAY))
                       .forEach(tooltip::add);
         }
         return true;

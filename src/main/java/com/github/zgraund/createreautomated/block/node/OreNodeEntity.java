@@ -7,7 +7,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -49,8 +48,7 @@ public class OreNodeEntity extends SyncedBlockEntity {
 
         if (newState != currentState.getValue(OreNodeBlock.DEPLETION)) {
             level.setBlockAndUpdate(pos, currentState.setValue(OreNodeBlock.DEPLETION, newState));
-            // TODO: funny but we should probably change this
-            level.playSound(null, pos, SoundEvents.GOAT_SCREAMING_AMBIENT, SoundSource.BLOCKS);
+            level.playSound(null, pos, node.getSoundType(currentState, level, pos, null).getBreakSound(), SoundSource.BLOCKS);
         }
     }
 
