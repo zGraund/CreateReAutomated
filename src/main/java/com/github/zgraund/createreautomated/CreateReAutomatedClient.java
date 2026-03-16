@@ -6,28 +6,26 @@ import com.github.zgraund.createreautomated.block.extractor.ExtractorRenderer;
 import com.github.zgraund.createreautomated.item.ModItems;
 import com.github.zgraund.createreautomated.ponder.ModPonderPlugin;
 import com.simibubi.create.foundation.item.ItemDescription;
+import net.createmod.catnip.config.ui.BaseConfigScreen;
 import net.createmod.ponder.foundation.PonderIndex;
+import net.minecraft.client.gui.screens.Screen;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
 import javax.annotation.Nonnull;
+import java.util.function.Supplier;
 
 @Mod(value = CreateReAutomated.MOD_ID, dist = Dist.CLIENT)
 @EventBusSubscriber(modid = CreateReAutomated.MOD_ID, value = Dist.CLIENT)
 public class CreateReAutomatedClient {
-    public CreateReAutomatedClient(@Nonnull ModContainer container) {
-        // Allows NeoForge to create a config screen for this mod's configs.
-        // The config screen is accessed by going to the Mods screen > clicking on your mod > clicking on config.
-        container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
-    }
-
     @SubscribeEvent
     public static void clientInit(FMLClientSetupEvent event) {
         PonderIndex.addPlugin(new ModPonderPlugin());
@@ -40,6 +38,24 @@ public class CreateReAutomatedClient {
         ModItems.getAllDrills().forEach(drill ->
                 ItemDescription.useKey(drill, "item.createreautomated.drill_head")
         );
+
+        setupConfigScreen();
+    }
+
+    private static void setupConfigScreen() {
+        BaseConfigScreen.setDefaultActionFor(CreateReAutomated.MOD_ID, base -> base
+                .withSpecs(Config.Client.SPEC, Config.Common.SPEC, null)
+        );
+    }
+
+    @SubscribeEvent
+    public static void onLoadComplete(FMLLoadCompleteEvent event) {
+        ModContainer container = ModList.get()
+                                        .getModContainerById(CreateReAutomated.MOD_ID)
+                                        .orElseThrow(() -> new IllegalStateException("Create Re-Automated mod container missing on LoadComplete"));
+        Supplier<IConfigScreenFactory> configScreen =
+                () -> (ModContainer mod, Screen screen) -> new ModConfigScreen(screen, CreateReAutomated.MOD_ID);
+        container.registerExtensionPoint(IConfigScreenFactory.class, configScreen);
     }
 
     @SubscribeEvent
