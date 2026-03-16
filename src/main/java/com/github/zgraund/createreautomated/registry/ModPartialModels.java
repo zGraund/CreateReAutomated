@@ -15,7 +15,7 @@ public class ModPartialModels {
     }
 
     private static PartialModel drill(String path) {
-        return PartialModel.of(CreateReAutomated.asResource(path));
+        return PartialModel.of(CreateReAutomated.asResource(path).withPrefix("block/drills/"));
     }
 
     public static void init() {}

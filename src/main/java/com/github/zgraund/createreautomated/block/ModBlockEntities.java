@@ -1,6 +1,7 @@
 package com.github.zgraund.createreautomated.block;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
+import com.github.zgraund.createreautomated.api.OreNodeBlockIndex;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorBlockEntity;
 import com.github.zgraund.createreautomated.block.node.OreNodeEntity;
 import net.minecraft.core.registries.Registries;
@@ -21,7 +22,7 @@ public class ModBlockEntities {
     );
     public static final Supplier<BlockEntityType<OreNodeEntity>> ORE_NODE_BE = BLOCK_ENTITY_TYPES.register(
             "ore_node_be",
-            () -> BlockEntityType.Builder.of(OreNodeEntity::new, ModBlocks.nodeBlocksArray()).build(null)
+            () -> BlockEntityType.Builder.of(OreNodeEntity::new, OreNodeBlockIndex.toArray()).build(null)
     );
 
     public static void register(IEventBus eventBus) {

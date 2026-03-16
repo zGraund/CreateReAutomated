@@ -163,7 +163,8 @@ public class ModRecipeProvider extends RecipeProvider {
                            .pattern("MIM")
                            .pattern(" M ")
                            .group(idAsString("drills"))
-                           .unlockedBy(getHasName(material), has(material))
+                           .unlockedBy("has_extractor", has(ModBlocks.EXTRACTOR))
+                           .unlockedBy("has_node", has(ModTags.Items.ORE_NODES))
                            .save(this.output, CreateReAutomated.asResource(drill.getId().getPath()));
     }
 

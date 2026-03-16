@@ -18,6 +18,8 @@ public class ModItemTagProvider extends ItemTagsProvider {
     @Override
     @SuppressWarnings("unchecked")
     protected void addTags(@Nonnull HolderLookup.Provider provider) {
+        copy(ModTags.Blocks.ORE_NODES, ModTags.Items.ORE_NODES);
+
         tag(ModTags.Items.DRILLS)
                 .addTags(
                         ModTags.Items.DRILL_TIER_1,

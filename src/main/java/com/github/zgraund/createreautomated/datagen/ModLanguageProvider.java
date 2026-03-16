@@ -31,8 +31,8 @@ public class ModLanguageProvider extends LanguageProvider {
         ModBlocks.getAllNodes().forEach(nodeBlock ->
                 addBlock(nodeBlock.block(), nameFromId(nodeBlock.block().getId()))
         );
-        add("block", "ore_node.tooltip", "Ore Node");
-        add("block", "ore_node.tooltip.summary", "A _mysterious_ node too hard to extract by hand");
+        tooltip("block", "ore_node", "Ore Node");
+        summary("block", "ore_node", "A _mysterious_ node too hard to extract by hand");
 
         simpleBlock(ModBlocks.EXTRACTOR);
 

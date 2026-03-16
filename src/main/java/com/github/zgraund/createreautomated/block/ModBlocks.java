@@ -1,6 +1,7 @@
 package com.github.zgraund.createreautomated.block;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
+import com.github.zgraund.createreautomated.api.OreNodeBlockIndex;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorBlock;
 import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
 import com.github.zgraund.createreautomated.block.node.OreNodeHolder;
@@ -93,6 +94,7 @@ public class ModBlocks {
         DeferredBlock<OreNodeBlock> block = BLOCKS.register(name, () -> new OreNodeBlock(properties, limit, turnsInto.defaultBlockState()));
         ModItems.ITEMS.registerSimpleBlockItem(name, block, ModItems.defaultNodeItemProperties());
         ALL_NODES.add(new OreNodeHolder(block, tags, rules));
+        OreNodeBlockIndex.register(block);
         return block;
     }
 

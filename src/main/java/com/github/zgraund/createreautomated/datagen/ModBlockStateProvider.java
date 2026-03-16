@@ -45,9 +45,10 @@ public class ModBlockStateProvider extends BlockStateProvider {
         defaultOreNodeWithOverlay(ModBlocks.DEEPSLATE_DIAMOND_NODE);
         defaultOreNodeWithOverlay(ModBlocks.NETHER_GOLD_NODE);
 
+        String drillPath = "block/drills/";
         ModItems.getAllDrills().forEach(drill -> {
             ResourceLocation id = drill.getId();
-            models().withExistingParent(id.withPrefix("block/drills/").toString(), modLoc("block/ore_extractor/drill")).texture("0", id.withPrefix("block/drills/"));
+            models().withExistingParent(id.withPrefix(drillPath).toString(), modLoc("block/ore_extractor/drill")).texture("0", id.withPrefix(drillPath));
         });
     }
 

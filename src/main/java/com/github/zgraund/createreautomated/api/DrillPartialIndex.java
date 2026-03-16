@@ -7,14 +7,18 @@ import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredItem;
 
 public class DrillPartialIndex {
-    public static final SimpleRegistry<Item, PartialModel> DRILL_PARTIAL_MODELS = SimpleRegistry.create();
+    /**
+     * Registry for drill models, if a drill has a custom model it should be registered here.
+     * If no model is provided a default will be used when rendering.
+     */
+    public static final SimpleRegistry<Item, PartialModel> MODELS = SimpleRegistry.create();
 
     public static PartialModel getOrDefault(Item item) {
-        PartialModel model = DRILL_PARTIAL_MODELS.get(item);
+        PartialModel model = MODELS.get(item);
         return model != null ? model : ModPartialModels.IRON_DRILL;
     }
 
     public static void register(DeferredItem<Item> drill, PartialModel model) {
-        DRILL_PARTIAL_MODELS.registerProvider(item -> item == drill.get() ? model : null);
+        MODELS.registerProvider(item -> item == drill.get() ? model : null);
     }
 }
