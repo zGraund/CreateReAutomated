@@ -8,6 +8,7 @@ import net.createmod.catnip.gui.element.GuiGameElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.neoforged.fml.ModContainer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -18,8 +19,8 @@ public class ModConfigScreen extends BaseConfigScreen {
             (graphics, x, y, alpha) -> graphics.fill(-200, -200, 200, 200, 0x60_000000)
     );
 
-    public ModConfigScreen(@Nullable Screen parent, String modID) {
-        super(parent, modID);
+    public ModConfigScreen(ModContainer ignoredModContainer, @Nullable Screen parent) {
+        super(parent, CreateReAutomated.MOD_ID);
     }
 
     protected static void renderExtractor(@Nonnull GuiGraphics graphics) {

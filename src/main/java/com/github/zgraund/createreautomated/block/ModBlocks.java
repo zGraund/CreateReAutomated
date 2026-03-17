@@ -1,12 +1,12 @@
 package com.github.zgraund.createreautomated.block;
 
+import com.github.zgraund.createreautomated.Config;
 import com.github.zgraund.createreautomated.CreateReAutomated;
 import com.github.zgraund.createreautomated.api.OreNodeBlockIndex;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorBlock;
 import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
 import com.github.zgraund.createreautomated.block.node.OreNodeHolder;
 import com.github.zgraund.createreautomated.item.ModItems;
-import com.simibubi.create.api.stress.BlockStressValues;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
@@ -28,14 +28,13 @@ import org.jetbrains.annotations.UnmodifiableView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
 
 @MethodsReturnNonnullByDefault
 public class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(CreateReAutomated.MOD_ID);
     private static final List<OreNodeHolder> ALL_NODES = new ArrayList<>();
 
-    public static final DeferredBlock<ExtractorBlock> EXTRACTOR = registerWithImpact(
+    public static final DeferredBlock<ExtractorBlock> EXTRACTOR = BLOCKS.registerBlock(
             "extractor",
             ExtractorBlock::new,
             BlockBehaviour.Properties.of()
@@ -44,8 +43,7 @@ public class ModBlocks {
                                      .isValidSpawn(Blocks::never)
                                      .mapColor(MapColor.COLOR_ORANGE)
                                      .sound(SoundType.METAL)
-                                     .pushReaction(PushReaction.BLOCK),
-            64.0
+                                     .pushReaction(PushReaction.BLOCK)
     );
 
     public static final DeferredBlock<OreNodeBlock> COPPER_NODE =
@@ -91,8 +89,10 @@ public class ModBlocks {
     public static DeferredBlock<OreNodeBlock> node(
             String name, int limit, Block turnsInto, List<TagKey<Block>> tags, List<RuleTest> rules, BlockBehaviour.Properties properties
     ) {
-        DeferredBlock<OreNodeBlock> block = BLOCKS.register(name, () -> new OreNodeBlock(properties, limit, turnsInto.defaultBlockState()));
+        // FIXME: this a mess
+        DeferredBlock<OreNodeBlock> block = BLOCKS.register(name, () -> new OreNodeBlock(properties, turnsInto.defaultBlockState()));
         ModItems.ITEMS.registerSimpleBlockItem(name, block, ModItems.defaultNodeItemProperties());
+        Config.Server.NodeValues.setNodeValue(block, limit);
         ALL_NODES.add(new OreNodeHolder(block, tags, rules));
         OreNodeBlockIndex.register(block);
         return block;
@@ -113,14 +113,6 @@ public class ModBlocks {
                                         .sound(SoundType.STONE)
                                         .pushReaction(PushReaction.BLOCK)
                                         .strength(5f);
-    }
-
-    public static <T extends Block> DeferredBlock<T> registerWithImpact(String name, Function<BlockBehaviour.Properties, T> blockClass,
-                                                                        BlockBehaviour.Properties properties, double stress) {
-        DeferredBlock<T> toReturn = BLOCKS.registerBlock(name, blockClass, properties);
-        // Create mod block stress registry
-        BlockStressValues.IMPACTS.registerProvider(block -> block == toReturn.get() ? () -> stress : null);
-        return toReturn;
     }
 
     @Contract(pure = true)

@@ -11,24 +11,24 @@ import com.github.zgraund.createreautomated.recipe.ModRecipes;
 import com.github.zgraund.createreautomated.registry.ModTags;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.item.ItemHelper;
+import com.simibubi.create.foundation.utility.CreateLang;
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
@@ -43,7 +43,6 @@ import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -238,10 +237,13 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         return getBlockPos().below(2);
     }
 
+    public BlockState getNode() {
+        return level == null ? Blocks.AIR.defaultBlockState() : level.getBlockState(getNodePosition());
+    }
+
     public float getNodeMaxDrillOffset() {
         if (level == null) return RETRACTED_DRILL_OFFSET;
-        BlockState state = level.getBlockState(getNodePosition());
-        return state.getBlock() instanceof OreNodeBlock node ? node.getDrillOffset() : DEFAULT_DRILL_OFFSET;
+        return getNode().getBlock() instanceof OreNodeBlock node ? node.getDrillOffset() : DEFAULT_DRILL_OFFSET;
     }
 
     public boolean hasDrill() {
@@ -295,23 +297,27 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-        if (Config.Client.DEBUG_EXTRACTOR_INFO.getAsBoolean() && lastRecipe != null) {
-            MutableComponent craftingProgress = Component.empty();
-            craftingProgress.append(Component.literal("    Crafting progress: ").withStyle(ChatFormatting.GRAY));
-            int percentage = (progress * 100) / lastRecipe.processingTime();
-            craftingProgress.append(Component.literal(percentage + "%").withStyle(ChatFormatting.DARK_GRAY));
-            tooltip.add(craftingProgress);
-            Arrays.stream(lastRecipe.drill().getItems())
-                  .map(s -> Component.literal("     " + s.getItem()).withStyle(ChatFormatting.DARK_GRAY))
-                  .forEach(tooltip::add);
-            lastRecipe.nodeSet()
-                      .stream()
-                      .map(Holder::getRegisteredName)
-                      .map(s -> Component.literal("     " + s).withStyle(ChatFormatting.DARK_GRAY))
-                      .forEach(tooltip::add);
+        boolean create = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+        boolean reAutomated = false;
+        if (Config.client().debugExtractorOverlay.get() && lastRecipe != null) {
+            reAutomated = true;
+            // For this use case the Create lang builder is good enough
+            CreateLang.text("Crafting progress: ")
+                      .style(ChatFormatting.GRAY)
+                      .add(CreateLang.text((progress * 100) / lastRecipe.processingTime() + "%").style(ChatFormatting.DARK_GRAY))
+                      .forGoggles(tooltip);
+            CreateLang.itemName(drillInv.getStackInSlot(0))
+                      .style(ChatFormatting.DARK_GRAY)
+                      .forGoggles(tooltip, 1);
+            CreateLang.blockName(getNode())
+                      .style(ChatFormatting.DARK_GRAY)
+                      .forGoggles(tooltip, 1);
+            CreateLang.text(" -> ")
+                      .style(ChatFormatting.DARK_GRAY)
+                      .add(CreateLang.itemName(lastRecipe.result()).style(ChatFormatting.DARK_GRAY))
+                      .forGoggles(tooltip, 1);
         }
-        return true;
+        return create || reAutomated;
     }
 
     public void setVirtualDrill(ItemStack stack) {

@@ -14,7 +14,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.config.ModConfig;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
@@ -41,8 +40,7 @@ public class CreateReAutomated {
 
         ModPartialModels.init();
 
-        modContainer.registerConfig(ModConfig.Type.CLIENT, Config.Client.SPEC);
-        modContainer.registerConfig(ModConfig.Type.COMMON, Config.Common.SPEC);
+        Config.register(modContainer);
     }
 
     @Nonnull

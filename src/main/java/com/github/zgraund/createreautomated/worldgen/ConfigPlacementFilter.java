@@ -19,7 +19,7 @@ public class ConfigPlacementFilter extends PlacementFilter {
 
     @Override
     protected boolean shouldPlace(PlacementContext context, RandomSource random, BlockPos pos) {
-        return Config.Common.WORLD_GENERATION.get();
+        return Config.common().worldgen.get();
     }
 
     @Nonnull

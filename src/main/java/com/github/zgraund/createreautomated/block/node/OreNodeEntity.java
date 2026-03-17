@@ -18,7 +18,7 @@ public class OreNodeEntity extends SyncedBlockEntity {
 
     public OreNodeEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.ORE_NODE_BE.get(), pos, blockState);
-        remaining = ((OreNodeBlock) blockState.getBlock()).maxExtractions;
+        remaining = ((OreNodeBlock) blockState.getBlock()).getMaxExtractions();
     }
 
     public void extract(int quantity) {

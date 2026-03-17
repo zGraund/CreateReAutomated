@@ -1,6 +1,7 @@
 package com.github.zgraund.createreautomated.block.node;
 
 import com.github.zgraund.createreautomated.Config;
+import com.github.zgraund.createreautomated.api.OreNodeBlockIndex;
 import com.github.zgraund.createreautomated.block.ModBlockEntities;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.ChatFormatting;
@@ -22,7 +23,6 @@ import net.minecraft.world.item.component.BlockItemStateProperties;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -42,23 +42,18 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
     public static final EnumProperty<DepletionLevel> DEPLETION = EnumProperty.create("depletion", DepletionLevel.class);
     public static final BooleanProperty NATURAL = BooleanProperty.create("natural");
 
-    public final int maxExtractions;
     public final BlockState turnsInto;
 
-    public OreNodeBlock(Properties properties, int maxExtractions, BlockState turnsInto) {
+    // TODO: maybe the turnsInto can also be configurable?
+    public OreNodeBlock(Properties properties, BlockState turnsInto) {
         super(properties);
-        this.maxExtractions = maxExtractions;
         this.turnsInto = turnsInto;
         this.registerDefaultState(this.defaultBlockState().setValue(DEPLETION, DepletionLevel.ZERO).setValue(NATURAL, false));
     }
 
-    public OreNodeBlock(Properties properties) {
-        this(properties, 0, Blocks.AIR.defaultBlockState());
-    }
-
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        if (!level.isClientSide() && Config.Client.DEBUG_ORE_NODE_DISPLAY.get()) {
+        if (!level.isClientSide() && Config.client().debugOreNodeOverlay.get()) {
             player.sendSystemMessage(Component.literal(
                     level.getBlockEntity(pos) instanceof OreNodeEntity oreNode
                             ? "The remaining ore is: " + oreNode.getRemaining()
@@ -79,7 +74,7 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
     }
 
     public DepletionLevel getStateFromQuantity(int quantity) {
-        return DepletionLevel.fromQuantity(quantity, maxExtractions);
+        return DepletionLevel.fromQuantity(quantity, getMaxExtractions());
     }
 
     public BlockState natural() {
@@ -138,7 +133,11 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
     }
 
     public boolean isInfinite() {
-        return maxExtractions <= 0;
+        return getMaxExtractions() <= 0;
+    }
+
+    public int getMaxExtractions() {
+        return OreNodeBlockIndex.getOrDefaultLimit(this);
     }
 
     public enum DepletionLevel implements StringRepresentable {
