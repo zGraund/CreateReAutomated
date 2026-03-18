@@ -1,5 +1,6 @@
-package com.github.zgraund.createreautomated;
+package com.github.zgraund.createreautomated.config;
 
+import com.github.zgraund.createreautomated.CreateReAutomated;
 import com.github.zgraund.createreautomated.registry.ModPartialModels;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.createmod.catnip.config.ui.BaseConfigScreen;

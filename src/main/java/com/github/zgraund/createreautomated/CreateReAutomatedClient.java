@@ -4,6 +4,7 @@ import com.github.zgraund.createreautomated.block.ModBlockEntities;
 import com.github.zgraund.createreautomated.block.ModBlocks;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorRenderer;
 import com.github.zgraund.createreautomated.config.Config;
+import com.github.zgraund.createreautomated.config.ModConfigScreen;
 import com.github.zgraund.createreautomated.item.ModItems;
 import com.github.zgraund.createreautomated.ponder.ModPonderPlugin;
 import com.simibubi.create.foundation.item.ItemDescription;
