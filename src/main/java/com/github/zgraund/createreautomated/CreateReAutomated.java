@@ -2,6 +2,7 @@ package com.github.zgraund.createreautomated;
 
 import com.github.zgraund.createreautomated.block.ModBlockEntities;
 import com.github.zgraund.createreautomated.block.ModBlocks;
+import com.github.zgraund.createreautomated.config.Config;
 import com.github.zgraund.createreautomated.item.ModCreativeModeTab;
 import com.github.zgraund.createreautomated.item.ModItems;
 import com.github.zgraund.createreautomated.recipe.ModRecipes;

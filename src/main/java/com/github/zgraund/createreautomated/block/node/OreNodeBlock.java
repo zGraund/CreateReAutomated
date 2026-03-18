@@ -1,8 +1,8 @@
 package com.github.zgraund.createreautomated.block.node;
 
-import com.github.zgraund.createreautomated.Config;
 import com.github.zgraund.createreautomated.api.OreNodeBlockIndex;
 import com.github.zgraund.createreautomated.block.ModBlockEntities;
+import com.github.zgraund.createreautomated.config.Config;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.ChatFormatting;
 import net.minecraft.MethodsReturnNonnullByDefault;

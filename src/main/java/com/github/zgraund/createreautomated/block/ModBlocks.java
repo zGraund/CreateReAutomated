@@ -1,11 +1,11 @@
 package com.github.zgraund.createreautomated.block;
 
-import com.github.zgraund.createreautomated.Config;
 import com.github.zgraund.createreautomated.CreateReAutomated;
 import com.github.zgraund.createreautomated.api.OreNodeBlockIndex;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorBlock;
 import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
 import com.github.zgraund.createreautomated.block.node.OreNodeHolder;
+import com.github.zgraund.createreautomated.config.NodeValues;
 import com.github.zgraund.createreautomated.item.ModItems;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.tags.TagKey;
@@ -92,7 +92,7 @@ public class ModBlocks {
         // FIXME: this a mess
         DeferredBlock<OreNodeBlock> block = BLOCKS.register(name, () -> new OreNodeBlock(properties, turnsInto.defaultBlockState()));
         ModItems.ITEMS.registerSimpleBlockItem(name, block, ModItems.defaultNodeItemProperties());
-        Config.Server.NodeValues.setNodeValue(block, limit);
+        NodeValues.setNodeValue(block, limit);
         ALL_NODES.add(new OreNodeHolder(block, tags, rules));
         OreNodeBlockIndex.register(block);
         return block;

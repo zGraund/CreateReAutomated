@@ -1,10 +1,10 @@
 package com.github.zgraund.createreautomated.block.extractor;
 
-import com.github.zgraund.createreautomated.Config;
 import com.github.zgraund.createreautomated.block.ModBlockEntities;
 import com.github.zgraund.createreautomated.block.ModBlocks;
 import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
 import com.github.zgraund.createreautomated.block.node.OreNodeEntity;
+import com.github.zgraund.createreautomated.config.Config;
 import com.github.zgraund.createreautomated.recipe.ExtractorRecipe;
 import com.github.zgraund.createreautomated.recipe.ExtractorRecipeInput;
 import com.github.zgraund.createreautomated.recipe.ModRecipes;

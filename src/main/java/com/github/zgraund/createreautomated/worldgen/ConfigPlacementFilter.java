@@ -1,6 +1,6 @@
 package com.github.zgraund.createreautomated.worldgen;
 
-import com.github.zgraund.createreautomated.Config;
+import com.github.zgraund.createreautomated.config.Config;
 import com.github.zgraund.createreautomated.registry.ModPlacementModifiers;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
