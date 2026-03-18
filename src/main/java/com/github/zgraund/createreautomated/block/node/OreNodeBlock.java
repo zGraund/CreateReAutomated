@@ -13,7 +13,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.ParticleUtils;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -28,7 +27,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
@@ -39,16 +38,15 @@ import java.util.List;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
-    public static final EnumProperty<DepletionLevel> DEPLETION = EnumProperty.create("depletion", DepletionLevel.class);
+    public static final IntegerProperty DEPLETION = IntegerProperty.create("depletion", 0, 10);
     public static final BooleanProperty NATURAL = BooleanProperty.create("natural");
 
-    public final BlockState turnsInto;
+    public final BlockState baseRock;
 
-    // TODO: maybe the turnsInto can also be configurable?
     public OreNodeBlock(Properties properties, BlockState turnsInto) {
         super(properties);
-        this.turnsInto = turnsInto;
-        this.registerDefaultState(this.defaultBlockState().setValue(DEPLETION, DepletionLevel.ZERO).setValue(NATURAL, false));
+        this.baseRock = turnsInto;
+        this.registerDefaultState(this.defaultBlockState().setValue(DEPLETION, 0).setValue(NATURAL, false));
     }
 
     @Override
@@ -73,8 +71,17 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
         return 0.85f;
     }
 
-    public DepletionLevel getStateFromQuantity(int quantity) {
-        return DepletionLevel.fromQuantity(quantity, getMaxExtractions());
+    public int getStateFromQuantity(int quantity) {
+        int percentage = (100 * quantity) / getMaxExtractions();
+        return Math.min(10, (100 - percentage + 9) / 10);
+    }
+
+    public boolean isInfinite() {
+        return getMaxExtractions() <= 0;
+    }
+
+    public int getMaxExtractions() {
+        return OreNodeBlockIndex.getOrDefaultLimit(this);
     }
 
     public BlockState natural() {
@@ -98,13 +105,13 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         BlockItemStateProperties data = stack.getComponents().get(DataComponents.BLOCK_STATE);
         if (data != null) {
-            OreNodeBlock.DepletionLevel level = data.get(OreNodeBlock.DEPLETION);
-            if (level != null && level != OreNodeBlock.DepletionLevel.ZERO) {
+            Integer level = data.get(OreNodeBlock.DEPLETION);
+            if (level != null && level != 0) {
                 // TODO: use translatable here
                 tooltipComponents.add(
                         Component.literal("Depletion Level: ")
                                  .withStyle(ChatFormatting.GRAY)
-                                 .append(Component.literal(level.getSerializedName()).withStyle(ChatFormatting.DARK_GRAY))
+                                 .append(Component.literal(String.valueOf(level)).withStyle(ChatFormatting.DARK_GRAY))
                 );
             }
         }
@@ -130,59 +137,5 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return isInfinite() ? null : new OreNodeEntity(pos, state);
-    }
-
-    public boolean isInfinite() {
-        return getMaxExtractions() <= 0;
-    }
-
-    public int getMaxExtractions() {
-        return OreNodeBlockIndex.getOrDefaultLimit(this);
-    }
-
-    public enum DepletionLevel implements StringRepresentable {
-        ZERO(0),
-        ONE(1),
-        TWO(2),
-        THREE(3),
-        FOUR(4),
-        FIVE(5),
-        SIX(6),
-        SEVEN(7),
-        EIGHT(8),
-        NINE(9),
-        TEN(10);
-
-        private final int stage;
-        private final int light;
-
-        DepletionLevel(int stage) {
-            this.stage = stage;
-            this.light = 10 - stage;
-        }
-
-        public static DepletionLevel fromQuantity(int quantity, int maxQuantity) {
-            int percentage = (100 * quantity) / maxQuantity;
-            if (percentage > 99) return ZERO;
-            if (percentage > 90) return ONE;
-            if (percentage > 80) return TWO;
-            if (percentage > 70) return THREE;
-            if (percentage > 60) return FOUR;
-            if (percentage > 50) return FIVE;
-            if (percentage > 40) return SIX;
-            if (percentage > 30) return SEVEN;
-            if (percentage > 20) return EIGHT;
-            if (percentage > 10) return NINE;
-            return TEN;
-        }
-
-        public int getLightLevel() {
-            return this.light;
-        }
-
-        @Override
-        public String getSerializedName() {
-            return String.valueOf(this.stage);
-        }
     }
 }

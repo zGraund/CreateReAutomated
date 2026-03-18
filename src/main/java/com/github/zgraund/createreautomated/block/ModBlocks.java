@@ -109,7 +109,7 @@ public class ModBlocks {
     public static BlockBehaviour.Properties stoneNodeProperties() {
         return BlockBehaviour.Properties.of()
                                         .requiresCorrectToolForDrops()
-                                        .lightLevel(value -> value.getValue(OreNodeBlock.DEPLETION).getLightLevel())
+                                        .lightLevel(state -> 10 - state.getValue(OreNodeBlock.DEPLETION))
                                         .sound(SoundType.STONE)
                                         .pushReaction(PushReaction.BLOCK)
                                         .strength(5f);

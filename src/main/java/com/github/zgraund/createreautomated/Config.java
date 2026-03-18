@@ -136,19 +136,19 @@ public class Config {
         }
 
         public static class NodeValues extends ConfigBase {
-            private static final Object2IntMap<DeferredBlock<?>> DEFAULT_VALUES = new Object2IntOpenHashMap<>();
+            private static final Object2IntMap<ResourceLocation> DEFAULT_VALUES = new Object2IntOpenHashMap<>();
 
             private final Map<ResourceLocation, ModConfigSpec.ConfigValue<Integer>> extractions = new HashMap<>();
 
-            public static void setNodeValue(DeferredBlock<? extends Block> block, int value) {
-                DEFAULT_VALUES.put(block, value);
+            public static void setNodeValue(@Nonnull DeferredBlock<? extends Block> block, int value) {
+                DEFAULT_VALUES.put(block.getId(), value);
             }
 
             @Override
             public void registerAll(@Nonnull ModConfigSpec.Builder builder) {
                 builder.comment("Configure how many times each node can be extracted before turning into its base rock").push("extraction");
-                DEFAULT_VALUES.forEach((block, value) ->
-                        extractions.put(block.getId(), builder.define(block.getId().getPath(), value))
+                DEFAULT_VALUES.forEach((id, value) ->
+                        extractions.put(id, builder.define(id.getPath(), value))
                 );
                 builder.pop();
             }

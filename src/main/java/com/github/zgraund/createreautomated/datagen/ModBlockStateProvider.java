@@ -17,8 +17,6 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import javax.annotation.Nonnull;
 
 public class ModBlockStateProvider extends BlockStateProvider {
-    public static final OreNodeBlock.DepletionLevel[] ALL_DEPLETION_LEVELS = OreNodeBlock.DepletionLevel.values();
-
     public ModBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
         super(output, CreateReAutomated.MOD_ID, exFileHelper);
     }
@@ -65,11 +63,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 .modelFile(models().getExistingFile(baseTexture))
                 .addModel()
                 .end();
-        for (int i = 1; i < ALL_DEPLETION_LEVELS.length; i++) {
+        for (int i = 1; i < OreNodeBlock.DEPLETION.getPossibleValues().size(); i++) {
             nodeState.part()
                      .modelFile(models().getExistingFile(modLoc(destroyStage + (i - 1))))
                      .addModel()
-                     .condition(OreNodeBlock.DEPLETION, ALL_DEPLETION_LEVELS[i])
+                     .condition(OreNodeBlock.DEPLETION, i)
                      .end();
         }
         simpleBlockItem(block.get(), models().getExistingFile(baseTexture));

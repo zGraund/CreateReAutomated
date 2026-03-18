@@ -39,12 +39,12 @@ public class OreNodeEntity extends SyncedBlockEntity {
         BlockPos pos = getBlockPos();
 
         if (this.remaining <= 0) {
-            level.setBlockAndUpdate(pos, node.turnsInto);
+            level.setBlockAndUpdate(pos, node.baseRock);
             level.playSound(null, pos, node.getSoundType(currentState, level, pos, null).getBreakSound(), SoundSource.BLOCKS);
             return;
         }
 
-        OreNodeBlock.DepletionLevel newState = node.getStateFromQuantity(remaining);
+        int newState = node.getStateFromQuantity(remaining);
 
         if (newState != currentState.getValue(OreNodeBlock.DEPLETION)) {
             level.setBlockAndUpdate(pos, currentState.setValue(OreNodeBlock.DEPLETION, newState));
