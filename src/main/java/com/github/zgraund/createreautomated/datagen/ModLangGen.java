@@ -1,49 +1,27 @@
 package com.github.zgraund.createreautomated.datagen;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
-import com.github.zgraund.createreautomated.block.ModBlocks;
-import com.github.zgraund.createreautomated.item.ModItems;
 import net.minecraft.Util;
-import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.common.data.LanguageProvider;
-import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredItem;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.stream.Collectors;
+import java.util.function.BiConsumer;
 
-public class ModLanguageProvider extends LanguageProvider {
-    public ModLanguageProvider(PackOutput output) {
-        super(output, CreateReAutomated.MOD_ID, "en_us");
+public class ModLangGen {
+    private final BiConsumer<String, String> consumer;
+
+    public ModLangGen(BiConsumer<String, String> consumer) {
+        this.consumer = consumer;
     }
 
-    public static String nameFromId(@Nonnull ResourceLocation id) {
-        return Arrays.stream(id.getPath().split("_")).map(StringUtils::capitalize).collect(Collectors.joining(" "));
-    }
-
-    @Override
-    protected void addTranslations() {
+    public void generate() {
         // Blocks
-        ModBlocks.getAllNodes().forEach(nodeBlock ->
-                addBlock(nodeBlock.block(), nameFromId(nodeBlock.block().getId()))
-        );
         tooltip("block", "ore_node", "Ore Node");
         summary("block", "ore_node", "A _mysterious_ node too hard to extract by hand");
 
-        simpleBlock(ModBlocks.EXTRACTOR);
-
         // Items
-        ModItems.getAllDrills().forEach(drill -> addItem(drill, nameFromId(drill.getId())));
         tooltip("item", "drill_head", "A drill head for an extractor");
         summary("item", "drill_head", "This drill can be used in an _Extractor_ to excavate an _Ore_ _Node_");
-        simpleItem(ModItems.COPPER_BIT);
-        simpleItem(ModItems.IRON_BIT);
-        simpleItem(ModItems.GOLD_BIT);
-        simpleItem(ModItems.DIAMOND_BIT);
 
         // Recipes
         recipe("extracting", "Extracting");
@@ -63,31 +41,23 @@ public class ModLanguageProvider extends LanguageProvider {
 
         // TODO: remove
         // Worldgen for testing
-        add("generator.createreautomated.ore_node_test", "Node Ore test world");
+        consumer.accept("generator.createreautomated.ore_node_test", "Node Ore test world");
     }
 
     private void add(String prefix, String suffix, String value) {
-        add(prefix + "." + CreateReAutomated.MOD_ID + "." + suffix, value);
-    }
-
-    private void simpleBlock(DeferredBlock<?> block) {
-        addBlock(block, nameFromId(block.getId()));
-    }
-
-    private void simpleItem(DeferredItem<?> item) {
-        addItem(item, nameFromId(item.getId()));
+        consumer.accept(prefix + "." + CreateReAutomated.MOD_ID + "." + suffix, value);
     }
 
     private void recipe(String type, String name) {
-        add(CreateReAutomated.MOD_ID + ".recipe." + type, name);
+        consumer.accept(CreateReAutomated.MOD_ID + ".recipe." + type, name);
     }
 
     private void config(String suffix, String value) {
-        add(CreateReAutomated.MOD_ID + ".configuration." + suffix, value);
+        consumer.accept(CreateReAutomated.MOD_ID + ".configuration." + suffix, value);
     }
 
     private void tooltip(String prefix, @Nonnull DeferredHolder<?, ?> holder, String tooltip) {
-        add(Util.makeDescriptionId(prefix, holder.getId()) + ".tooltip", tooltip);
+        consumer.accept(Util.makeDescriptionId(prefix, holder.getId()) + ".tooltip", tooltip);
     }
 
     private void tooltip(String prefix, String id, String tooltip) {
@@ -95,7 +65,7 @@ public class ModLanguageProvider extends LanguageProvider {
     }
 
     private void summary(String prefix, @Nonnull DeferredHolder<?, ?> holder, String summary) {
-        add(Util.makeDescriptionId(prefix, holder.getId()) + ".tooltip.summary", summary);
+        consumer.accept(Util.makeDescriptionId(prefix, holder.getId()) + ".tooltip.summary", summary);
     }
 
     private void summary(String prefix, String id, String summary) {

@@ -1,12 +1,13 @@
 package com.github.zgraund.createreautomated.datagen;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
-import com.github.zgraund.createreautomated.block.ModBlocks;
-import com.github.zgraund.createreautomated.item.ModItems;
 import com.github.zgraund.createreautomated.recipe.ExtractorRecipe;
+import com.github.zgraund.createreautomated.registry.ModBlocks;
+import com.github.zgraund.createreautomated.registry.ModItems;
 import com.github.zgraund.createreautomated.registry.ModTags;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
+import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
@@ -21,8 +22,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredItem;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -39,6 +38,7 @@ public class ModRecipeProvider extends RecipeProvider {
     protected void buildRecipes(@Nonnull RecipeOutput recipeOutput) {
         this.output = recipeOutput;
 
+        // Extractor
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.EXTRACTOR)
                            .unlockedBy("has_", has(AllBlocks.BRASS_CASING))
                            .define('I', AllItems.BRASS_INGOT)
@@ -50,15 +50,40 @@ public class ModRecipeProvider extends RecipeProvider {
                            .pattern("IEI")
                            .save(recipeOutput);
 
-        drillRecipe(ModItems.NETHERITE_DRILL, Items.NETHERITE_INGOT);
-        drillRecipe(ModItems.DIAMOND_DRILL, Items.DIAMOND);
-        drillRecipe(ModItems.IRON_DRILL, Items.IRON_INGOT);
+        // Drills
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.IRON_DRILL)
+                           .unlockedBy("has_iron", has(Items.IRON_INGOT))
+                           .unlockedBy("has_extractor", has(ModBlocks.EXTRACTOR))
+                           .define('I', Items.IRON_INGOT)
+                           .define('A', AllItems.ANDESITE_ALLOY)
+                           .pattern(" A ")
+                           .pattern("III")
+                           .pattern(" I ")
+                           .save(recipeOutput);
 
-        bitsPacking(ModItems.DIAMOND_BIT, Items.DIAMOND);
-        bitsPacking(ModItems.GOLD_BIT, Items.GOLD_NUGGET);
-        bitsPacking(ModItems.IRON_BIT, Items.IRON_NUGGET);
-        bitsPacking(ModItems.COPPER_BIT, AllItems.COPPER_NUGGET);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.DIAMOND_DRILL)
+                           .unlockedBy("has_diamond", has(Items.DIAMOND))
+                           .unlockedBy("has_extractor", has(ModBlocks.EXTRACTOR))
+                           .define('P', AllItems.PRECISION_MECHANISM)
+                           .define('I', ModItems.IRON_DRILL)
+                           .define('D', Items.DIAMOND)
+                           .pattern(" P ")
+                           .pattern("DID")
+                           .pattern(" D ")
+                           .save(recipeOutput);
 
+        SmithingTransformRecipeBuilder.smithing(
+                                              Ingredient.EMPTY,
+                                              Ingredient.of(ModItems.DIAMOND_DRILL),
+                                              Ingredient.of(Items.NETHERITE_INGOT),
+                                              RecipeCategory.MISC,
+                                              ModItems.NETHERITE_DRILL.get()
+                                      )
+                                      .unlocks("has_netherite", has(Items.NETHERITE_INGOT))
+                                      .unlocks("has_extractor", has(ModBlocks.EXTRACTOR))
+                                      .save(recipeOutput, CreateReAutomated.asResource("netherite_drill_upgrade"));
+
+        // Extracting
         simpleExtractorRecipe(
                 Ingredient.of(ModTags.Items.AT_LEAST_TIER_3),
                 fromBlocks(ModBlocks.DIAMOND_NODE, ModBlocks.DEEPSLATE_DIAMOND_NODE),
@@ -127,45 +152,16 @@ public class ModRecipeProvider extends RecipeProvider {
 
     @Nonnull
     @SafeVarargs
-    protected final HolderSet.Direct<Block> fromBlocks(DeferredBlock<? extends Block>... blocks) {
+    protected final HolderSet.Direct<Block> fromBlocks(BlockEntry<? extends Block>... blocks) {
         return HolderSet.direct(blocks);
-    }
-
-    protected String idAsString(String path) {
-        return CreateReAutomated.MOD_ID + ":" + path;
-    }
-
-    protected void bitsPacking(ItemLike unpacked, ItemLike packed) {
-        String unpackedName = getItemName(unpacked);
-        String packedName = getItemName(packed);
-        nineBlockStorageRecipes(
-                this.output,
-                RecipeCategory.MISC,
-                unpacked,
-                RecipeCategory.MISC,
-                packed,
-                idAsString(packedName + "_from_bits"),
-                packedName,
-                idAsString(unpackedName),
-                unpackedName
-        );
     }
 
     protected int secAtMaxSpeed(int seconds) {
         return seconds * 256 * 20;
     }
 
-    protected void drillRecipe(DeferredItem<Item> drill, ItemLike material) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, drill)
-                           .define('I', Items.IRON_INGOT)
-                           .define('M', material)
-                           .pattern(" I ")
-                           .pattern("MIM")
-                           .pattern(" M ")
-                           .group(idAsString("drills"))
-                           .unlockedBy("has_extractor", has(ModBlocks.EXTRACTOR))
-                           .unlockedBy("has_node", has(ModTags.Items.ORE_NODES))
-                           .save(this.output, CreateReAutomated.asResource(drill.getId().getPath()));
+    protected void simpleBitPacking(ItemLike bit) {
+        // TODO
     }
 
     protected void simpleExtractorRecipe(Ingredient drill, HolderSet<Block> set, int durationTicks, int drillDamage, ItemStack result, String name) {

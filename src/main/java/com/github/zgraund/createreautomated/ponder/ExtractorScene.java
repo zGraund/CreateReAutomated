@@ -1,7 +1,7 @@
 package com.github.zgraund.createreautomated.ponder;
 
 import com.github.zgraund.createreautomated.block.extractor.ExtractorBlockEntity;
-import com.github.zgraund.createreautomated.item.ModItems;
+import com.github.zgraund.createreautomated.registry.ModItems;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
 import net.createmod.catnip.math.Pointing;
 import net.createmod.ponder.api.scene.SceneBuilder;
@@ -75,7 +75,7 @@ public class ExtractorScene {
              .placeNearTarget()
              .attachKeyFrame()
              .pointAt(util.vector().blockSurface(extBot, Direction.WEST))
-             .text("A drill can be inserted via Right-click...");
+             .text("A drill can be inserted via Right-click");
 
         scene.idle(70);
 
@@ -102,7 +102,7 @@ public class ExtractorScene {
         scene.overlay().showText(60)
              .placeNearTarget()
              .pointAt(util.vector().blockSurface(funnelIn, Direction.WEST))
-             .text("...or with automation");
+             .text("or with automation");
 
         scene.idle(40);
 
@@ -131,7 +131,7 @@ public class ExtractorScene {
              .placeNearTarget()
              .attachKeyFrame()
              .pointAt(util.vector().blockSurface(extTop, Direction.WEST))
-             .text("The output can be obtained via Right-click...");
+             .text("The output can be obtained via Right-click");
 
         scene.idle(70);
 
@@ -156,7 +156,7 @@ public class ExtractorScene {
         scene.overlay().showText(60)
              .placeNearTarget()
              .pointAt(util.vector().blockSurface(funnelOut, Direction.SOUTH))
-             .text("...or with automation");
+             .text("or with automation");
 
         scene.idle(60);
 

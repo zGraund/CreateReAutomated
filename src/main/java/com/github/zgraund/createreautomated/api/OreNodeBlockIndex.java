@@ -1,7 +1,9 @@
 package com.github.zgraund.createreautomated.api;
 
+import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
 import com.simibubi.create.api.registry.SimpleRegistry;
-import net.minecraft.core.Holder;
+import com.tterrag.registrate.builders.BlockBuilder;
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
@@ -12,13 +14,23 @@ import java.util.function.IntSupplier;
 
 public class OreNodeBlockIndex {
     /**
-     * Registry for all blocks that are considered valid for a OreNodeEntity. All nodes should be registered here.
+     * Registry for all blocks that are considered valid for a OreNodeEntity. All nodes
+     * and their max number of extractions should be registered here.
      */
     public static final SimpleRegistry<Block, IntSupplier> NODE_VALUES = SimpleRegistry.create();
-    public static final Set<DeferredBlock<? extends Block>> BLOCKS = new HashSet<>();
+    private static final Set<NonNullSupplier<OreNodeBlock>> BLOCKS = new HashSet<>();
 
-    public static void register(DeferredBlock<? extends Block> block) {
-        BLOCKS.add(block);
+    public static void register(OreNodeBlock block) {
+        BLOCKS.add(NonNullSupplier.of(() -> block));
+    }
+
+    public static void register(DeferredBlock<OreNodeBlock> node) {
+        BLOCKS.add(NonNullSupplier.of(node));
+    }
+
+    public static <T extends OreNodeBlock, R> BlockBuilder<T, R> register(@Nonnull BlockBuilder<T, R> builder) {
+        BLOCKS.add(builder::getEntry);
+        return builder;
     }
 
     public static int getOrDefaultLimit(Block node) {
@@ -27,7 +39,8 @@ public class OreNodeBlockIndex {
     }
 
     @Nonnull
-    public static Block[] toArray() {
-        return BLOCKS.stream().map(Holder::value).toArray(Block[]::new);
+    @SuppressWarnings("unchecked")
+    public static NonNullSupplier<? extends Block>[] toArray() {
+        return BLOCKS.toArray(NonNullSupplier[]::new);
     }
 }

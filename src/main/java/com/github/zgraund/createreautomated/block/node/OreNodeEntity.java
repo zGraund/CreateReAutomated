@@ -1,6 +1,5 @@
 package com.github.zgraund.createreautomated.block.node;
 
-import com.github.zgraund.createreautomated.block.ModBlockEntities;
 import com.github.zgraund.createreautomated.registry.ModDataComponents;
 import com.simibubi.create.foundation.blockEntity.SyncedBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -8,6 +7,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -16,9 +16,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 public class OreNodeEntity extends SyncedBlockEntity {
     private int remaining;
 
-    public OreNodeEntity(BlockPos pos, BlockState blockState) {
-        super(ModBlockEntities.ORE_NODE_BE.get(), pos, blockState);
-        remaining = ((OreNodeBlock) blockState.getBlock()).getMaxExtractions();
+    public OreNodeEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
+        remaining = ((OreNodeBlock) state.getBlock()).getMaxExtractions();
     }
 
     public void extract(int quantity) {

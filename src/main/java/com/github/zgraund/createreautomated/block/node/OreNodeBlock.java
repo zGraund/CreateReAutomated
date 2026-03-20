@@ -1,8 +1,8 @@
 package com.github.zgraund.createreautomated.block.node;
 
 import com.github.zgraund.createreautomated.api.OreNodeBlockIndex;
-import com.github.zgraund.createreautomated.block.ModBlockEntities;
 import com.github.zgraund.createreautomated.config.Config;
+import com.github.zgraund.createreautomated.registry.ModBlockEntities;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.ChatFormatting;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -136,6 +136,6 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return isInfinite() ? null : new OreNodeEntity(pos, state);
+        return isInfinite() ? null : IBE.super.newBlockEntity(pos, state);
     }
 }

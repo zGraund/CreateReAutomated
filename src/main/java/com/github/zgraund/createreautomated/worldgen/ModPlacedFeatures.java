@@ -18,6 +18,7 @@ import static net.minecraft.data.worldgen.placement.PlacementUtils.register;
 
 public class ModPlacedFeatures {
     public static final ResourceKey<PlacedFeature> OVERWORLD_ORE_NODE_PLACED_KEY = registerKey("ore_node_placed");
+    public static final ResourceKey<PlacedFeature> NETHER_ORE_NODE_PLACED_KEY = registerKey("nether_ore_node_placed");
 
     public static void bootstrap(@Nonnull BootstrapContext<PlacedFeature> context) {
         HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
@@ -28,12 +29,19 @@ public class ModPlacedFeatures {
                 configuredFeatures.getOrThrow(ModConfiguredFeatures.OVERWORLD_ORE_NODE_KEY),
                 defaultNodePlacement()
         );
+
+        register(
+                context,
+                NETHER_ORE_NODE_PLACED_KEY,
+                configuredFeatures.getOrThrow(ModConfiguredFeatures.NETHER_ORE_NODE_KEY),
+                nodePlacement(50, 0, 128)
+        );
     }
 
     @Nonnull
     @Contract(" -> new")
     public static @Unmodifiable List<PlacementModifier> defaultNodePlacement() {
-        return nodePlacement(50, -64, 128);
+        return nodePlacement(35, -64, 64);
     }
 
     @Nonnull

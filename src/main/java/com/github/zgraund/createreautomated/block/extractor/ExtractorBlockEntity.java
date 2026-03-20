@@ -1,13 +1,12 @@
 package com.github.zgraund.createreautomated.block.extractor;
 
-import com.github.zgraund.createreautomated.block.ModBlockEntities;
-import com.github.zgraund.createreautomated.block.ModBlocks;
 import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
 import com.github.zgraund.createreautomated.block.node.OreNodeEntity;
 import com.github.zgraund.createreautomated.config.Config;
 import com.github.zgraund.createreautomated.recipe.ExtractorRecipe;
 import com.github.zgraund.createreautomated.recipe.ExtractorRecipeInput;
 import com.github.zgraund.createreautomated.recipe.ModRecipes;
+import com.github.zgraund.createreautomated.registry.ModBlocks;
 import com.github.zgraund.createreautomated.registry.ModTags;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.item.ItemHelper;
@@ -30,6 +29,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.Vec3;
@@ -63,8 +63,8 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     @Nullable
     private ExtractorRecipe lastRecipe;
 
-    public ExtractorBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.EXTRACTOR_BE.get(), pos, state);
+    public ExtractorBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
+        super(typeIn, pos, state);
     }
 
     public static void registerCapabilities(@Nonnull RegisterCapabilitiesEvent event) {
@@ -75,7 +75,8 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
                         pos = pos.above();
                         state = level.getBlockState(pos);
                         blockEntity = level.getBlockEntity(pos);
-                        context = Direction.DOWN;
+                        // in case I need to change the capability based on direction
+                        // context = Direction.DOWN;
                     }
                     if (state.getValue(ExtractorBlock.HALF) == DoubleBlockHalf.UPPER && blockEntity instanceof ExtractorBlockEntity extractor)
                         return extractor.capabilities;
@@ -314,6 +315,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
                       .forGoggles(tooltip, 1);
             CreateLang.text(" -> ")
                       .style(ChatFormatting.DARK_GRAY)
+                      .add(CreateLang.text(lastRecipe.result().getCount() + "x ").style(ChatFormatting.DARK_GRAY))
                       .add(CreateLang.itemName(lastRecipe.result()).style(ChatFormatting.DARK_GRAY))
                       .forGoggles(tooltip, 1);
         }

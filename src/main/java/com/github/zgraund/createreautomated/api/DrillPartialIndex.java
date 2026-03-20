@@ -13,7 +13,7 @@ public class DrillPartialIndex {
      */
     public static final SimpleRegistry<Item, PartialModel> MODELS = SimpleRegistry.create();
 
-    public static PartialModel getOrDefault(Item item) {
+    public static PartialModel getOrDefaultModel(Item item) {
         PartialModel model = MODELS.get(item);
         return model != null ? model : ModPartialModels.IRON_DRILL;
     }

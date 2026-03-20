@@ -1,9 +1,9 @@
 package com.github.zgraund.createreautomated.compat.jei;
 
 import com.github.zgraund.createreautomated.api.DrillPartialIndex;
-import com.github.zgraund.createreautomated.block.ModBlocks;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorBlock;
-import com.github.zgraund.createreautomated.item.ModItems;
+import com.github.zgraund.createreautomated.registry.ModBlocks;
+import com.github.zgraund.createreautomated.registry.ModItems;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.simibubi.create.AllPartialModels;
@@ -49,8 +49,7 @@ public class AnimatedExtractor extends AnimatedKinetics {
                 .scale(scale)
                 .render(graphics);
 
-//        blockElement(ModPartialModels.DRILL)
-        blockElement(DrillPartialIndex.getOrDefault(drill))
+        blockElement(DrillPartialIndex.getOrDefaultModel(drill))
                 .atLocal(0, -0.15, 0)
                 .rotateBlock(0, getCurrentAngle() * 2, 0)
                 .scale(scale)

@@ -1,7 +1,7 @@
 package com.github.zgraund.createreautomated.ponder;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
-import com.github.zgraund.createreautomated.block.ModBlocks;
+import com.github.zgraund.createreautomated.registry.ModBlocks;
 import net.createmod.ponder.api.registration.PonderPlugin;
 import net.createmod.ponder.api.registration.PonderSceneRegistrationHelper;
 import net.minecraft.resources.ResourceLocation;
@@ -20,6 +20,6 @@ public class ModPonderPlugin implements PonderPlugin {
     public void registerScenes(@Nonnull PonderSceneRegistrationHelper<ResourceLocation> helper) {
         PonderSceneRegistrationHelper<DeferredHolder<?, ?>> HELPER = helper.withKeyFunction(DeferredHolder::getId);
 
-        HELPER.forComponents(ModBlocks.EXTRACTOR).addStoryBoard("ore_extractor", ExtractorScene::extractor);
+        HELPER.forComponents(ModBlocks.EXTRACTOR).addStoryBoard("extractor", ExtractorScene::extractor);
     }
 }

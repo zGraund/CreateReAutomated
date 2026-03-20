@@ -18,10 +18,12 @@ import javax.annotation.Nonnull;
 
 public class ModBiomeModifiers {
     public static final ResourceKey<BiomeModifier> ADD_ORE_NODE = registerKey("add_ore_node");
+    public static final ResourceKey<BiomeModifier> ADD_NETHER_ORE_NODE = registerKey("add_nether_ore_node");
 
     public static void bootstrap(@Nonnull BootstrapContext<BiomeModifier> context) {
         HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
         HolderSet<Biome> isOverworld = biomes.getOrThrow(BiomeTags.IS_OVERWORLD);
+        HolderSet<Biome> isNether = biomes.getOrThrow(BiomeTags.IS_NETHER);
 
         HolderGetter<PlacedFeature> placedFeature = context.lookup(Registries.PLACED_FEATURE);
 
@@ -30,6 +32,15 @@ public class ModBiomeModifiers {
                 new BiomeModifiers.AddFeaturesBiomeModifier(
                         isOverworld,
                         HolderSet.direct(placedFeature.getOrThrow(ModPlacedFeatures.OVERWORLD_ORE_NODE_PLACED_KEY)),
+                        GenerationStep.Decoration.UNDERGROUND_DECORATION
+                )
+        );
+
+        context.register(
+                ADD_NETHER_ORE_NODE,
+                new BiomeModifiers.AddFeaturesBiomeModifier(
+                        isNether,
+                        HolderSet.direct(placedFeature.getOrThrow(ModPlacedFeatures.NETHER_ORE_NODE_PLACED_KEY)),
                         GenerationStep.Decoration.UNDERGROUND_DECORATION
                 )
         );

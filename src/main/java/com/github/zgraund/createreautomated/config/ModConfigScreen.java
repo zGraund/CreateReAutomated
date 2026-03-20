@@ -15,7 +15,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class ModConfigScreen extends BaseConfigScreen {
-    public static DelegatedStencilElement customShadow = new DelegatedStencilElement(
+    public static final DelegatedStencilElement customShadow = new DelegatedStencilElement(
             (graphics, x, y, alpha) -> renderExtractor(graphics),
             (graphics, x, y, alpha) -> graphics.fill(-200, -200, 200, 200, 0x60_000000)
     );

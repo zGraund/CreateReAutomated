@@ -1,6 +1,6 @@
 package com.github.zgraund.createreautomated.config;
 
-import com.github.zgraund.createreautomated.block.ModBlocks;
+import com.github.zgraund.createreautomated.registry.ModBlocks;
 import net.createmod.catnip.config.ConfigBase;
 import net.minecraft.world.level.block.Block;
 
