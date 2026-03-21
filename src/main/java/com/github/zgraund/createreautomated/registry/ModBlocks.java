@@ -6,6 +6,7 @@ import com.github.zgraund.createreautomated.block.extractor.ExtractorBlock;
 import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
 import com.github.zgraund.createreautomated.config.NodeValues;
 import com.github.zgraund.createreautomated.datagen.ModBlockLootTableGen;
+import com.github.zgraund.createreautomated.datagen.ModCommonBlockModelGen;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.CreateRegistrate;
@@ -17,7 +18,6 @@ import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BlockItem;
@@ -29,8 +29,10 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
-import net.neoforged.neoforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.neoforged.neoforge.common.Tags;
+
+import javax.annotation.Nonnull;
+import java.util.Arrays;
 
 @MethodsReturnNonnullByDefault
 public class ModBlocks {
@@ -74,16 +76,19 @@ public class ModBlocks {
     public static final BlockEntry<OreNodeBlock>
             NETHER_GOLD_NODE = netherrackNode("nether_gold_node", 250, Tags.Blocks.ORES_GOLD);
 
-    private static BlockEntry<OreNodeBlock> stoneNode(String name, int limit, TagKey<?> tags) {
-        return node(name, limit, Blocks.COBBLESTONE, stoneNodeProperties(), tags);
+    private static BlockEntry<OreNodeBlock> stoneNode(String name, int limit, TagKey<?>... tags) {
+        return node(name, limit, Blocks.COBBLESTONE, stoneNodeProperties(),
+                addTags(tags, Tags.Blocks.ORES_IN_GROUND_STONE, Tags.Items.ORES_IN_GROUND_STONE));
     }
 
     private static BlockEntry<OreNodeBlock> deepslateNode(String name, int limit, TagKey<?>... tags) {
-        return node(name, limit, Blocks.COBBLED_DEEPSLATE, deepslateNodeProperties(), tags);
+        return node(name, limit, Blocks.COBBLED_DEEPSLATE, deepslateNodeProperties(),
+                addTags(tags, Tags.Blocks.ORES_IN_GROUND_DEEPSLATE, Tags.Items.ORES_IN_GROUND_DEEPSLATE));
     }
 
     private static BlockEntry<OreNodeBlock> netherrackNode(String name, int limit, TagKey<?>... tags) {
-        return node(name, limit, Blocks.NETHERRACK, netherrackNodeProperties(), tags);
+        return node(name, limit, Blocks.NETHERRACK, netherrackNodeProperties(),
+                addTags(tags, Tags.Blocks.ORES_IN_GROUND_NETHERRACK, Tags.Items.ORES_IN_GROUND_NETHERRACK));
     }
 
     private static BlockEntry<OreNodeBlock> node(
@@ -91,28 +96,11 @@ public class ModBlocks {
     ) {
         return REGISTRATE.block(name, (prop) -> new OreNodeBlock(properties, baseStone.defaultBlockState()))
                          .transform(tagBlockOrItem(tags))
+                         .tag(Tags.Items.ORES)
                          .build()
-                         .tag(BlockTags.NEEDS_IRON_TOOL)
-                         .tag(ModTags.Blocks.ORE_NODES)
+                         .tag(BlockTags.NEEDS_IRON_TOOL, Tags.Blocks.ORES, ModTags.Blocks.ORE_NODES)
                          .transform(TagGen.pickaxeOnly())
-                         .blockstate((ctx, prov) -> {
-                             // TODO: refactor this
-                             ResourceLocation texture = ctx.getId().withPrefix("block/");
-                             prov.models().cubeAll("block/" + ctx.getId().getPath(), texture);
-                             String destroyStage = "block/node_overlays/node_destroy_stage_";
-                             MultiPartBlockStateBuilder nodeState = prov.getMultipartBuilder(ctx.get())
-                                                                        .part()
-                                                                        .modelFile(prov.models().getExistingFile(texture))
-                                                                        .addModel()
-                                                                        .end();
-                             for (int i = 1; i < OreNodeBlock.DEPLETION.getPossibleValues().size(); i++) {
-                                 nodeState.part()
-                                          .modelFile(prov.models().getExistingFile(prov.modLoc(destroyStage + (i - 1))))
-                                          .addModel()
-                                          .condition(OreNodeBlock.DEPLETION, i)
-                                          .end();
-                             }
-                         })
+                         .blockstate(ModCommonBlockModelGen.defaultOverlay())
                          .loot((prov, block) -> prov.add(block, ModBlockLootTableGen.createOreNodeDrop(block)))
                          .transform(NodeValues.setNodeValue(quantity))
                          .transform(OreNodeBlockIndex::register)
@@ -146,6 +134,12 @@ public class ModBlocks {
                                         .sound(SoundType.STONE)
                                         .pushReaction(PushReaction.BLOCK)
                                         .strength(5f);
+    }
+
+    public static TagKey<?>[] addTags(TagKey<?>[] original, @Nonnull TagKey<?>... toAdd) {
+        TagKey<?>[] newTags = Arrays.copyOf(original, original.length + toAdd.length);
+        System.arraycopy(toAdd, 0, newTags, original.length, toAdd.length);
+        return newTags;
     }
 
     public static void register() {}

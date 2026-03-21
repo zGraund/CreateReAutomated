@@ -1,11 +1,17 @@
 package com.github.zgraund.createreautomated.datagen;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
+import com.github.zgraund.createreautomated.registry.ModTags;
 import net.minecraft.Util;
+import net.minecraft.tags.TagKey;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 public class ModLangGen {
     private final BiConsumer<String, String> consumer;
@@ -15,11 +21,11 @@ public class ModLangGen {
     }
 
     public void generate() {
-        // Blocks
+        // Blocks tooltip
         tooltip("block", "ore_node", "Ore Node");
         summary("block", "ore_node", "A _mysterious_ node too hard to extract by hand");
 
-        // Items
+        // Items tooltip
         tooltip("item", "drill_head", "A drill head for an extractor");
         summary("item", "drill_head", "This drill can be used in an _Extractor_ to excavate an _Ore_ _Node_");
 
@@ -28,6 +34,21 @@ public class ModLangGen {
 
         // Misc
         add("itemGroup", "base", "Create Re-Automated");
+
+        // Block tags
+        tag(ModTags.Blocks.ORE_NODES);
+
+        // Item tags
+        tag(ModTags.Items.DRILLS);
+        tag(ModTags.Items.DRILL_TIER_1);
+        tag(ModTags.Items.DRILL_TIER_2);
+        tag(ModTags.Items.DRILL_TIER_3);
+        tag(ModTags.Items.AT_MOST_TIER_1);
+        tag(ModTags.Items.AT_MOST_TIER_2);
+        tag(ModTags.Items.AT_MOST_TIER_3);
+        tag(ModTags.Items.AT_LEAST_TIER_1);
+        tag(ModTags.Items.AT_LEAST_TIER_2);
+        tag(ModTags.Items.AT_LEAST_TIER_3);
 
         // Configs
         config("title", "Create Re-Automated Configurations");
@@ -70,5 +91,16 @@ public class ModLangGen {
 
     private void summary(String prefix, String id, String summary) {
         add(prefix, id + ".tooltip.summary", summary);
+    }
+
+    private void tag(@Nonnull TagKey<?> tag) {
+        String[] splits = tag.location().getPath().split("/");
+        String name = splits[splits.length - 1];
+        String toHuman = Arrays.stream(name.split("_")).map(StringUtils::capitalize).collect(Collectors.joining(" "));
+        tag(tag, toHuman);
+    }
+
+    private void tag(TagKey<?> tag, String translation) {
+        consumer.accept(Tags.getTagTranslationKey(tag), translation);
     }
 }

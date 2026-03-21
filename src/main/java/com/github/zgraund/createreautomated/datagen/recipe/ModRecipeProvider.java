@@ -1,4 +1,4 @@
-package com.github.zgraund.createreautomated.datagen;
+package com.github.zgraund.createreautomated.datagen.recipe;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
 import com.github.zgraund.createreautomated.recipe.ExtractorRecipe;
@@ -20,7 +20,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 
 import javax.annotation.Nonnull;
@@ -158,10 +157,6 @@ public class ModRecipeProvider extends RecipeProvider {
 
     protected int secAtMaxSpeed(int seconds) {
         return seconds * 256 * 20;
-    }
-
-    protected void simpleBitPacking(ItemLike bit) {
-        // TODO
     }
 
     protected void simpleExtractorRecipe(Ingredient drill, HolderSet<Block> set, int durationTicks, int drillDamage, ItemStack result, String name) {

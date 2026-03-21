@@ -2,6 +2,7 @@ package com.github.zgraund.createreautomated.registry;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
 import com.github.zgraund.createreautomated.api.DrillPartialIndex;
+import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.tterrag.registrate.util.entry.ItemEntry;
@@ -15,17 +16,20 @@ import javax.annotation.Nonnull;
 public class ModItems {
     private static final CreateRegistrate REGISTRATE = CreateReAutomated.REGISTRATE;
 
-    // TODO: register partial model directly in ModPartialModels (?)
+    // maybe register partial model directly in ModPartialModels (?)
     public static final ItemEntry<Item>
             IRON_DRILL = drill("iron_drill", 1500, ModTags.Items.DRILL_TIER_1, ModPartialModels.IRON_DRILL),
             DIAMOND_DRILL = drill("diamond_drill", 4000, ModTags.Items.DRILL_TIER_2, ModPartialModels.DIAMOND_DRILL),
             NETHERITE_DRILL = drill("netherite_drill", 8000, ModTags.Items.DRILL_TIER_3, ModPartialModels.NETHERITE_DRILL);
 
     public static final ItemEntry<Item>
-            COPPER_BIT = bit("copper_bit"),
-            IRON_BIT = bit("iron_bit"),
-            GOLD_BIT = bit("gold_bit"),
-            DIAMOND_BIT = bit("diamond_bit");
+            COPPER_BIT = simple("copper_bit"),
+            IRON_BIT = simple("iron_bit"),
+            GOLD_BIT = simple("gold_bit"),
+            DIAMOND_BIT = simple("diamond_bit");
+
+    public static final ItemEntry<Item> UNBAKED_DIAMOND = hidden("unbaked_diamond");
+    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_DIAMOND = sequencedAssembly("incomplete_diamond");
 
     @Nonnull
     private static ItemEntry<Item> drill(String name, int durability, TagKey<Item> tier, PartialModel model) {
@@ -44,8 +48,20 @@ public class ModItems {
     }
 
     @Nonnull
-    private static ItemEntry<Item> bit(String name) {
+    private static ItemEntry<Item> simple(String name) {
         return REGISTRATE.item(name, Item::new).register();
+    }
+
+    @Nonnull
+    private static ItemEntry<Item> hidden(String name) {
+        return REGISTRATE.item(name, Item::new).removeTab(ModCreativeModeTab.BASE.getKey()).register();
+    }
+
+    @Nonnull
+    private static ItemEntry<SequencedAssemblyItem> sequencedAssembly(String name) {
+        return REGISTRATE.item(name, SequencedAssemblyItem::new)
+                         .removeTab(ModCreativeModeTab.BASE.getKey())
+                         .register();
     }
 
     public static void register() {}

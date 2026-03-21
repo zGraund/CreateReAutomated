@@ -137,8 +137,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
             }
             outputInv.insertItem(0, result, false);
             drillInv.getStackInSlot(0).hurtAndBreak(lastRecipe.durabilityLoss(), (ServerLevel) level, null, item -> {
-                animationProgress = RETRACTED_DRILL_OFFSET;
-                resetDrill();
+                resetDrill(true);
                 level.playSound(null, getBlockPos().below(), SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 0.5f, 1);
             });
             progress = 0;
@@ -210,9 +209,18 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     }
 
     public void resetDrill() {
+        resetDrill(false);
+    }
+
+    public void resetDrill(boolean hard) {
         progress = 0;
         lastRecipe = null;
-        animationStatus = AnimationStatus.RETRACTING;
+        if (hard) {
+            animationStatus = AnimationStatus.IDLE;
+            animationProgress = RETRACTED_DRILL_OFFSET;
+        } else {
+            animationStatus = AnimationStatus.RETRACTING;
+        }
     }
 
     public Optional<ExtractorRecipe> getRecipe(ExtractorRecipeInput input) {

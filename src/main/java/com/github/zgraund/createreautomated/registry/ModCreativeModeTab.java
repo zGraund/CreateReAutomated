@@ -1,6 +1,7 @@
 package com.github.zgraund.createreautomated.registry;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
+import com.simibubi.create.AllCreativeModeTabs;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -19,6 +20,7 @@ public class ModCreativeModeTab {
                     .builder()
                     .icon(() -> new ItemStack(ModBlocks.EXTRACTOR.get()))
                     .title(Component.translatable("itemGroup.createreautomated.base"))
+                    .withTabsBefore(AllCreativeModeTabs.PALETTES_CREATIVE_TAB.getKey())
                     .build()
     );
 
