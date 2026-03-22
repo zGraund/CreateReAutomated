@@ -27,7 +27,7 @@ public class ModBlockLootTableGen {
                                                                                               .setProperties(
                                                                                                       StatePropertiesPredicate.Builder
                                                                                                               .properties()
-                                                                                                              .hasProperty(OreNodeBlock.NATURAL, false)
+                                                                                                              .hasProperty(OreNodeBlock.STABLE, true)
                                                                                               )
                                                      )
                                                      .apply(CopyBlockState.copyState(block).copy(OreNodeBlock.DEPLETION))

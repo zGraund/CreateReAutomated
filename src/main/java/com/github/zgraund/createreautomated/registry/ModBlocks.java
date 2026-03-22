@@ -7,6 +7,7 @@ import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
 import com.github.zgraund.createreautomated.config.NodeValues;
 import com.github.zgraund.createreautomated.datagen.ModBlockLootTableGen;
 import com.github.zgraund.createreautomated.datagen.ModCommonBlockModelGen;
+import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.CreateRegistrate;
@@ -76,6 +77,17 @@ public class ModBlocks {
     public static final BlockEntry<OreNodeBlock>
             NETHER_GOLD_NODE = netherrackNode("nether_gold_node", 250, Tags.Blocks.ORES_GOLD);
 
+    public static final BlockEntry<Block> STABILIZER_CAGE =
+            REGISTRATE.block("stabilizer_cage", Block::new)
+                      .properties(p -> p.noOcclusion().strength(1f))
+                      .simpleItem()
+                      .blockstate((ctx, prov) ->
+                              // The model in pre-generated in ModCommonBlockModelGen because it is also
+                              // used in the Ore Node blockstate file
+                              prov.simpleBlock(ctx.get(), prov.models().getExistingFile(ctx.getId()))
+                      )
+                      .register();
+
     private static BlockEntry<OreNodeBlock> stoneNode(String name, int limit, TagKey<?>... tags) {
         return node(name, limit, Blocks.COBBLESTONE, stoneNodeProperties(),
                 addTags(tags, Tags.Blocks.ORES_IN_GROUND_STONE, Tags.Items.ORES_IN_GROUND_STONE));
@@ -98,7 +110,7 @@ public class ModBlocks {
                          .transform(tagBlockOrItem(tags))
                          .tag(Tags.Items.ORES)
                          .build()
-                         .tag(BlockTags.NEEDS_IRON_TOOL, Tags.Blocks.ORES, ModTags.Blocks.ORE_NODES)
+                         .tag(BlockTags.NEEDS_IRON_TOOL, Tags.Blocks.ORES, ModTags.Blocks.ORE_NODES, AllTags.AllBlockTags.NON_BREAKABLE.tag)
                          .transform(TagGen.pickaxeOnly())
                          .blockstate(ModCommonBlockModelGen.defaultOverlay())
                          .loot((prov, block) -> prov.add(block, ModBlockLootTableGen.createOreNodeDrop(block)))
@@ -120,11 +132,11 @@ public class ModBlocks {
     }
 
     public static BlockBehaviour.Properties netherrackNodeProperties() {
-        return stoneNodeProperties().sound(SoundType.NETHERRACK).strength(4f);
+        return stoneNodeProperties().sound(SoundType.NETHERRACK).strength(26f);
     }
 
     public static BlockBehaviour.Properties deepslateNodeProperties() {
-        return stoneNodeProperties().sound(SoundType.DEEPSLATE).strength(6f);
+        return stoneNodeProperties().sound(SoundType.DEEPSLATE).strength(30f);
     }
 
     public static BlockBehaviour.Properties stoneNodeProperties() {
@@ -133,7 +145,7 @@ public class ModBlocks {
                                         .lightLevel(state -> 10 - state.getValue(OreNodeBlock.DEPLETION))
                                         .sound(SoundType.STONE)
                                         .pushReaction(PushReaction.BLOCK)
-                                        .strength(5f);
+                                        .strength(28f);
     }
 
     public static TagKey<?>[] addTags(TagKey<?>[] original, @Nonnull TagKey<?>... toAdd) {

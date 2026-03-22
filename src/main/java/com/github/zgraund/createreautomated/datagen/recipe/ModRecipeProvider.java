@@ -82,6 +82,16 @@ public class ModRecipeProvider extends RecipeProvider {
                                       .unlocks("has_extractor", has(ModBlocks.EXTRACTOR))
                                       .save(recipeOutput, CreateReAutomated.asResource("netherite_drill_upgrade"));
 
+        // Node Stabilizer
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.STABILIZER_CAGE)
+                           .define('F', ModItems.NODE_FRAGMENT)
+                           .define('S', Items.NETHER_STAR)
+                           .pattern("FFF")
+                           .pattern("FSF")
+                           .pattern("FFF")
+                           .unlockedBy(getHasName(ModItems.NODE_FRAGMENT), has(ModItems.NODE_FRAGMENT))
+                           .save(recipeOutput);
+
         // Extracting
         simpleExtractorRecipe(
                 Ingredient.of(ModTags.Items.AT_LEAST_TIER_3),

@@ -58,7 +58,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     protected final ItemStackHandler outputInv = new ItemStackHandler(1);
     private final IItemHandler capabilities = new ExtractorInventoryHandler();
     private int progress;
-    private float animationProgress;
+    private float animationProgress = RETRACTED_DRILL_OFFSET;
     private AnimationStatus animationStatus = AnimationStatus.IDLE;
     @Nullable
     private ExtractorRecipe lastRecipe;

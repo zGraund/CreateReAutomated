@@ -16,6 +16,8 @@ import javax.annotation.Nonnull;
 public class ModItems {
     private static final CreateRegistrate REGISTRATE = CreateReAutomated.REGISTRATE;
 
+    public static final ItemEntry<Item> NODE_FRAGMENT = simple("node_fragment");
+
     // maybe register partial model directly in ModPartialModels (?)
     public static final ItemEntry<Item>
             IRON_DRILL = drill("iron_drill", 1500, ModTags.Items.DRILL_TIER_1, ModPartialModels.IRON_DRILL),

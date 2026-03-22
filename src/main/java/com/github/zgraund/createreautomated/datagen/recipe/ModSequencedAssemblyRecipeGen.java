@@ -8,6 +8,7 @@ import net.minecraft.data.PackOutput;
 
 import java.util.concurrent.CompletableFuture;
 
+@SuppressWarnings("unused")
 public class ModSequencedAssemblyRecipeGen extends SequencedAssemblyRecipeGen {
     GeneratedRecipe DIAMOND = create(
             "unbaked_diamond_from_bits",

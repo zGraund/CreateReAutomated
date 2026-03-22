@@ -23,19 +23,19 @@ public class ModConfiguredFeatures {
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         List<OreConfiguration.TargetBlockState> overworld = List.of(
-                OreConfiguration.target(new BlockMatchTest(Blocks.COPPER_ORE), ModBlocks.COPPER_NODE.get().natural()),
-                OreConfiguration.target(new BlockMatchTest(Blocks.IRON_ORE), ModBlocks.IRON_NODE.get().natural()),
-                OreConfiguration.target(new BlockMatchTest(Blocks.GOLD_ORE), ModBlocks.GOLD_NODE.get().natural()),
-                OreConfiguration.target(new BlockMatchTest(Blocks.DIAMOND_ORE), ModBlocks.DIAMOND_NODE.get().natural()),
+                OreConfiguration.target(new BlockMatchTest(Blocks.COPPER_ORE), ModBlocks.COPPER_NODE.get().unstable()),
+                OreConfiguration.target(new BlockMatchTest(Blocks.IRON_ORE), ModBlocks.IRON_NODE.get().unstable()),
+                OreConfiguration.target(new BlockMatchTest(Blocks.GOLD_ORE), ModBlocks.GOLD_NODE.get().unstable()),
+                OreConfiguration.target(new BlockMatchTest(Blocks.DIAMOND_ORE), ModBlocks.DIAMOND_NODE.get().unstable()),
 
-                OreConfiguration.target(new BlockMatchTest(Blocks.DEEPSLATE_COPPER_ORE), ModBlocks.DEEPSLATE_COPPER_NODE.get().natural()),
-                OreConfiguration.target(new BlockMatchTest(Blocks.DEEPSLATE_IRON_ORE), ModBlocks.DEEPSLATE_IRON_NODE.get().natural()),
-                OreConfiguration.target(new BlockMatchTest(Blocks.DEEPSLATE_GOLD_ORE), ModBlocks.DEEPSLATE_GOLD_NODE.get().natural()),
-                OreConfiguration.target(new BlockMatchTest(Blocks.DEEPSLATE_DIAMOND_ORE), ModBlocks.DEEPSLATE_DIAMOND_NODE.get().natural())
+                OreConfiguration.target(new BlockMatchTest(Blocks.DEEPSLATE_COPPER_ORE), ModBlocks.DEEPSLATE_COPPER_NODE.get().unstable()),
+                OreConfiguration.target(new BlockMatchTest(Blocks.DEEPSLATE_IRON_ORE), ModBlocks.DEEPSLATE_IRON_NODE.get().unstable()),
+                OreConfiguration.target(new BlockMatchTest(Blocks.DEEPSLATE_GOLD_ORE), ModBlocks.DEEPSLATE_GOLD_NODE.get().unstable()),
+                OreConfiguration.target(new BlockMatchTest(Blocks.DEEPSLATE_DIAMOND_ORE), ModBlocks.DEEPSLATE_DIAMOND_NODE.get().unstable())
         );
 
         List<OreConfiguration.TargetBlockState> nether = List.of(
-                OreConfiguration.target(new BlockMatchTest(Blocks.NETHER_GOLD_ORE), ModBlocks.NETHER_GOLD_NODE.get().natural())
+                OreConfiguration.target(new BlockMatchTest(Blocks.NETHER_GOLD_ORE), ModBlocks.NETHER_GOLD_NODE.get().unstable())
         );
 
         register(context, OVERWORLD_ORE_NODE_KEY, ModFeatures.ORE_NODE_FEATURE.get(), new ReplaceBlockConfiguration(overworld));

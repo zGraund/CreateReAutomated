@@ -2,6 +2,7 @@ package com.github.zgraund.createreautomated.datagen;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
 import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
+import com.github.zgraund.createreautomated.registry.ModBlocks;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
@@ -40,6 +41,11 @@ public class ModCommonBlockModelGen extends BlockStateProvider {
                          .condition(OreNodeBlock.DEPLETION, i)
                          .end();
             }
+            nodeState.part()
+                     .modelFile(prov.models().getExistingFile(ModBlocks.STABILIZER_CAGE.getId()))
+                     .addModel()
+                     .condition(OreNodeBlock.STABLE, true)
+                     .end();
         };
     }
 
@@ -48,5 +54,7 @@ public class ModCommonBlockModelGen extends BlockStateProvider {
         for (int i = 0; i <= 9; i++) {
             models().cubeAll(OVERLAY_PATH + i, modLoc(OVERLAY_PATH + i)).renderType(mcLoc("cutout"));
         }
+        ResourceLocation stabilizer = ModBlocks.STABILIZER_CAGE.getId();
+        models().cubeAll(stabilizer.getPath(), stabilizer.withPrefix("block/")).renderType(mcLoc("cutout"));
     }
 }
