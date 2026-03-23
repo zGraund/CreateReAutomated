@@ -26,6 +26,7 @@ import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.TransparentBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.material.MapColor;
@@ -77,9 +78,10 @@ public class ModBlocks {
     public static final BlockEntry<OreNodeBlock>
             NETHER_GOLD_NODE = netherrackNode("nether_gold_node", 250, Tags.Blocks.ORES_GOLD);
 
-    public static final BlockEntry<Block> STABILIZER_CAGE =
-            REGISTRATE.block("stabilizer_cage", Block::new)
-                      .properties(p -> p.noOcclusion().strength(1f))
+    public static final BlockEntry<TransparentBlock> STABILIZER_CAGE =
+            REGISTRATE.block("stabilizer_cage", TransparentBlock::new)
+                      .initialProperties(() -> Blocks.GLASS)
+                      .properties(p -> p.strength(1f).sound(SoundType.CHAIN))
                       .simpleItem()
                       .blockstate((ctx, prov) ->
                               // The model in pre-generated in ModCommonBlockModelGen because it is also

@@ -62,7 +62,7 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
             if (!player.isCreative())
                 stack.shrink(1);
             // TODO: choose better sound
-            level.playSound(null, pos, SoundEvents.TOTEM_USE, SoundSource.BLOCKS);
+            level.playSound(null, pos, SoundEvents.TRIAL_SPAWNER_PLACE, SoundSource.BLOCKS, 1, 0.80f);
             level.setBlockAndUpdate(pos, state.setValue(STABLE, true));
             return ItemInteractionResult.sidedSuccess(level.isClientSide());
         }
@@ -116,7 +116,8 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
                 BlockPos neighbor = pos.relative(dir);
                 if (!level.getBlockState(neighbor).isSolidRender(level, neighbor)) {
                     // TODO: choose better particle
-                    ParticleUtils.spawnParticleOnFace(level, pos, dir, new DustParticleOptions(new Vector3f(256, 0, 0), 0.75f), Vec3.ZERO, 0.57);
+                    ParticleUtils.spawnParticleOnFace(level, pos, dir,
+                            new DustParticleOptions(new Vector3f(255, 0, 208), 0.75f), Vec3.ZERO, 0.57);
                 }
             }
         }
