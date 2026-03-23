@@ -1,7 +1,6 @@
 package com.github.zgraund.createreautomated;
 
 import com.github.zgraund.createreautomated.config.Config;
-import com.github.zgraund.createreautomated.recipe.ModRecipes;
 import com.github.zgraund.createreautomated.registry.*;
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.foundation.data.CreateRegistrate;

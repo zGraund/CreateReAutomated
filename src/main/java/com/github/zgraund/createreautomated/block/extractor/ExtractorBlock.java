@@ -95,16 +95,19 @@ public class ExtractorBlock extends KineticBlock implements IBE<ExtractorBlockEn
                 if (stack.isEmpty()) {
                     ItemStack drill = extractor.drillInv.extractItem(0, 1, false);
                     player.getInventory().placeItemBackInInventory(drill);
+                    extractor.resetDrill(true);
                 }
             } else {
                 if (stack.isEmpty()) {
-                    ItemStack output = extractor.outputInv.getStackInSlot(0);
-                    player.getInventory().placeItemBackInInventory(output);
-                    extractor.outputInv.setStackInSlot(0, ItemStack.EMPTY);
-                    extractor.resetDrill(true);
+                    for (int i = 0; i < extractor.outputInv.getSlots(); i++) {
+                        ItemStack output = extractor.outputInv.getStackInSlot(i);
+                        player.getInventory().placeItemBackInInventory(output);
+                        extractor.outputInv.setStackInSlot(i, ItemStack.EMPTY);
+                    }
                 } else {
                     ItemStack remainder = extractor.drillInv.insertItem(0, stack.copy(), false);
                     stack.setCount(remainder.getCount());
+                    extractor.resetDrill(true);
                 }
             }
             extractor.notifyUpdate();

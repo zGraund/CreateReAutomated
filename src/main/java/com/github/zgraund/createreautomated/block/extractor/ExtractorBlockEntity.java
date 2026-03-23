@@ -5,8 +5,8 @@ import com.github.zgraund.createreautomated.block.node.OreNodeEntity;
 import com.github.zgraund.createreautomated.config.Config;
 import com.github.zgraund.createreautomated.recipe.ExtractorRecipe;
 import com.github.zgraund.createreautomated.recipe.ExtractorRecipeInput;
-import com.github.zgraund.createreautomated.recipe.ModRecipes;
 import com.github.zgraund.createreautomated.registry.ModBlocks;
+import com.github.zgraund.createreautomated.registry.ModRecipes;
 import com.github.zgraund.createreautomated.registry.ModTags;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.item.ItemHelper;
@@ -38,6 +38,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
 
@@ -55,7 +56,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
             return 1;
         }
     };
-    protected final ItemStackHandler outputInv = new ItemStackHandler(1);
+    protected final ItemStackHandler outputInv = new ItemStackHandler(6);
     private final IItemHandler capabilities = new ExtractorInventoryHandler();
     private int progress;
     private float animationProgress = RETRACTED_DRILL_OFFSET;
@@ -112,12 +113,6 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
             return;
         }
 
-        ItemStack result = lastRecipe.assemble(input, level.registryAccess());
-        if (!canInsertResult(result)) {
-            animationStatus = AnimationStatus.RETRACTING;
-            return;
-        }
-
         if (animationStatus != AnimationStatus.ENGAGED) {
             animationStatus = AnimationStatus.DEPLOYING;
             return;
@@ -135,7 +130,9 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
             if (blockEntity instanceof OreNodeEntity nodeEntity) {
                 nodeEntity.extract(1);
             }
-            outputInv.insertItem(0, result, false);
+            lastRecipe.assemble(input, level).forEach(result ->
+                    ItemHandlerHelper.insertItemStacked(outputInv, result, false)
+            );
             drillInv.getStackInSlot(0).hurtAndBreak(lastRecipe.durabilityLoss(), (ServerLevel) level, null, item -> {
                 resetDrill(true);
                 level.playSound(null, getBlockPos().below(), SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 0.5f, 1);
@@ -230,10 +227,6 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
                     .map(RecipeHolder::value);
     }
 
-    public boolean canInsertResult(ItemStack stack) {
-        return outputInv.insertItem(0, stack, true).isEmpty();
-    }
-
     public boolean failPreConditions() {
         return level == null
                || level.getBlockState(getNodePosition()).isEmpty()
@@ -264,8 +257,12 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     }
 
     public boolean isOutputFull() {
-        ItemStack output = outputInv.getStackInSlot(0);
-        return output.getCount() >= output.getMaxStackSize();
+        for (int i = 0; i < outputInv.getSlots(); i++) {
+            ItemStack stack = outputInv.getStackInSlot(i);
+            if (stack.getCount() >= stack.getMaxStackSize())
+                return true;
+        }
+        return false;
     }
 
     public float getDrillOffset() {
@@ -321,11 +318,15 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
             CreateLang.blockName(getNode())
                       .style(ChatFormatting.DARK_GRAY)
                       .forGoggles(tooltip, 1);
-            CreateLang.text(" -> ")
-                      .style(ChatFormatting.DARK_GRAY)
-                      .add(CreateLang.text(lastRecipe.result().getCount() + "x ").style(ChatFormatting.DARK_GRAY))
-                      .add(CreateLang.itemName(lastRecipe.result()).style(ChatFormatting.DARK_GRAY))
-                      .forGoggles(tooltip, 1);
+            lastRecipe.results().forEach(stack ->
+                    CreateLang.text(" -> ")
+                              .style(ChatFormatting.DARK_GRAY)
+                              .add(CreateLang.text(stack.stack().getCount() + "x ").style(ChatFormatting.DARK_GRAY))
+                              .add(CreateLang.itemName(stack.stack()).style(ChatFormatting.DARK_GRAY))
+                              .space()
+                              .add(CreateLang.text(stack.chance() * 100 + "%").style(ChatFormatting.DARK_GRAY))
+                              .forGoggles(tooltip, 1)
+            );
         }
         return create || reAutomated;
     }

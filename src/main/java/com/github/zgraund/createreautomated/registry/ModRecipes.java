@@ -1,6 +1,7 @@
-package com.github.zgraund.createreautomated.recipe;
+package com.github.zgraund.createreautomated.registry;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
+import com.github.zgraund.createreautomated.recipe.ExtractorRecipe;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
