@@ -58,7 +58,7 @@ public class ModExtractingRecipeGen extends ExtractingRecipeGen {
                             .require(ModTags.Items.AT_LEAST_TIER_1)
                             .nodes(ModTags.Blocks.COPPER_NODES)
                             .secAtMaxSpeed(5)
-                            .output(ModItems.IRON_BIT, 6)
+                            .output(ModItems.COPPER_BIT, 6)
                     )
             );
 
