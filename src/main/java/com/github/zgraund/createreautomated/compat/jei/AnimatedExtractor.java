@@ -2,6 +2,7 @@ package com.github.zgraund.createreautomated.compat.jei;
 
 import com.github.zgraund.createreautomated.api.DrillPartialIndex;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorBlock;
+import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
 import com.github.zgraund.createreautomated.registry.ModBlocks;
 import com.github.zgraund.createreautomated.registry.ModItems;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -38,7 +39,8 @@ public class AnimatedExtractor extends AnimatedKinetics {
 
         int scale = 22;
 
-        blockElement(node.defaultBlockState())
+        BlockState state = node instanceof OreNodeBlock nodeBlock ? nodeBlock.unstable() : node.defaultBlockState();
+        blockElement(state)
                 .atLocal(0, 1, 0)
                 .scale(scale)
                 .render(graphics);

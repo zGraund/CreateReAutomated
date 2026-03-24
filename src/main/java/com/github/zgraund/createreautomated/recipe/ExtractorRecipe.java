@@ -1,24 +1,23 @@
 package com.github.zgraund.createreautomated.recipe;
 
 import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
+import com.github.zgraund.createreautomated.registry.ModRecipes;
 import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
+import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
+import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
+import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.MethodsReturnNonnullByDefault;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.util.ExtraCodecs;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,37 +28,64 @@ import java.util.List;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public record ExtractorRecipe(Ingredient drill, HolderSet<Block> nodeSet, int processingTime, int durabilityLoss,
-                              ItemStack result) implements Recipe<ExtractorRecipeInput> {
+public class ExtractorRecipe extends ProcessingRecipe<ExtractorRecipeInput, ExtractingRecipeParams> {
+    public static final IRecipeTypeInfo INFO = new ExtractingRecipeInfo();
+
+    private final HolderSet<Block> nodes;
+    private final int durabilityCost;
+
+    public ExtractorRecipe(ExtractingRecipeParams params) {
+        super(INFO, params);
+        this.nodes = params.nodes;
+        this.durabilityCost = params.durabilityCost;
+    }
+
     @Override
     public boolean matches(ExtractorRecipeInput input, Level level) {
-        if (!drill.test(input.drill()))
+        if (!getDrill().test(input.drill()))
             return false;
         BlockState blockState = level.getBlockState(input.nodePos());
-        if (!nodeSet.contains(blockState.getBlockHolder()))
+        if (!getNodes().contains(blockState.getBlockHolder()))
             return false;
         if (!(blockState.getBlock() instanceof OreNodeBlock nodeBlock))
             return true;
+        // TODO: move this on the be directly
         return nodeBlock.canExtract(1, input.nodePos(), level);
     }
 
     @Override
-    public ItemStack assemble(ExtractorRecipeInput input, HolderLookup.Provider registries) {
-        return result.copy();
+    protected int getMaxInputCount() {
+        return 1;
     }
 
     @Override
-    public boolean canCraftInDimensions(int width, int height) {
-        return width * height >= 1;
+    protected int getMaxOutputCount() {
+        return 6;
     }
 
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider registries) {
-        return result;
+    protected boolean canSpecifyDuration() {
+        return true;
     }
 
-    public @Unmodifiable List<ItemStack> getNodes() {
-        return nodeSet.stream().map(holder -> {
+    public Ingredient getDrill() {
+        if (ingredients.isEmpty())
+            throw new IllegalStateException("Extracting recipe has no drill!");
+        return ingredients.getFirst();
+    }
+
+    public int durabilityCost() {
+        return durabilityCost;
+    }
+
+    public HolderSet<Block> getNodes() {
+        if (nodes.size() == 0)
+            throw new IllegalStateException("Extracting recipe has no nodes!");
+        return nodes;
+    }
+
+    public @Unmodifiable List<ItemStack> getNodesAsItemStacks() {
+        return nodes.stream().map(holder -> {
             ItemStack nodeItem = new ItemStack(holder.value().asItem());
             if (!nodeItem.isEmpty())
                 return nodeItem;
@@ -69,35 +95,95 @@ public record ExtractorRecipe(Ingredient drill, HolderSet<Block> nodeSet, int pr
         }).toList();
     }
 
-    @Override
-    public RecipeSerializer<?> getSerializer() {
-        return ModRecipes.EXTRACTOR_RECIPE_SERIALIZER.get();
+    public interface Factory extends ProcessingRecipe.Factory<ExtractingRecipeParams, ExtractorRecipe> {
+        ExtractorRecipe create(ExtractingRecipeParams params);
     }
 
-    @Override
-    public RecipeType<?> getType() {
-        return ModRecipes.EXTRACTOR_RECIPE.get();
+    // This should eventually be moved into a separate class
+    public static class ExtractingRecipeInfo implements IRecipeTypeInfo {
+        @Override
+        public ResourceLocation getId() {
+            return ModRecipes.EXTRACTOR_RECIPE.getId();
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public <T extends RecipeSerializer<?>> T getSerializer() {
+            return (T) ModRecipes.EXTRACTOR_RECIPE_SERIALIZER.get();
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public <I extends RecipeInput, R extends Recipe<I>> RecipeType<R> getType() {
+            return (RecipeType<R>) ModRecipes.EXTRACTOR_RECIPE.get();
+        }
+    }
+
+    public static class Builder extends ProcessingRecipeBuilder<ExtractingRecipeParams, ExtractorRecipe, Builder> {
+        public Builder(Factory factory, ResourceLocation recipeId) {
+            super(factory, recipeId);
+        }
+
+        @Override
+        protected ExtractingRecipeParams createParams() {
+            return new ExtractingRecipeParams();
+        }
+
+        public Builder nodes(HolderSet<Block> nodes) {
+            params.nodes = nodes;
+            return this;
+        }
+
+        @SuppressWarnings("deprecation")
+        public Builder nodes(TagKey<Block> tag) {
+            params.nodes = HolderSet.emptyNamed(BuiltInRegistries.BLOCK.holderOwner(), tag);
+            return this;
+        }
+
+        @SafeVarargs
+        public final Builder nodes(BlockEntry<? extends Block>... blocks) {
+            params.nodes = HolderSet.direct(blocks);
+            return this;
+        }
+
+        public Builder durabilityCost(int cost) {
+            params.durabilityCost = cost;
+            return this;
+        }
+
+        public Builder noDurability() {
+            params.durabilityCost = 0;
+            return this;
+        }
+
+        public Builder secAtMaxSpeed(int seconds) {
+            duration(seconds * 256 * 20);
+            return this;
+        }
+
+        @Override
+        public Builder self() {
+            return this;
+        }
     }
 
     public static class Serializer implements RecipeSerializer<ExtractorRecipe> {
-        public static final MapCodec<ExtractorRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
-                Ingredient.CODEC_NONEMPTY.fieldOf("drill").forGetter(ExtractorRecipe::drill),
-                RegistryCodecs.homogeneousList(Registries.BLOCK).fieldOf("node").forGetter(ExtractorRecipe::nodeSet),
-                ExtraCodecs.POSITIVE_INT.fieldOf("processingTime").forGetter(ExtractorRecipe::processingTime),
-                ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("durabilityLoss", 1).forGetter(ExtractorRecipe::durabilityLoss),
-                ItemStack.CODEC.fieldOf("result").forGetter(ExtractorRecipe::result)
-        ).apply(inst, ExtractorRecipe::new));
-        public static final StreamCodec<RegistryFriendlyByteBuf, ExtractorRecipe> STREAM_CODEC =
-                ByteBufCodecs.fromCodecWithRegistries(CODEC.codec());
+        private final MapCodec<ExtractorRecipe> codec;
+        private final StreamCodec<RegistryFriendlyByteBuf, ExtractorRecipe> streamCodec;
+
+        public Serializer(ProcessingRecipe.Factory<ExtractingRecipeParams, ExtractorRecipe> factory) {
+            this.codec = ProcessingRecipe.codec(factory, ExtractingRecipeParams.CODEC);
+            this.streamCodec = ProcessingRecipe.streamCodec(factory, ExtractingRecipeParams.STREAM_CODEC);
+        }
 
         @Override
         public MapCodec<ExtractorRecipe> codec() {
-            return CODEC;
+            return codec;
         }
 
         @Override
         public StreamCodec<RegistryFriendlyByteBuf, ExtractorRecipe> streamCodec() {
-            return STREAM_CODEC;
+            return streamCodec;
         }
     }
 }

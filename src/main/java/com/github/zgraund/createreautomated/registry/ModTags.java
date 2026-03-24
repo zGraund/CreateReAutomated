@@ -14,6 +14,10 @@ import javax.annotation.Nonnull;
 public class ModTags {
     public static class Blocks {
         public static final TagKey<Block> ORE_NODES = mod("ore_nodes");
+        public static final TagKey<Block> COPPER_NODES = mod("copper_nodes");
+        public static final TagKey<Block> IRON_NODES = mod("iron_nodes");
+        public static final TagKey<Block> GOLD_NODES = mod("gold_nodes");
+        public static final TagKey<Block> DIAMOND_NODES = mod("diamond_nodes");
 
         @Nonnull
         private static TagKey<Block> mod(String name) {

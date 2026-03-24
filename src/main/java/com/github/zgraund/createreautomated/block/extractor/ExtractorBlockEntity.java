@@ -125,15 +125,15 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
 
         progress += (int) getProcessingSpeed();
 
-        if (progress >= lastRecipe.processingTime()) {
+        if (progress >= lastRecipe.getProcessingDuration()) {
             BlockEntity blockEntity = level.getBlockEntity(nodePos);
             if (blockEntity instanceof OreNodeEntity nodeEntity) {
                 nodeEntity.extract(1);
             }
-            lastRecipe.assemble(input, level).forEach(result ->
+            lastRecipe.rollResults(level.random).forEach(result ->
                     ItemHandlerHelper.insertItemStacked(outputInv, result, false)
             );
-            drillInv.getStackInSlot(0).hurtAndBreak(lastRecipe.durabilityLoss(), (ServerLevel) level, null, item -> {
+            drillInv.getStackInSlot(0).hurtAndBreak(lastRecipe.durabilityCost(), (ServerLevel) level, null, item -> {
                 resetDrill(true);
                 level.playSound(null, getBlockPos().below(), SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 0.5f, 1);
             });
@@ -310,7 +310,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
             // For this use case the Create lang builder is good enough
             CreateLang.text("Crafting progress: ")
                       .style(ChatFormatting.GRAY)
-                      .add(CreateLang.text((progress * 100) / lastRecipe.processingTime() + "%").style(ChatFormatting.DARK_GRAY))
+                      .add(CreateLang.text((progress * 100) / lastRecipe.getProcessingDuration() + "%").style(ChatFormatting.DARK_GRAY))
                       .forGoggles(tooltip);
             CreateLang.itemName(drillInv.getStackInSlot(0))
                       .style(ChatFormatting.DARK_GRAY)
@@ -318,13 +318,13 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
             CreateLang.blockName(getNode())
                       .style(ChatFormatting.DARK_GRAY)
                       .forGoggles(tooltip, 1);
-            lastRecipe.results().forEach(stack ->
+            lastRecipe.getRollableResults().forEach(output ->
                     CreateLang.text(" -> ")
                               .style(ChatFormatting.DARK_GRAY)
-                              .add(CreateLang.text(stack.stack().getCount() + "x ").style(ChatFormatting.DARK_GRAY))
-                              .add(CreateLang.itemName(stack.stack()).style(ChatFormatting.DARK_GRAY))
+                              .add(CreateLang.text(output.getStack().getCount() + "x ").style(ChatFormatting.DARK_GRAY))
+                              .add(CreateLang.itemName(output.getStack()).style(ChatFormatting.DARK_GRAY))
                               .space()
-                              .add(CreateLang.text(stack.chance() * 100 + "%").style(ChatFormatting.DARK_GRAY))
+                              .add(CreateLang.text(output.getChance() * 100 + "%").style(ChatFormatting.DARK_GRAY))
                               .forGoggles(tooltip, 1)
             );
         }

@@ -2,10 +2,12 @@ package com.github.zgraund.createreautomated.compat.jei;
 
 import com.github.zgraund.createreautomated.recipe.ExtractorRecipe;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
+import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.BlockItem;
@@ -16,6 +18,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.List;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -29,15 +32,24 @@ public class ExtractorCategory extends CreateRecipeCategory<ExtractorRecipe> {
     @Override
     protected void setRecipe(IRecipeLayoutBuilder builder, ExtractorRecipe recipe, IFocusGroup focuses) {
         builder.addInputSlot(35, 30)
-               .addIngredients(recipe.drill())
+               .addIngredients(recipe.getDrill())
                .setBackground(getRenderedSlot(), -1, -1);
         builder.addInputSlot(35, 50)
-//               .setSlotName("node")
-               .addItemStacks(recipe.getNodes())
+               .addItemStacks(recipe.getNodesAsItemStacks())
                .setBackground(getRenderedSlot(), -1, -1);
-        builder.addOutputSlot(121, 50)
-               .addItemStack(recipe.result())
-               .setBackground(getRenderedSlot(), -1, -1);
+        // TODO: change slot offset
+        List<ProcessingOutput> results = recipe.getRollableResults();
+        int i = 0;
+        for (ProcessingOutput output : results) {
+            int xOffset = i % 2 == 0 ? 0 : 19;
+            int yOffset = (i / 2) * 19;
+            builder
+                    .addSlot(RecipeIngredientRole.OUTPUT, results.size() == 1 ? 139 : 133 + xOffset, 27 + yOffset)
+                    .setBackground(getRenderedSlot(output.getChance()), -1, -1)
+                    .addItemStack(output.getStack())
+                    .addRichTooltipCallback(addStochasticTooltip(output));
+            i++;
+        }
     }
 
     @Override

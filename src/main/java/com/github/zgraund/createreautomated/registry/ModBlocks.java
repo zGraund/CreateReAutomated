@@ -64,16 +64,16 @@ public class ModBlocks {
                       .register();
 
     public static final BlockEntry<OreNodeBlock>
-            COPPER_NODE = stoneNode("copper_node", 100, Tags.Blocks.ORES_COPPER),
-            IRON_NODE = stoneNode("iron_node", 200, Tags.Blocks.ORES_IRON),
-            GOLD_NODE = stoneNode("gold_node", 50, Tags.Blocks.ORES_GOLD),
-            DIAMOND_NODE = stoneNode("diamond_node", 20, Tags.Blocks.ORES_DIAMOND);
+            COPPER_NODE = stoneNode("copper_node", 300, Tags.Blocks.ORES_COPPER, ModTags.Blocks.COPPER_NODES),
+            IRON_NODE = stoneNode("iron_node", 200, Tags.Blocks.ORES_IRON, ModTags.Blocks.IRON_NODES),
+            GOLD_NODE = stoneNode("gold_node", 50, Tags.Blocks.ORES_GOLD, ModTags.Blocks.GOLD_NODES),
+            DIAMOND_NODE = stoneNode("diamond_node", 20, Tags.Blocks.ORES_DIAMOND, ModTags.Blocks.DIAMOND_NODES);
 
     public static final BlockEntry<OreNodeBlock>
-            DEEPSLATE_COPPER_NODE = deepslateNode("deepslate_copper_node", 100, Tags.Blocks.ORES_COPPER),
-            DEEPSLATE_IRON_NODE = deepslateNode("deepslate_iron_node", 250, Tags.Blocks.ORES_IRON),
-            DEEPSLATE_GOLD_NODE = deepslateNode("deepslate_gold_node", 60, Tags.Blocks.ORES_GOLD),
-            DEEPSLATE_DIAMOND_NODE = deepslateNode("deepslate_diamond_node", 20, Tags.Blocks.ORES_DIAMOND);
+            DEEPSLATE_COPPER_NODE = deepslateNode("deepslate_copper_node", 350, Tags.Blocks.ORES_COPPER, ModTags.Blocks.COPPER_NODES),
+            DEEPSLATE_IRON_NODE = deepslateNode("deepslate_iron_node", 250, Tags.Blocks.ORES_IRON, ModTags.Blocks.IRON_NODES),
+            DEEPSLATE_GOLD_NODE = deepslateNode("deepslate_gold_node", 60, Tags.Blocks.ORES_GOLD, ModTags.Blocks.GOLD_NODES),
+            DEEPSLATE_DIAMOND_NODE = deepslateNode("deepslate_diamond_node", 20, Tags.Blocks.ORES_DIAMOND, ModTags.Blocks.DIAMOND_NODES);
 
     public static final BlockEntry<OreNodeBlock>
             NETHER_GOLD_NODE = netherrackNode("nether_gold_node", 250, Tags.Blocks.ORES_GOLD);

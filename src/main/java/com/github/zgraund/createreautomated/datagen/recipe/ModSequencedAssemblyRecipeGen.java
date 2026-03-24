@@ -1,5 +1,6 @@
 package com.github.zgraund.createreautomated.datagen.recipe;
 
+import com.github.zgraund.createreautomated.CreateReAutomated;
 import com.github.zgraund.createreautomated.registry.ModItems;
 import com.simibubi.create.api.data.recipe.SequencedAssemblyRecipeGen;
 import com.simibubi.create.content.kinetics.deployer.DeployerApplicationRecipe;
@@ -20,7 +21,7 @@ public class ModSequencedAssemblyRecipeGen extends SequencedAssemblyRecipeGen {
                            .addStep(DeployerApplicationRecipe::new, deployer -> deployer.require(ModItems.DIAMOND_BIT))
     );
 
-    public ModSequencedAssemblyRecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, String defaultNamespace) {
-        super(output, registries, defaultNamespace);
+    public ModSequencedAssemblyRecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        super(output, registries, CreateReAutomated.MOD_ID);
     }
 }

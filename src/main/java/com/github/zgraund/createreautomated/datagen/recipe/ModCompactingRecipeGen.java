@@ -1,5 +1,6 @@
 package com.github.zgraund.createreautomated.datagen.recipe;
 
+import com.github.zgraund.createreautomated.CreateReAutomated;
 import com.github.zgraund.createreautomated.registry.ModItems;
 import com.simibubi.create.api.data.recipe.CompactingRecipeGen;
 import com.simibubi.create.content.processing.recipe.HeatCondition;
@@ -23,10 +24,6 @@ public class ModCompactingRecipeGen extends CompactingRecipeGen {
             RAW_COPPER = compactBits(ModItems.COPPER_BIT, Items.RAW_COPPER, HeatCondition.NONE),
             RAW_GOLD = compactBits(ModItems.GOLD_BIT, Items.RAW_GOLD, HeatCondition.HEATED);
 
-    public ModCompactingRecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, String defaultNamespace) {
-        super(output, registries, defaultNamespace);
-    }
-
     public GeneratedRecipe compactBits(ItemLike bit, @Nonnull ItemLike output, HeatCondition heat) {
         return create(
                 BuiltInRegistries.ITEM.getKey(output.asItem()).getPath() + "_from_bits",
@@ -36,5 +33,9 @@ public class ModCompactingRecipeGen extends CompactingRecipeGen {
                     return builder.output(output).requiresHeat(heat);
                 }
         );
+    }
+
+    public ModCompactingRecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        super(output, registries, CreateReAutomated.MOD_ID);
     }
 }
