@@ -27,10 +27,12 @@ public class ExtractingRecipeParams extends ProcessingRecipeParams {
     public static final StreamCodec<RegistryFriendlyByteBuf, ExtractingRecipeParams> STREAM_CODEC = streamCodec(ExtractingRecipeParams::new);
 
     protected HolderSet<Block> nodes;
+    protected int extractionQuantity;
     protected int durabilityCost;
 
     protected ExtractingRecipeParams() {
         this.nodes = HolderSet.empty();
+        this.extractionQuantity = 1;
         this.durabilityCost = 1;
     }
 
@@ -46,13 +48,15 @@ public class ExtractingRecipeParams extends ProcessingRecipeParams {
     protected void encode(RegistryFriendlyByteBuf buffer) {
         super.encode(buffer);
         ByteBufCodecs.holderSet(Registries.BLOCK).encode(buffer, nodes);
-        ByteBufCodecs.INT.encode(buffer, durabilityCost);
+        ByteBufCodecs.VAR_INT.encode(buffer, extractionQuantity);
+        ByteBufCodecs.VAR_INT.encode(buffer, durabilityCost);
     }
 
     @Override
     protected void decode(RegistryFriendlyByteBuf buffer) {
         super.decode(buffer);
         nodes = ByteBufCodecs.holderSet(Registries.BLOCK).decode(buffer);
-        durabilityCost = ByteBufCodecs.INT.decode(buffer);
+        extractionQuantity = ByteBufCodecs.VAR_INT.decode(buffer);
+        durabilityCost = ByteBufCodecs.VAR_INT.decode(buffer);
     }
 }

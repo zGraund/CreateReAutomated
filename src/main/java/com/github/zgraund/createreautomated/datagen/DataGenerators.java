@@ -1,10 +1,7 @@
 package com.github.zgraund.createreautomated.datagen;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
-import com.github.zgraund.createreautomated.datagen.recipe.ModCompactingRecipeGen;
-import com.github.zgraund.createreautomated.datagen.recipe.ModExtractingRecipeGen;
-import com.github.zgraund.createreautomated.datagen.recipe.ModRecipeProvider;
-import com.github.zgraund.createreautomated.datagen.recipe.ModSequencedAssemblyRecipeGen;
+import com.github.zgraund.createreautomated.datagen.recipe.*;
 import com.github.zgraund.createreautomated.ponder.ModPonderPlugin;
 import com.tterrag.registrate.providers.ProviderType;
 import net.createmod.ponder.foundation.PonderIndex;
@@ -57,6 +54,7 @@ public class DataGenerators {
 
         generator.addProvider(event.includeServer(), new ModRecipeProvider(packOutput, lookupProvider));
         generator.addProvider(event.includeServer(), new ModExtractingRecipeGen(packOutput, lookupProvider));
+        generator.addProvider(event.includeServer(), new ModMechanicalCraftingRecipeGen(packOutput, lookupProvider));
         generator.addProvider(event.includeServer(), new ModSequencedAssemblyRecipeGen(packOutput, lookupProvider));
         generator.addProvider(event.includeServer(), new ModCompactingRecipeGen(packOutput, lookupProvider));
 

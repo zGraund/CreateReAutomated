@@ -1,6 +1,5 @@
 package com.github.zgraund.createreautomated.api;
 
-import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
 import com.simibubi.create.api.registry.SimpleRegistry;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
@@ -18,17 +17,17 @@ public class OreNodeBlockIndex {
      * and their max number of extractions should be registered here.
      */
     public static final SimpleRegistry<Block, IntSupplier> NODE_VALUES = SimpleRegistry.create();
-    private static final Set<NonNullSupplier<OreNodeBlock>> BLOCKS = new HashSet<>();
+    private static final Set<NonNullSupplier<? extends Block>> BLOCKS = new HashSet<>();
 
-    public static void register(OreNodeBlock block) {
+    public static <T extends Block> void register(T block) {
         BLOCKS.add(NonNullSupplier.of(() -> block));
     }
 
-    public static void register(DeferredBlock<OreNodeBlock> node) {
+    public static <T extends Block> void register(DeferredBlock<T> node) {
         BLOCKS.add(NonNullSupplier.of(node));
     }
 
-    public static <T extends OreNodeBlock, R> BlockBuilder<T, R> register(@Nonnull BlockBuilder<T, R> builder) {
+    public static <T extends Block, R> BlockBuilder<T, R> register(@Nonnull BlockBuilder<T, R> builder) {
         BLOCKS.add(builder::getEntry);
         return builder;
     }

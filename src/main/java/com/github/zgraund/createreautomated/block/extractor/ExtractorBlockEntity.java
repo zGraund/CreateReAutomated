@@ -1,6 +1,6 @@
 package com.github.zgraund.createreautomated.block.extractor;
 
-import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
+import com.github.zgraund.createreautomated.api.block.Extractable;
 import com.github.zgraund.createreautomated.block.node.OreNodeEntity;
 import com.github.zgraund.createreautomated.config.Config;
 import com.github.zgraund.createreautomated.recipe.ExtractorRecipe;
@@ -243,7 +243,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
 
     public float getNodeMaxDrillOffset() {
         if (level == null) return RETRACTED_DRILL_OFFSET;
-        return getNode().getBlock() instanceof OreNodeBlock node ? node.getDrillOffset() : DEFAULT_DRILL_OFFSET;
+        return getNode().getBlock() instanceof Extractable node ? node.getDrillOffset() : DEFAULT_DRILL_OFFSET;
     }
 
     public boolean hasDrill() {

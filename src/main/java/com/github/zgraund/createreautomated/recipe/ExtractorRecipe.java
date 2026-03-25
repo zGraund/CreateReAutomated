@@ -1,6 +1,6 @@
 package com.github.zgraund.createreautomated.recipe;
 
-import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
+import com.github.zgraund.createreautomated.api.block.Extractable;
 import com.github.zgraund.createreautomated.registry.ModRecipeTypes;
 import com.mojang.serialization.MapCodec;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
@@ -29,8 +29,6 @@ import java.util.List;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class ExtractorRecipe extends ProcessingRecipe<ExtractorRecipeInput, ExtractingRecipeParams> {
-//    public static final IRecipeTypeInfo INFO = new ExtractingRecipeInfo();
-
     private final HolderSet<Block> nodes;
     private final int durabilityCost;
 
@@ -47,9 +45,8 @@ public class ExtractorRecipe extends ProcessingRecipe<ExtractorRecipeInput, Extr
         BlockState blockState = level.getBlockState(input.nodePos());
         if (!getNodes().contains(blockState.getBlockHolder()))
             return false;
-        if (!(blockState.getBlock() instanceof OreNodeBlock nodeBlock))
+        if (!(blockState.getBlock() instanceof Extractable nodeBlock))
             return true;
-        // TODO: move this on the be directly
         return nodeBlock.canExtract(1, input.nodePos(), level);
     }
 
@@ -99,26 +96,7 @@ public class ExtractorRecipe extends ProcessingRecipe<ExtractorRecipeInput, Extr
         ExtractorRecipe create(ExtractingRecipeParams params);
     }
 
-    // This should eventually be moved into a separate class
-//    public static class ExtractingRecipeInfo implements IRecipeTypeInfo {
-//        @Override
-//        public ResourceLocation getId() {
-//            return ModRecipeTypes.EXTRACTOR_RECIPE.getId();
-//        }
-//
-//        @Override
-//        @SuppressWarnings("unchecked")
-//        public <T extends RecipeSerializer<?>> T getSerializer() {
-//            return (T) ModRecipeTypes.EXTRACTOR_RECIPE_SERIALIZER.get();
-//        }
-//
-//        @Override
-//        @SuppressWarnings("unchecked")
-//        public <I extends RecipeInput, R extends Recipe<I>> RecipeType<R> getType() {
-//            return (RecipeType<R>) ModRecipeTypes.EXTRACTOR_RECIPE.get();
-//        }
-//    }
-
+    @SuppressWarnings("unused")
     public static class Builder extends ProcessingRecipeBuilder<ExtractingRecipeParams, ExtractorRecipe, Builder> {
         public Builder(Factory factory, ResourceLocation recipeId) {
             super(factory, recipeId);

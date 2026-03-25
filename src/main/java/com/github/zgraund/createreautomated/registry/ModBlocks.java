@@ -2,6 +2,7 @@ package com.github.zgraund.createreautomated.registry;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
 import com.github.zgraund.createreautomated.api.OreNodeBlockIndex;
+import com.github.zgraund.createreautomated.block.InfiniteNodeBlock;
 import com.github.zgraund.createreautomated.block.StabilizerCageBlock;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorBlock;
 import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
@@ -63,6 +64,12 @@ public class ModBlocks {
                       .build()
                       .register();
 
+    public static final BlockEntry<InfiniteNodeBlock>
+            INFINITE_COPPER_NODE = infiniteNode("infinite_copper_node", ModTags.Blocks.COPPER_NODES),
+            INFINITE_IRON_NODE = infiniteNode("infinite_iron_node", ModTags.Blocks.IRON_NODES),
+            INFINITE_GOLD_NODE = infiniteNode("infinite_gold_node", ModTags.Blocks.GOLD_NODES),
+            INFINITE_DIAMOND_NODE = infiniteNode("infinite_diamond_node", ModTags.Blocks.DIAMOND_NODES);
+
     public static final BlockEntry<OreNodeBlock>
             COPPER_NODE = stoneNode("copper_node", 300, Tags.Blocks.ORES_COPPER, ModTags.Blocks.COPPER_NODES),
             IRON_NODE = stoneNode("iron_node", 200, Tags.Blocks.ORES_IRON, ModTags.Blocks.IRON_NODES),
@@ -118,6 +125,18 @@ public class ModBlocks {
                          .loot((prov, block) -> prov.add(block, ModBlockLootTableGen.createOreNodeDrop(block)))
                          .transform(NodeValues.setNodeValue(quantity))
                          .transform(OreNodeBlockIndex::register)
+                         .onRegisterAfter(Registries.ITEM, item -> ItemDescription.useKey(item, "block.createreautomated.ore_node"))
+                         .register();
+    }
+
+    private static BlockEntry<InfiniteNodeBlock> infiniteNode(String name, TagKey<?>... tags) {
+        return REGISTRATE.block(name, InfiniteNodeBlock::new)
+                         .initialProperties(() -> Blocks.STONE)
+                         .properties(p -> p.strength(30f).requiresCorrectToolForDrops())
+                         .tag(BlockTags.NEEDS_IRON_TOOL)
+                         .transform(tagBlockOrItem(tags))
+                         .build()
+                         // TODO: use different description
                          .onRegisterAfter(Registries.ITEM, item -> ItemDescription.useKey(item, "block.createreautomated.ore_node"))
                          .register();
     }

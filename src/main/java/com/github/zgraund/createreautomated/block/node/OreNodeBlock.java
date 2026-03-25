@@ -1,6 +1,7 @@
 package com.github.zgraund.createreautomated.block.node;
 
 import com.github.zgraund.createreautomated.api.OreNodeBlockIndex;
+import com.github.zgraund.createreautomated.api.block.Extractable;
 import com.github.zgraund.createreautomated.config.Config;
 import com.github.zgraund.createreautomated.registry.ModBlockEntities;
 import com.github.zgraund.createreautomated.registry.ModBlocks;
@@ -43,7 +44,7 @@ import java.util.List;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
+public class OreNodeBlock extends Block implements IBE<OreNodeEntity>, Extractable {
     public static final IntegerProperty DEPLETION = IntegerProperty.create("depletion", 0, 10);
     public static final BooleanProperty STABLE = BooleanProperty.create("stable");
 
@@ -80,14 +81,11 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
         return super.useWithoutItem(state, level, pos, player, hitResult);
     }
 
+    @Override
     public boolean canExtract(int quantity, BlockPos pos, BlockGetter level) {
         return getBlockEntityOptional(level, pos)
                 .map(be -> be.canExtract(quantity))
                 .orElse(this.isInfinite());
-    }
-
-    public float getDrillOffset() {
-        return 0.85f;
     }
 
     public int getStateFromQuantity(int quantity) {
@@ -116,7 +114,7 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
                 if (!level.getBlockState(neighbor).isSolidRender(level, neighbor)) {
                     // TODO: choose better particle
                     ParticleUtils.spawnParticleOnFace(level, pos, dir,
-                            new DustParticleOptions(new Vector3f(255, 0, 208), 0.75f), Vec3.ZERO, 0.57);
+                            new DustParticleOptions(new Vector3f(1, 0, 1), 0.75f), Vec3.ZERO, 0.57);
                 }
             }
         }
