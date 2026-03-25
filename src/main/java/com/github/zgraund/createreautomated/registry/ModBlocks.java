@@ -2,6 +2,7 @@ package com.github.zgraund.createreautomated.registry;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
 import com.github.zgraund.createreautomated.api.OreNodeBlockIndex;
+import com.github.zgraund.createreautomated.block.StabilizerCageBlock;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorBlock;
 import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
 import com.github.zgraund.createreautomated.config.NodeValues;
@@ -26,7 +27,6 @@ import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.TransparentBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.material.MapColor;
@@ -78,10 +78,10 @@ public class ModBlocks {
     public static final BlockEntry<OreNodeBlock>
             NETHER_GOLD_NODE = netherrackNode("nether_gold_node", 250, Tags.Blocks.ORES_GOLD);
 
-    public static final BlockEntry<TransparentBlock> STABILIZER_CAGE =
-            REGISTRATE.block("stabilizer_cage", TransparentBlock::new)
+    public static final BlockEntry<StabilizerCageBlock> STABILIZER_CAGE =
+            REGISTRATE.block("stabilizer_cage", StabilizerCageBlock::new)
                       .initialProperties(() -> Blocks.GLASS)
-                      .properties(p -> p.strength(1f).sound(SoundType.CHAIN))
+                      .properties(p -> p.strength(1f).sound(SoundType.METAL))
                       .simpleItem()
                       .blockstate((ctx, prov) ->
                               // The model in pre-generated in ModCommonBlockModelGen because it is also
