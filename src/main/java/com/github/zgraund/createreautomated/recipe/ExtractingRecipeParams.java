@@ -18,9 +18,11 @@ public class ExtractingRecipeParams extends ProcessingRecipeParams {
     public static final MapCodec<ExtractingRecipeParams> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
             codec(ExtractingRecipeParams::new).forGetter(Function.identity()),
             RegistryCodecs.homogeneousList(Registries.BLOCK).fieldOf("node").forGetter(ExtractingRecipeParams::nodes),
-            ExtraCodecs.NON_NEGATIVE_INT.fieldOf("durabilityCost").forGetter(ExtractingRecipeParams::durabilityCost)
-    ).apply(inst, (params, nodes, durability) -> {
+            ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("extractionQuantity", 1).forGetter(ExtractingRecipeParams::extractionQuantity),
+            ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("durabilityCost", 1).forGetter(ExtractingRecipeParams::durabilityCost)
+    ).apply(inst, (params, nodes, quantity, durability) -> {
         params.nodes = nodes;
+        params.extractionQuantity = quantity;
         params.durabilityCost = durability;
         return params;
     }));
@@ -38,6 +40,10 @@ public class ExtractingRecipeParams extends ProcessingRecipeParams {
 
     protected final HolderSet<Block> nodes() {
         return nodes;
+    }
+
+    protected final int extractionQuantity() {
+        return extractionQuantity;
     }
 
     protected final int durabilityCost() {

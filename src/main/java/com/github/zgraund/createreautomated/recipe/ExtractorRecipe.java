@@ -30,11 +30,13 @@ import java.util.List;
 @MethodsReturnNonnullByDefault
 public class ExtractorRecipe extends ProcessingRecipe<ExtractorRecipeInput, ExtractingRecipeParams> {
     private final HolderSet<Block> nodes;
+    private final int extractionQuantity;
     private final int durabilityCost;
 
     public ExtractorRecipe(ExtractingRecipeParams params) {
         super(ModRecipeTypes.EXTRACTING, params);
         this.nodes = params.nodes;
+        this.extractionQuantity = params.extractionQuantity;
         this.durabilityCost = params.durabilityCost;
     }
 
@@ -47,7 +49,7 @@ public class ExtractorRecipe extends ProcessingRecipe<ExtractorRecipeInput, Extr
             return false;
         if (!(blockState.getBlock() instanceof Extractable nodeBlock))
             return true;
-        return nodeBlock.canExtract(1, input.nodePos(), level);
+        return nodeBlock.canExtract(extractionQuantity, input.nodePos(), level);
     }
 
     @Override
@@ -73,6 +75,10 @@ public class ExtractorRecipe extends ProcessingRecipe<ExtractorRecipeInput, Extr
 
     public int durabilityCost() {
         return durabilityCost;
+    }
+
+    public int extractionQuantity() {
+        return extractionQuantity;
     }
 
     public HolderSet<Block> getNodes() {
@@ -131,6 +137,11 @@ public class ExtractorRecipe extends ProcessingRecipe<ExtractorRecipeInput, Extr
 
         public Builder noDurability() {
             params.durabilityCost = 0;
+            return this;
+        }
+
+        public Builder extract(int quantity) {
+            params.extractionQuantity = quantity;
             return this;
         }
 
