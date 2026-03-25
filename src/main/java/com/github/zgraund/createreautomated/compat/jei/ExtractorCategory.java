@@ -37,14 +37,13 @@ public class ExtractorCategory extends CreateRecipeCategory<ExtractorRecipe> {
         builder.addInputSlot(35, 50)
                .addItemStacks(recipe.getNodesAsItemStacks())
                .setBackground(getRenderedSlot(), -1, -1);
-        // TODO: change slot offset
         List<ProcessingOutput> results = recipe.getRollableResults();
         int i = 0;
         for (ProcessingOutput output : results) {
             int xOffset = i % 2 == 0 ? 0 : 19;
             int yOffset = (i / 2) * 19;
             builder
-                    .addSlot(RecipeIngredientRole.OUTPUT, results.size() == 1 ? 139 : 133 + xOffset, 27 + yOffset)
+                    .addSlot(RecipeIngredientRole.OUTPUT, 121 + xOffset, 42 + yOffset)
                     .setBackground(getRenderedSlot(output.getChance()), -1, -1)
                     .addItemStack(output.getStack())
                     .addRichTooltipCallback(addStochasticTooltip(output));
@@ -54,7 +53,7 @@ public class ExtractorCategory extends CreateRecipeCategory<ExtractorRecipe> {
 
     @Override
     protected void draw(ExtractorRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
-        AllGuiTextures.JEI_DOWN_ARROW.render(graphics, 115, 30);
+        AllGuiTextures.JEI_DOWN_ARROW.render(graphics, 115, 25);
         AllGuiTextures.JEI_SHADOW.render(graphics, 61, 74);
         Block node = recipeSlotsView.getSlotViews()
                                     .get(1)

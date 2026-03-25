@@ -6,7 +6,7 @@ import com.github.zgraund.createreautomated.config.Config;
 import com.github.zgraund.createreautomated.recipe.ExtractorRecipe;
 import com.github.zgraund.createreautomated.recipe.ExtractorRecipeInput;
 import com.github.zgraund.createreautomated.registry.ModBlocks;
-import com.github.zgraund.createreautomated.registry.ModRecipes;
+import com.github.zgraund.createreautomated.registry.ModRecipeTypes;
 import com.github.zgraund.createreautomated.registry.ModTags;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.item.ItemHelper;
@@ -174,7 +174,6 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         if (!shouldPlayAudioAndParticles())
             return;
 
-        // TODO: test tick rate of audio
         if ((AnimationTickHolder.getTicks() % Math.floor(256 / (getProcessingSpeed() / 2))) == 0)
             level.playLocalSound(getNodePosition(), SoundEvents.STONE_HIT, SoundSource.BLOCKS, 0.5f, 0.1f, true);
     }
@@ -222,9 +221,8 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
 
     public Optional<ExtractorRecipe> getRecipe(ExtractorRecipeInput input) {
         if (level == null) return Optional.empty();
-        return level.getRecipeManager()
-                    .getRecipeFor(ModRecipes.EXTRACTOR_RECIPE.get(), input, level)
-                    .map(RecipeHolder::value);
+        Optional<RecipeHolder<ExtractorRecipe>> holder = ModRecipeTypes.EXTRACTING.find(input, level);
+        return holder.map(RecipeHolder::value);
     }
 
     public boolean failPreConditions() {

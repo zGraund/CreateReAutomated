@@ -61,7 +61,6 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity> {
         if (stack.is(ModBlocks.STABILIZER_CAGE.asItem()) && !state.getValue(STABLE)) {
             if (!player.isCreative())
                 stack.shrink(1);
-            // TODO: choose better sound
             level.playSound(null, pos, SoundEvents.TRIAL_SPAWNER_PLACE, SoundSource.BLOCKS, 1, 0.80f);
             level.setBlockAndUpdate(pos, state.setValue(STABLE, true));
             return ItemInteractionResult.sidedSuccess(level.isClientSide());

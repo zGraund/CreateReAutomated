@@ -1,11 +1,10 @@
 package com.github.zgraund.createreautomated.recipe;
 
 import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
-import com.github.zgraund.createreautomated.registry.ModRecipes;
+import com.github.zgraund.createreautomated.registry.ModRecipeTypes;
 import com.mojang.serialization.MapCodec;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
-import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.HolderSet;
@@ -17,7 +16,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,13 +29,13 @@ import java.util.List;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class ExtractorRecipe extends ProcessingRecipe<ExtractorRecipeInput, ExtractingRecipeParams> {
-    public static final IRecipeTypeInfo INFO = new ExtractingRecipeInfo();
+//    public static final IRecipeTypeInfo INFO = new ExtractingRecipeInfo();
 
     private final HolderSet<Block> nodes;
     private final int durabilityCost;
 
     public ExtractorRecipe(ExtractingRecipeParams params) {
-        super(INFO, params);
+        super(ModRecipeTypes.EXTRACTING, params);
         this.nodes = params.nodes;
         this.durabilityCost = params.durabilityCost;
     }
@@ -100,24 +100,24 @@ public class ExtractorRecipe extends ProcessingRecipe<ExtractorRecipeInput, Extr
     }
 
     // This should eventually be moved into a separate class
-    public static class ExtractingRecipeInfo implements IRecipeTypeInfo {
-        @Override
-        public ResourceLocation getId() {
-            return ModRecipes.EXTRACTOR_RECIPE.getId();
-        }
-
-        @Override
-        @SuppressWarnings("unchecked")
-        public <T extends RecipeSerializer<?>> T getSerializer() {
-            return (T) ModRecipes.EXTRACTOR_RECIPE_SERIALIZER.get();
-        }
-
-        @Override
-        @SuppressWarnings("unchecked")
-        public <I extends RecipeInput, R extends Recipe<I>> RecipeType<R> getType() {
-            return (RecipeType<R>) ModRecipes.EXTRACTOR_RECIPE.get();
-        }
-    }
+//    public static class ExtractingRecipeInfo implements IRecipeTypeInfo {
+//        @Override
+//        public ResourceLocation getId() {
+//            return ModRecipeTypes.EXTRACTOR_RECIPE.getId();
+//        }
+//
+//        @Override
+//        @SuppressWarnings("unchecked")
+//        public <T extends RecipeSerializer<?>> T getSerializer() {
+//            return (T) ModRecipeTypes.EXTRACTOR_RECIPE_SERIALIZER.get();
+//        }
+//
+//        @Override
+//        @SuppressWarnings("unchecked")
+//        public <I extends RecipeInput, R extends Recipe<I>> RecipeType<R> getType() {
+//            return (RecipeType<R>) ModRecipeTypes.EXTRACTOR_RECIPE.get();
+//        }
+//    }
 
     public static class Builder extends ProcessingRecipeBuilder<ExtractingRecipeParams, ExtractorRecipe, Builder> {
         public Builder(Factory factory, ResourceLocation recipeId) {

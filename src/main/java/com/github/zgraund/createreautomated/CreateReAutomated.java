@@ -37,7 +37,7 @@ public class CreateReAutomated {
 
         ModBlockEntities.register();
 
-        ModRecipes.register(modEventBus);
+        ModRecipeTypes.register(modEventBus);
 
         ModDataComponents.register(modEventBus);
 

@@ -3,7 +3,7 @@ package com.github.zgraund.createreautomated.compat.jei;
 import com.github.zgraund.createreautomated.CreateReAutomated;
 import com.github.zgraund.createreautomated.recipe.ExtractorRecipe;
 import com.github.zgraund.createreautomated.registry.ModBlocks;
-import com.github.zgraund.createreautomated.registry.ModRecipes;
+import com.github.zgraund.createreautomated.registry.ModRecipeTypes;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -36,11 +36,11 @@ public class JEIPlugin implements IModPlugin {
 
         allCategories.add(
                 new CreateRecipeCategory.Builder<>(ExtractorRecipe.class)
-                        .addTypedRecipes(ModRecipes.EXTRACTOR_RECIPE)
+                        .addTypedRecipes(ModRecipeTypes.EXTRACTING)
                         .catalyst(() -> ModBlocks.EXTRACTOR)
                         .emptyBackground(178, 100)
                         .itemIcon(ModBlocks.EXTRACTOR)
-                        .build(CreateReAutomated.asResource("extracting"), ExtractorCategory::new)
+                        .build(ModRecipeTypes.EXTRACTING.getId(), ExtractorCategory::new)
         );
 
         registration.addRecipeCategories(allCategories.toArray(new CreateRecipeCategory[0]));

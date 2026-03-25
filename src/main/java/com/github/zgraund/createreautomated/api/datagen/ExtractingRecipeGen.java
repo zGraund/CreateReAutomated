@@ -3,6 +3,7 @@ package com.github.zgraund.createreautomated.api.datagen;
 import com.github.zgraund.createreautomated.recipe.ExtractingRecipeParams;
 import com.github.zgraund.createreautomated.recipe.ExtractorRecipe;
 import com.github.zgraund.createreautomated.registry.ModItems;
+import com.github.zgraund.createreautomated.registry.ModRecipeTypes;
 import com.simibubi.create.api.data.recipe.ProcessingRecipeGen;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import net.minecraft.core.HolderLookup;
@@ -23,7 +24,7 @@ public class ExtractingRecipeGen extends ProcessingRecipeGen<ExtractingRecipePar
 
     @Override
     protected IRecipeTypeInfo getRecipeType() {
-        return ExtractorRecipe.INFO;
+        return ModRecipeTypes.EXTRACTING;
     }
 
     @Override
