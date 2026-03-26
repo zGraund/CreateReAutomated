@@ -8,6 +8,8 @@ public interface Extractable {
         return true;
     }
 
+    default void extract(int quantity, BlockPos pos, BlockGetter level) {}
+
     default float getDrillOffset() {
         return 0.85f;
     }

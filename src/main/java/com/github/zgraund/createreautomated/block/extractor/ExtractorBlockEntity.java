@@ -1,7 +1,6 @@
 package com.github.zgraund.createreautomated.block.extractor;
 
 import com.github.zgraund.createreautomated.api.block.Extractable;
-import com.github.zgraund.createreautomated.block.node.OreNodeEntity;
 import com.github.zgraund.createreautomated.config.Config;
 import com.github.zgraund.createreautomated.recipe.ExtractorRecipe;
 import com.github.zgraund.createreautomated.recipe.ExtractorRecipeInput;
@@ -28,7 +27,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
@@ -126,9 +124,8 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         progress += (int) getProcessingSpeed();
 
         if (progress >= lastRecipe.getProcessingDuration()) {
-            BlockEntity blockEntity = level.getBlockEntity(nodePos);
-            if (blockEntity instanceof OreNodeEntity nodeEntity) {
-                nodeEntity.extract(1);
+            if (level.getBlockState(nodePos).getBlock() instanceof Extractable node) {
+                node.extract(lastRecipe.extractionQuantity(), nodePos, level);
             }
             lastRecipe.rollResults(level.random).forEach(result ->
                     ItemHandlerHelper.insertItemStacked(outputInv, result, false)
