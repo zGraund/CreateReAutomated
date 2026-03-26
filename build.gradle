@@ -140,7 +140,8 @@ dependencies {
     localRuntime("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
 
     // KubeJS
-    api("dev.latvian.mods:kubejs-neoforge:$kubejs_version")
+    compileOnly("dev.latvian.mods:kubejs-neoforge:$kubejs_version")
+    localRuntime("dev.latvian.mods:kubejs-neoforge:$kubejs_version")
     interfaceInjectionData("dev.latvian.mods:kubejs-neoforge:$kubejs_version") // optional
 }
 

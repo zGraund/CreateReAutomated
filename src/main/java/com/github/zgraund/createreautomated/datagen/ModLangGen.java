@@ -22,11 +22,10 @@ public class ModLangGen {
 
     public void generate() {
         // Blocks tooltip
-        tooltip("block", "ore_node", "Ore Node");
         summary("block", "ore_node", "A _mysterious_ node too hard to extract by hand");
+        summary("block", "infinite_node", "A node that emanates _powerful_ energy, it could be extracted for a very long time.");
 
         // Items tooltip
-        tooltip("item", "drill_head", "A drill head for an extractor");
         summary("item", "drill_head", "This drill can be used in an _Extractor_ to excavate an _Ore_ _Node_");
 
         // Recipes
@@ -37,6 +36,10 @@ public class ModLangGen {
 
         // Block tags
         tag(ModTags.Blocks.ORE_NODES);
+        tag(ModTags.Blocks.DIAMOND_NODES);
+        tag(ModTags.Blocks.GOLD_NODES);
+        tag(ModTags.Blocks.IRON_NODES);
+        tag(ModTags.Blocks.COPPER_NODES);
 
         // Item tags
         tag(ModTags.Items.DRILLS);
@@ -77,20 +80,20 @@ public class ModLangGen {
         consumer.accept(CreateReAutomated.MOD_ID + ".configuration." + suffix, value);
     }
 
-    private void tooltip(String prefix, @Nonnull DeferredHolder<?, ?> holder, String tooltip) {
-        consumer.accept(Util.makeDescriptionId(prefix, holder.getId()) + ".tooltip", tooltip);
-    }
-
-    private void tooltip(String prefix, String id, String tooltip) {
-        add(prefix, id + ".tooltip", tooltip);
-    }
-
     private void summary(String prefix, @Nonnull DeferredHolder<?, ?> holder, String summary) {
         consumer.accept(Util.makeDescriptionId(prefix, holder.getId()) + ".tooltip.summary", summary);
     }
 
     private void summary(String prefix, String id, String summary) {
         add(prefix, id + ".tooltip.summary", summary);
+    }
+
+    private void condition(String prefix, int number, String id, String summary) {
+        add(prefix, id + ".tooltip.condition" + number, summary);
+    }
+
+    private void behaviour(String prefix, int number, String id, String summary) {
+        add(prefix, id + ".tooltip.behaviour" + number, summary);
     }
 
     private void tag(@Nonnull TagKey<?> tag) {

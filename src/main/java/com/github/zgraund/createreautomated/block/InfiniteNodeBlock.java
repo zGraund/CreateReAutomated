@@ -7,4 +7,9 @@ public class InfiniteNodeBlock extends Block implements Extractable {
     public InfiniteNodeBlock(Properties properties) {
         super(properties);
     }
+
+    @Override
+    public float getDrillOffset() {
+        return 0.98f;
+    }
 }

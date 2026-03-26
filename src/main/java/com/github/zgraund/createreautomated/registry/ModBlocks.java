@@ -132,12 +132,20 @@ public class ModBlocks {
     private static BlockEntry<InfiniteNodeBlock> infiniteNode(String name, TagKey<?>... tags) {
         return REGISTRATE.block(name, InfiniteNodeBlock::new)
                          .initialProperties(() -> Blocks.STONE)
-                         .properties(p -> p.strength(30f).requiresCorrectToolForDrops())
+                         .properties(p -> p.noOcclusion().strength(30f).requiresCorrectToolForDrops())
                          .tag(BlockTags.NEEDS_IRON_TOOL)
+                         .blockstate((ctx, prov) ->
+                                 prov.simpleBlock(
+                                         ctx.get(),
+                                         prov.models()
+                                             .withExistingParent(ctx.getName(), prov.modLoc("block/infinite_node_base"))
+                                             .texture("node", ctx.getId().withPrefix("block/"))
+                                             .renderType(prov.mcLoc("cutout_mipped"))
+                                 )
+                         )
                          .transform(tagBlockOrItem(tags))
                          .build()
-                         // TODO: use different description
-                         .onRegisterAfter(Registries.ITEM, item -> ItemDescription.useKey(item, "block.createreautomated.ore_node"))
+                         .onRegisterAfter(Registries.ITEM, item -> ItemDescription.useKey(item, "block.createreautomated.infinite_node"))
                          .register();
     }
 
