@@ -134,6 +134,7 @@ public class ModBlocks {
                          .initialProperties(() -> Blocks.STONE)
                          .properties(p -> p.noOcclusion().strength(30f).requiresCorrectToolForDrops())
                          .tag(BlockTags.NEEDS_IRON_TOOL)
+                         .transform(TagGen.pickaxeOnly())
                          .blockstate((ctx, prov) ->
                                  prov.simpleBlock(
                                          ctx.get(),

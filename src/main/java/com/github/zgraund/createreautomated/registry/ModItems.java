@@ -41,8 +41,8 @@ public class ModItems {
                          .model((ctx, prov) -> {
                              prov.generated(ctx);
                              ResourceLocation path = ctx.getId();
-                             prov.withExistingParent(path.withPrefix(ModPartialModels.PATH).toString(), prov.modLoc("block/extractor/drill"))
-                                 .texture("0", path.withPrefix("block/"));
+                             prov.singleTexture(path.withPrefix(ModPartialModels.PATH).toString(), prov.modLoc("block/extractor/drill"),
+                                     "0", path.withPrefix("block/"));
                          })
                          .onRegister(item -> DrillPartialIndex.MODELS.register(item, model))
                          .onRegister(item -> ItemDescription.useKey(item, "item.createreautomated.drill_head"))

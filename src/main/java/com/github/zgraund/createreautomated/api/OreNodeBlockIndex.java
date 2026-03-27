@@ -3,6 +3,8 @@ package com.github.zgraund.createreautomated.api;
 import com.simibubi.create.api.registry.SimpleRegistry;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
@@ -25,6 +27,10 @@ public class OreNodeBlockIndex {
 
     public static <T extends Block> void register(DeferredBlock<T> node) {
         BLOCKS.add(NonNullSupplier.of(node));
+    }
+
+    public static void register(ResourceLocation id) {
+        BLOCKS.add(NonNullSupplier.of(() -> BuiltInRegistries.BLOCK.get(id)));
     }
 
     public static <T extends Block, R> BlockBuilder<T, R> register(@Nonnull BlockBuilder<T, R> builder) {

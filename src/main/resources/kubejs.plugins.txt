@@ -1,0 +1,1 @@
+com.github.zgraund.createreautomated.compat.kubejs.CRAKubeJSPlugin createreautomated
