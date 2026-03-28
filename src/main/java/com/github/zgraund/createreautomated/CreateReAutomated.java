@@ -19,6 +19,7 @@ import javax.annotation.Nonnull;
 @Mod(CreateReAutomated.MOD_ID)
 public class CreateReAutomated {
     public static final String MOD_ID = "createreautomated";
+    public static final String NAME = "Create ReAutomated";
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MOD_ID)
                                                                       .defaultCreativeTab(ModCreativeModeTab.BASE.getKey())
@@ -28,6 +29,7 @@ public class CreateReAutomated {
                                                                       );
 
     public CreateReAutomated(@Nonnull IEventBus modEventBus, @Nonnull ModContainer modContainer) {
+        LOGGER.info(NAME + " Starting up!");
         REGISTRATE.registerEventListeners(modEventBus);
 
         ModCreativeModeTab.register(modEventBus);

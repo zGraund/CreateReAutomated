@@ -29,6 +29,7 @@ public class ExtractorRenderer extends KineticBlockEntityRenderer<ExtractorBlock
 
     @Override
     protected void renderSafe(@Nonnull ExtractorBlockEntity be, float partialTicks, PoseStack ms, @Nonnull MultiBufferSource buffer, int light, int overlay) {
+        // TODO: make a visual
 //        super.renderSafe(be, partialTicks, ms, buffer, light, overlay);
 //        if (VisualizationManager.supportsVisualization(be.getLevel())) return;
 
