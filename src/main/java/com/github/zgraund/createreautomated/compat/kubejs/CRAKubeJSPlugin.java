@@ -42,6 +42,9 @@ public class CRAKubeJSPlugin implements KubeJSPlugin {
 
     @Override
     public void init() {
+        if (!ModList.get().isLoaded("kubejs_create"))
+            throw new IllegalStateException(CreateReAutomated.NAME + " requires addon KubeJS Create when KubeJS is installed.");
+
         ModList.get().getModContainerById(CreateReAutomated.MOD_ID).ifPresent(container -> {
                     IEventBus eventBus = container.getEventBus();
                     if (eventBus == null)

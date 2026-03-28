@@ -32,7 +32,7 @@ public class NodeValues extends ConfigBase {
     public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> setNodeValue(int value) {
         return builder -> {
             if (!builder.getOwner().getModid().equals(CreateReAutomated.MOD_ID))
-                throw new IllegalStateException("Only Create Re-Automated blocks can be added to the mod config.");
+                throw new IllegalStateException("Only " + CreateReAutomated.NAME + " blocks can be added to the mod config.");
             DEFAULT_VALUES.put(CreateReAutomated.asResource(builder.getName()), value);
             return builder;
         };
