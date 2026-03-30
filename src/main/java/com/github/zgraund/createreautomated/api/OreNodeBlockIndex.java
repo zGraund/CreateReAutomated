@@ -18,7 +18,7 @@ public class OreNodeBlockIndex {
      * Registry for all blocks that are considered valid for a OreNodeEntity. All nodes
      * and their max number of extractions should be registered here.
      */
-    public static final SimpleRegistry<Block, IntSupplier> NODE_VALUES = SimpleRegistry.create();
+    public static final SimpleRegistry<Block, IntSupplier> NODE_YIELDS = SimpleRegistry.create();
     private static final Set<NonNullSupplier<? extends Block>> BLOCKS = new HashSet<>();
 
     public static <T extends Block> void register(T block) {
@@ -39,7 +39,7 @@ public class OreNodeBlockIndex {
     }
 
     public static int getOrDefaultLimit(Block node) {
-        IntSupplier value = NODE_VALUES.get(node);
+        IntSupplier value = NODE_YIELDS.get(node);
         return value == null ? 0 : value.getAsInt();
     }
 

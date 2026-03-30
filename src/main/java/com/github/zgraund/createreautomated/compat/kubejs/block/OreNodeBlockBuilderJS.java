@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 @SuppressWarnings("unused")
 public class OreNodeBlockBuilderJS extends BlockBuilder {
     public boolean commonLoot = false;
-    public int maxExtractions = 0;
+    public int yield = 0;
     public BlockState baseStone = Blocks.AIR.defaultBlockState();
 
     public OreNodeBlockBuilderJS(ResourceLocation id) {
@@ -49,8 +49,8 @@ public class OreNodeBlockBuilderJS extends BlockBuilder {
         return this;
     }
 
-    public OreNodeBlockBuilderJS maxExtractions(int quantity) {
-        this.maxExtractions = quantity;
+    public OreNodeBlockBuilderJS yield(int yield) {
+        this.yield = yield;
         return this;
     }
 
@@ -69,7 +69,7 @@ public class OreNodeBlockBuilderJS extends BlockBuilder {
     @Override
     public Block createObject() {
         Block block = new OreNodeBlock(createProperties(), baseStone);
-        OreNodeBlockIndex.NODE_VALUES.register(block, () -> maxExtractions);
+        OreNodeBlockIndex.NODE_YIELDS.register(block, () -> yield);
         CRAKubeJSPlugin.VALID_BLOCKS_FOR_BE.add(block);
         return block;
     }

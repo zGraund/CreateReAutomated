@@ -10,7 +10,6 @@ import net.createmod.catnip.registry.RegisteredObjectsHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.ModConfigSpec;
-import net.neoforged.neoforge.registries.DeferredBlock;
 import org.jetbrains.annotations.Contract;
 
 import javax.annotation.Nonnull;
@@ -22,10 +21,6 @@ public class NodeValues extends ConfigBase {
     private static final Object2IntMap<ResourceLocation> DEFAULT_VALUES = new Object2IntOpenHashMap<>();
 
     private final Map<ResourceLocation, ModConfigSpec.ConfigValue<Integer>> extractions = new HashMap<>();
-
-    public static void setNodeValue(@Nonnull DeferredBlock<? extends Block> block, int value) {
-        DEFAULT_VALUES.put(block.getId(), value);
-    }
 
     @Nonnull
     @Contract(pure = true)

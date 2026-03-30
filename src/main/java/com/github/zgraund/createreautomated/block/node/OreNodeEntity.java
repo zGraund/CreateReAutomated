@@ -14,17 +14,17 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 public class OreNodeEntity extends SyncedBlockEntity {
-    private int remaining;
+    private int yield;
 
     public OreNodeEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
-        remaining = ((OreNodeBlock) state.getBlock()).getMaxExtractions();
+        yield = ((OreNodeBlock) state.getBlock()).getMaxExtractions();
     }
 
     public void extract(int quantity) {
         if (level == null || level.isClientSide() || !canExtract(quantity)) return;
 
-        remaining -= quantity;
+        yield -= quantity;
 
         updateBlockState();
         notifyUpdate();
@@ -38,13 +38,13 @@ public class OreNodeEntity extends SyncedBlockEntity {
 
         BlockPos pos = getBlockPos();
 
-        if (this.remaining <= 0) {
+        if (this.yield <= 0) {
             level.setBlockAndUpdate(pos, node.baseRock);
             level.playSound(null, pos, node.getSoundType(currentState, level, pos, null).getBreakSound(), SoundSource.BLOCKS);
             return;
         }
 
-        int newState = node.getStateFromQuantity(remaining);
+        int newState = node.getStateFromQuantity(yield);
 
         if (newState != currentState.getValue(OreNodeBlock.DEPLETION)) {
             level.setBlockAndUpdate(pos, currentState.setValue(OreNodeBlock.DEPLETION, newState));
@@ -53,41 +53,41 @@ public class OreNodeEntity extends SyncedBlockEntity {
     }
 
     public boolean canExtract(int quantity) {
-        return remaining >= quantity;
+        return yield >= quantity;
     }
 
-    public int getRemaining() {
-        return remaining;
+    public int getYield() {
+        return yield;
     }
 
     @Override
     protected void applyImplicitComponents(DataComponentInput componentInput) {
         super.applyImplicitComponents(componentInput);
-        remaining = componentInput.getOrDefault(ModDataComponents.NODE_REMAINING_EXTRACTIONS.get(), remaining);
+        yield = componentInput.getOrDefault(ModDataComponents.NODE_REMAINING_EXTRACTIONS.get(), yield);
     }
 
     @Override
     protected void collectImplicitComponents(DataComponentMap.Builder components) {
         super.collectImplicitComponents(components);
-        components.set(ModDataComponents.NODE_REMAINING_EXTRACTIONS.get(), remaining);
+        components.set(ModDataComponents.NODE_REMAINING_EXTRACTIONS.get(), yield);
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public void removeComponentsFromTag(CompoundTag tag) {
         super.removeComponentsFromTag(tag);
-        tag.remove("remaining");
+        tag.remove("Yield");
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        remaining = tag.getInt("remaining");
+        yield = tag.getInt("Yield");
     }
 
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
-        tag.putInt("remaining", remaining);
+        tag.putInt("Yield", yield);
     }
 }

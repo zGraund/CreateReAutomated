@@ -74,7 +74,7 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity>, Extractab
         if (!level.isClientSide() && player.getMainHandItem().isEmpty() && Config.client().debugOreNodeOverlay.get()) {
             player.sendSystemMessage(Component.literal(
                     level.getBlockEntity(pos) instanceof OreNodeEntity oreNode
-                            ? "The remaining ore is: " + oreNode.getRemaining()
+                            ? "The remaining ore is: " + oreNode.getYield()
                             : "The node is unlimited"
             ));
         }

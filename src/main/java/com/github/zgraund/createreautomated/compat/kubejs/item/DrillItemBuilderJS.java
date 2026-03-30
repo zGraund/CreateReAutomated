@@ -14,8 +14,8 @@ public class DrillItemBuilderJS extends ItemBuilder {
 
     public DrillItemBuilderJS(ResourceLocation id) {
         super(id);
-        maxStackSize = 1;
-        maxDamage = 1000;
+        this.maxStackSize = 1;
+        this.maxDamage = 1000;
     }
 
     public DrillItemBuilderJS withPartial(ResourceLocation partial) {
