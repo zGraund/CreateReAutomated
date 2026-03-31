@@ -103,7 +103,7 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity>, Extractab
     }
 
     public int getMaxExtractions() {
-        return OreNodeBlockIndex.getOrDefaultLimit(this);
+        return OreNodeBlockIndex.getYieldOrDefault(this);
     }
 
     public BlockState unstable() {

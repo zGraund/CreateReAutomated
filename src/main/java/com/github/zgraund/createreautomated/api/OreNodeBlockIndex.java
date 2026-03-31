@@ -38,7 +38,7 @@ public class OreNodeBlockIndex {
         return builder;
     }
 
-    public static int getOrDefaultLimit(Block node) {
+    public static int getYieldOrDefault(Block node) {
         IntSupplier value = NODE_YIELDS.get(node);
         return value == null ? 0 : value.getAsInt();
     }

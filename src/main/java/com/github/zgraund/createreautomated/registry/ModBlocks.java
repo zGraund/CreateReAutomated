@@ -139,8 +139,8 @@ public class ModBlocks {
                                  prov.simpleBlock(
                                          ctx.get(),
                                          prov.models()
-                                             .withExistingParent(ctx.getName(), prov.modLoc("block/infinite_node_base"))
-                                             .texture("node", ctx.getId().withPrefix("block/"))
+                                             .singleTexture(ctx.getName(), prov.modLoc("block/infinite_node_base"),
+                                                     "node", ctx.getId().withPrefix("block/"))
                                              .renderType(prov.mcLoc("cutout_mipped"))
                                  )
                          )
