@@ -1,7 +1,0 @@
-/btw{
-  "permissions": {
-    "allow": [
-      "Bash(find /c/Users/TYP/IdeaProjects/CreateReAutomated/build/resources/main/data -type f -name *.json)"
-    ]
-  }
-}
