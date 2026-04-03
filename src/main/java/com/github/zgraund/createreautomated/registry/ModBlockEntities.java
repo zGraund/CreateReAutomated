@@ -2,6 +2,8 @@ package com.github.zgraund.createreautomated.registry;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
 import com.github.zgraund.createreautomated.api.OreNodeBlockIndex;
+import com.github.zgraund.createreautomated.block.cutter.CutterBlockEntity;
+import com.github.zgraund.createreautomated.block.cutter.CutterRenderer;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorBlockEntity;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorRenderer;
 import com.github.zgraund.createreautomated.block.node.OreNodeEntity;
@@ -15,6 +17,12 @@ public class ModBlockEntities {
             REGISTRATE.blockEntity("extractor_be", ExtractorBlockEntity::new)
                       .validBlocks(ModBlocks.EXTRACTOR)
                       .renderer(() -> ExtractorRenderer::new)
+                      .register();
+
+    public static final BlockEntityEntry<CutterBlockEntity> CUTTER_BE =
+            REGISTRATE.blockEntity("cutter_be", CutterBlockEntity::new)
+                      .validBlocks(ModBlocks.JET_CUTTER)
+                      .renderer(() -> CutterRenderer::new)
                       .register();
 
     public static final BlockEntityEntry<OreNodeEntity> ORE_NODE_BE =

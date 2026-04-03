@@ -57,7 +57,8 @@ public class Config {
             container.registerConfig(pair.getKey(), pair.getValue().specification);
 
         BlockStressValues.IMPACTS.registerProvider(server()::getExtractorImpact);
-        OreNodeBlockIndex.NODE_YIELDS.registerProvider(server().nodeValues::getNodeValue);
+        BlockStressValues.IMPACTS.registerProvider(server()::getCutterImpact);
+        OreNodeBlockIndex.NODE_YIELDS.registerProvider(server().nodeYields::getNodeValue);
     }
 
     @SubscribeEvent

@@ -4,15 +4,17 @@ import com.github.zgraund.createreautomated.CreateReAutomated;
 import com.github.zgraund.createreautomated.api.OreNodeBlockIndex;
 import com.github.zgraund.createreautomated.block.InfiniteNodeBlock;
 import com.github.zgraund.createreautomated.block.StabilizerCageBlock;
+import com.github.zgraund.createreautomated.block.cutter.CutterBlock;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorBlock;
 import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
-import com.github.zgraund.createreautomated.config.NodeValues;
+import com.github.zgraund.createreautomated.config.NodeYields;
 import com.github.zgraund.createreautomated.datagen.ModBlockLootTableGen;
 import com.github.zgraund.createreautomated.datagen.ModCommonBlockModelGen;
+import com.github.zgraund.createreautomated.item.CutterBlockItem;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.simibubi.create.foundation.data.ModelGen;
 import com.simibubi.create.foundation.data.TagGen;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.tterrag.registrate.builders.BlockBuilder;
@@ -59,9 +61,19 @@ public class ModBlocks {
                                       prov.models().getExistingFile(prov.modLoc("block/extractor/" + state.getValue(ExtractorBlock.HALF)))
                               )
                       )
+                      .transform(TagGen.pickaxeOnly())
                       .item(DoubleHighBlockItem::new)
-                      .model(AssetLookup.customBlockItemModel("_", "item"))
-                      .build()
+                      .transform(ModelGen.customItemModel())
+                      .register();
+
+    // TODO: unsure about the name
+    public static final BlockEntry<CutterBlock> JET_CUTTER =
+            REGISTRATE.block("jet_cutter", CutterBlock::new)
+                      .initialProperties(EXTRACTOR)
+                      .transform(TagGen.pickaxeOnly())
+                      .blockstate(BlockStateGen.horizontalBlockProvider(true))
+                      .item(CutterBlockItem::new)
+                      .transform(ModelGen.customItemModel())
                       .register();
 
     public static final BlockEntry<InfiniteNodeBlock>
@@ -123,7 +135,7 @@ public class ModBlocks {
                          .transform(TagGen.pickaxeOnly())
                          .blockstate(ModCommonBlockModelGen.defaultOverlay())
                          .loot((prov, block) -> prov.add(block, ModBlockLootTableGen.createOreNodeDrop(block)))
-                         .transform(NodeValues.setNodeValue(quantity))
+                         .transform(NodeYields.setNodeValue(quantity))
                          .transform(OreNodeBlockIndex::register)
                          .onRegisterAfter(Registries.ITEM, item -> ItemDescription.useKey(item, "block.createreautomated.ore_node"))
                          .register();

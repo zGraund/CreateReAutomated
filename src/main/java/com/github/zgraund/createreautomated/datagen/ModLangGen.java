@@ -1,7 +1,9 @@
 package com.github.zgraund.createreautomated.datagen;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
+import com.github.zgraund.createreautomated.block.cutter.CutterBlockEntity;
 import com.github.zgraund.createreautomated.registry.ModTags;
+import net.createmod.catnip.lang.Lang;
 import net.minecraft.Util;
 import net.minecraft.tags.TagKey;
 import net.neoforged.neoforge.common.Tags;
@@ -33,6 +35,11 @@ public class ModLangGen {
 
         // Misc
         add("itemGroup", "base", "Create Re-Automated");
+
+        // Menus
+        for (CutterBlockEntity.Mode mode : CutterBlockEntity.Mode.values()) {
+            consumer.accept(mode.getTranslationKey(), StringUtils.capitalize(Lang.asId(mode.name())));
+        }
 
         // Block tags
         tag(ModTags.Blocks.ORE_NODES);

@@ -8,12 +8,18 @@ public class ModPartialModels {
 
     public static final PartialModel HALF_COG = create("half_shaft_cogwheel");
 
+    public static final PartialModel NOZZLE = block("jet_cutter/nozzle");
+
     public static final PartialModel IRON_DRILL = create("iron_drill");
     public static final PartialModel DIAMOND_DRILL = create("diamond_drill");
     public static final PartialModel NETHERITE_DRILL = create("netherite_drill");
 
     private static PartialModel create(String path) {
         return PartialModel.of(CreateReAutomated.asResource(PATH + path));
+    }
+
+    private static PartialModel block(String path) {
+        return PartialModel.of(CreateReAutomated.asResource("block/" + path));
     }
 
     public static void init() {}

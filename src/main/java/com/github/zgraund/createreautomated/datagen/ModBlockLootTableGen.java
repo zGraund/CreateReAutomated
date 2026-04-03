@@ -11,6 +11,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.CopyBlockState;
 import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
+import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
@@ -47,6 +48,7 @@ public class ModBlockLootTableGen {
                                 LootPool.lootPool()
                                         .setRolls(ConstantValue.exactly(1.0F))
                                         .add(LootItem.lootTableItem(block)
+                                                     .when(ExplosionCondition.survivesExplosion())
                                                      .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
                                                                                               .setProperties(
                                                                                                       StatePropertiesPredicate.Builder
