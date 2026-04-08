@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.IntSupplier;
 
-public class NodeValues extends ConfigBase {
+public class NodeYields extends ConfigBase {
     private static final Object2IntMap<ResourceLocation> DEFAULT_VALUES = new Object2IntOpenHashMap<>();
 
     private final Map<ResourceLocation, ModConfigSpec.ConfigValue<Integer>> extractions = new HashMap<>();

@@ -12,19 +12,12 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 
 import javax.annotation.Nonnull;
 
 public class ExtractorRenderer extends KineticBlockEntityRenderer<ExtractorBlockEntity> {
     public ExtractorRenderer(BlockEntityRendererProvider.Context context) {
         super(context);
-    }
-
-    @Nonnull
-    @Override
-    public AABB getRenderBoundingBox(@Nonnull ExtractorBlockEntity blockEntity) {
-        return AABB.INFINITE;
     }
 
     @Override

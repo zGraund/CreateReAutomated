@@ -30,6 +30,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -89,6 +90,12 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     public void tick() {
         super.tick();
         if (level == null) return;
+
+        // TODO: the extractor animation/progress should only tick on server
+        //       partly because in 1.21.2 recipes are no longer synced and and
+        //       so that the animation is not broken by the server running at a
+        //       different tick rate than the client.
+        //       so this method need to be refactored
 
         tickAnimation();
 
@@ -227,7 +234,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
                || level.getBlockState(getNodePosition()).isEmpty()
                || !hasDrill()
                || isOutputFull()
-               || getProcessingSpeed() < ExtractorBlock.MIN_SPEED.getSpeedValue();
+               || !isSpeedRequirementFulfilled();
     }
 
     public BlockPos getNodePosition() {
@@ -266,10 +273,19 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     }
 
     @Override
+    public AABB createRenderBoundingBox() {
+        return new AABB(worldPosition).expandTowards(0, -1, 0);
+    }
+
+    @Override
     public void destroy() {
         super.destroy();
         ItemHelper.dropContents(level, worldPosition, drillInv);
         ItemHelper.dropContents(level, worldPosition, outputInv);
+        if (level != null) {
+            level.invalidateCapabilities(worldPosition);
+            level.invalidateCapabilities(worldPosition.below());
+        }
     }
 
     @Override
