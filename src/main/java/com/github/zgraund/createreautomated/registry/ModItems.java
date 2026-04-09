@@ -2,7 +2,9 @@ package com.github.zgraund.createreautomated.registry;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
 import com.github.zgraund.createreautomated.api.DrillPartialIndex;
+import com.github.zgraund.createreautomated.item.stabilizer.StabilizerItem;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
+import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.tterrag.registrate.util.entry.ItemEntry;
@@ -15,6 +17,11 @@ import javax.annotation.Nonnull;
 
 public class ModItems {
     private static final CreateRegistrate REGISTRATE = CreateReAutomated.REGISTRATE;
+
+    public static final ItemEntry<StabilizerItem> STABILIZER =
+            REGISTRATE.item("stabilizer", StabilizerItem::new)
+                      .model(AssetLookup.existingItemModel())
+                      .register();
 
     public static final ItemEntry<Item> NODE_FRAGMENT = simple("node_fragment");
 

@@ -8,6 +8,8 @@ public class ModPartialModels {
 
     public static final PartialModel HALF_COG = create("half_shaft_cogwheel");
 
+    public static final PartialModel STABILIZER = create("stabilizer");
+
     public static final PartialModel IRON_DRILL = create("iron_drill");
     public static final PartialModel DIAMOND_DRILL = create("diamond_drill");
     public static final PartialModel NETHERITE_DRILL = create("netherite_drill");

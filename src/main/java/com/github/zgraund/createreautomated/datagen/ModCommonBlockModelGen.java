@@ -6,6 +6,7 @@ import com.github.zgraund.createreautomated.registry.ModBlocks;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -17,7 +18,8 @@ import org.jetbrains.annotations.Contract;
 import javax.annotation.Nonnull;
 
 public class ModCommonBlockModelGen extends BlockStateProvider {
-    public static final String OVERLAY_PATH = "block/node_overlays/node_destroy_stage_";
+    public static final String OVERLAY_PATH = "block/node_overlays/";
+    public static final String DESTROY_STAGE_PATH = OVERLAY_PATH + "node_destroy_stage_";
 
     public ModCommonBlockModelGen(PackOutput output, ExistingFileHelper exFileHelper) {
         super(output, CreateReAutomated.MOD_ID, exFileHelper);
@@ -36,13 +38,18 @@ public class ModCommonBlockModelGen extends BlockStateProvider {
                                                        .end();
             for (int i = 1; i < OreNodeBlock.DEPLETION.getPossibleValues().size(); i++) {
                 nodeState.part()
-                         .modelFile(prov.models().getExistingFile(prov.modLoc(OVERLAY_PATH + (i - 1))))
+                         .modelFile(prov.models().getExistingFile(prov.modLoc(DESTROY_STAGE_PATH + (i - 1))))
                          .addModel()
                          .condition(OreNodeBlock.DEPLETION, i)
                          .end();
             }
             nodeState.part()
-                     .modelFile(prov.models().getExistingFile(ModBlocks.STABILIZER_CAGE.getId()))
+//                     .modelFile(prov.models().getExistingFile(ModBlocks.STABILIZER_CAGE.getId()))
+                     .modelFile(prov.models().cubeColumn(
+                             OVERLAY_PATH + "stabilizer",
+                             prov.modLoc(OVERLAY_PATH + "stabilizer_side"),
+                             prov.modLoc(OVERLAY_PATH + "stabilizer_top")
+                     ).renderType(prov.mcLoc(RenderType.cutoutMipped().name)))
                      .addModel()
                      .condition(OreNodeBlock.STABLE, true)
                      .end();
@@ -52,7 +59,7 @@ public class ModCommonBlockModelGen extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         for (int i = 0; i <= 9; i++) {
-            models().cubeAll(OVERLAY_PATH + i, modLoc(OVERLAY_PATH + i)).renderType(mcLoc("cutout"));
+            models().cubeAll(DESTROY_STAGE_PATH + i, modLoc(DESTROY_STAGE_PATH + i)).renderType(mcLoc("cutout"));
         }
         ResourceLocation stabilizer = ModBlocks.STABILIZER_CAGE.getId();
         models().cubeAll(stabilizer.getPath(), stabilizer.withPrefix("block/")).renderType(mcLoc("cutout"));

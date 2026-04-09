@@ -1,16 +1,17 @@
 package com.github.zgraund.createreautomated.datagen;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
+import com.github.zgraund.createreautomated.registry.ModItems;
 import com.github.zgraund.createreautomated.registry.ModTags;
-import net.minecraft.Util;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class ModLangGen {
@@ -27,6 +28,10 @@ public class ModLangGen {
 
         // Items tooltip
         summary("item", "drill_head", "This drill can be used in an _Extractor_ to excavate an _Ore_ _Node_");
+
+        summary(ModItems.STABILIZER, "A stabilizer for an Ore Node");
+        condition(ModItems.STABILIZER, 1, "Hold R-Click");
+        behaviour(ModItems.STABILIZER, 1, "_Stabilize_ the node to make it breakable with a pickaxe");
 
         // Recipes
         recipe("extracting", "Extracting");
@@ -80,20 +85,20 @@ public class ModLangGen {
         consumer.accept(CreateReAutomated.MOD_ID + ".configuration." + suffix, value);
     }
 
-    private void summary(String prefix, @Nonnull DeferredHolder<?, ?> holder, String summary) {
-        consumer.accept(Util.makeDescriptionId(prefix, holder.getId()) + ".tooltip.summary", summary);
+    private void summary(@Nonnull Supplier<? extends ItemLike> holder, String summary) {
+        consumer.accept(holder.get().asItem().getDescriptionId() + ".tooltip.summary", summary);
     }
 
     private void summary(String prefix, String id, String summary) {
         add(prefix, id + ".tooltip.summary", summary);
     }
 
-    private void condition(String prefix, int number, String id, String summary) {
-        add(prefix, id + ".tooltip.condition" + number, summary);
+    private void condition(@Nonnull Supplier<? extends ItemLike> holder, int number, String condition) {
+        consumer.accept(holder.get().asItem().getDescriptionId() + ".tooltip.condition" + number, condition);
     }
 
-    private void behaviour(String prefix, int number, String id, String summary) {
-        add(prefix, id + ".tooltip.behaviour" + number, summary);
+    private void behaviour(@Nonnull Supplier<? extends ItemLike> holder, int number, String behaviour) {
+        consumer.accept(holder.get().asItem().getDescriptionId() + ".tooltip.behaviour" + number, behaviour);
     }
 
     private void tag(@Nonnull TagKey<?> tag) {
