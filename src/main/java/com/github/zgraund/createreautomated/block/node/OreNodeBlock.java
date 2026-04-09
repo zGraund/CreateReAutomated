@@ -4,7 +4,6 @@ import com.github.zgraund.createreautomated.api.OreNodeBlockIndex;
 import com.github.zgraund.createreautomated.api.block.Extractable;
 import com.github.zgraund.createreautomated.config.Config;
 import com.github.zgraund.createreautomated.registry.ModBlockEntities;
-import com.github.zgraund.createreautomated.registry.ModBlocks;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.ChatFormatting;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -13,13 +12,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.ParticleUtils;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -54,19 +49,6 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity>, Extractab
         super(properties);
         this.baseRock = turnsInto;
         this.registerDefaultState(this.defaultBlockState().setValue(DEPLETION, 0).setValue(STABLE, true));
-    }
-
-    @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand,
-                                              BlockHitResult hitResult) {
-        if (stack.is(ModBlocks.STABILIZER_CAGE.asItem()) && !state.getValue(STABLE)) {
-            if (!player.isCreative())
-                stack.shrink(1);
-            level.playSound(null, pos, SoundEvents.TRIAL_SPAWNER_PLACE, SoundSource.BLOCKS, 1, 0.80f);
-            level.setBlockAndUpdate(pos, state.setValue(STABLE, true));
-            return ItemInteractionResult.sidedSuccess(level.isClientSide());
-        }
-        return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
 
     @Override

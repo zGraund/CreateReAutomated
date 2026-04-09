@@ -3,7 +3,6 @@ package com.github.zgraund.createreautomated.registry;
 import com.github.zgraund.createreautomated.CreateReAutomated;
 import com.github.zgraund.createreautomated.api.OreNodeBlockIndex;
 import com.github.zgraund.createreautomated.block.InfiniteNodeBlock;
-import com.github.zgraund.createreautomated.block.StabilizerCageBlock;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorBlock;
 import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
 import com.github.zgraund.createreautomated.config.NodeYields;
@@ -84,18 +83,6 @@ public class ModBlocks {
 
     public static final BlockEntry<OreNodeBlock>
             NETHER_GOLD_NODE = netherrackNode("nether_gold_node", 250, Tags.Blocks.ORES_GOLD);
-
-    public static final BlockEntry<StabilizerCageBlock> STABILIZER_CAGE =
-            REGISTRATE.block("stabilizer_cage", StabilizerCageBlock::new)
-                      .initialProperties(() -> Blocks.GLASS)
-                      .properties(p -> p.strength(1f).sound(SoundType.METAL))
-                      .simpleItem()
-                      .blockstate((ctx, prov) ->
-                              // The model in pre-generated in ModCommonBlockModelGen because it is also
-                              // used in the Ore Node blockstate file
-                              prov.simpleBlock(ctx.get(), prov.models().getExistingFile(ctx.getId()))
-                      )
-                      .register();
 
     private static BlockEntry<OreNodeBlock> stoneNode(String name, int limit, TagKey<?>... tags) {
         return node(name, limit, Blocks.COBBLESTONE, stoneNodeProperties(),

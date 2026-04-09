@@ -67,7 +67,7 @@ public class ModRecipeProvider extends RecipeProvider {
                                       .save(recipeOutput, CreateReAutomated.asResource("netherite_drill_upgrade"));
 
         // Node Stabilizer
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.STABILIZER_CAGE)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.STABILIZER)
                            .define('F', ModItems.NODE_FRAGMENT)
                            .define('S', Items.NETHER_STAR)
                            .pattern("FFF")
