@@ -16,6 +16,7 @@ public class ModTags {
         public static final TagKey<Block>
                 ORE_NODES = mod("ore_nodes"),
                 COPPER_NODES = ores("copper_nodes"),
+                ZINC_NODES = ores("zinc_nodes"),
                 IRON_NODES = ores("iron_nodes"),
                 GOLD_NODES = ores("gold_nodes"),
                 DIAMOND_NODES = ores("diamond_nodes");

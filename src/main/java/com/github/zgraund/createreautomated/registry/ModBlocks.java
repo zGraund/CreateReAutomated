@@ -13,6 +13,7 @@ import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.ModelGen;
 import com.simibubi.create.foundation.data.TagGen;
+import com.simibubi.create.foundation.data.recipe.CommonMetal;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.builders.ItemBuilder;
@@ -65,18 +66,21 @@ public class ModBlocks {
 
     public static final BlockEntry<InfiniteNodeBlock>
             INFINITE_COPPER_NODE = infiniteNode("infinite_copper_node", ModTags.Blocks.COPPER_NODES),
+            INFINITE_ZINC_NODE = infiniteNode("infinite_zinc_node", ModTags.Blocks.ZINC_NODES),
             INFINITE_IRON_NODE = infiniteNode("infinite_iron_node", ModTags.Blocks.IRON_NODES),
             INFINITE_GOLD_NODE = infiniteNode("infinite_gold_node", ModTags.Blocks.GOLD_NODES),
             INFINITE_DIAMOND_NODE = infiniteNode("infinite_diamond_node", ModTags.Blocks.DIAMOND_NODES);
 
     public static final BlockEntry<OreNodeBlock>
             COPPER_NODE = stoneNode("copper_node", 300, Tags.Blocks.ORES_COPPER, ModTags.Blocks.COPPER_NODES),
+            ZINC_NODE = stoneNode("zinc_node", 300, CommonMetal.ZINC.ores.blocks(), CommonMetal.ZINC.ores.items(), ModTags.Blocks.ZINC_NODES),
             IRON_NODE = stoneNode("iron_node", 200, Tags.Blocks.ORES_IRON, ModTags.Blocks.IRON_NODES),
             GOLD_NODE = stoneNode("gold_node", 50, Tags.Blocks.ORES_GOLD, ModTags.Blocks.GOLD_NODES),
             DIAMOND_NODE = stoneNode("diamond_node", 20, Tags.Blocks.ORES_DIAMOND, ModTags.Blocks.DIAMOND_NODES);
 
     public static final BlockEntry<OreNodeBlock>
             DEEPSLATE_COPPER_NODE = deepslateNode("deepslate_copper_node", 350, Tags.Blocks.ORES_COPPER, ModTags.Blocks.COPPER_NODES),
+            DEEPSLATE_ZINC_NODE = stoneNode("deepslate_zinc_node", 300, CommonMetal.ZINC.ores.blocks(), CommonMetal.ZINC.ores.items(), ModTags.Blocks.ZINC_NODES),
             DEEPSLATE_IRON_NODE = deepslateNode("deepslate_iron_node", 250, Tags.Blocks.ORES_IRON, ModTags.Blocks.IRON_NODES),
             DEEPSLATE_GOLD_NODE = deepslateNode("deepslate_gold_node", 60, Tags.Blocks.ORES_GOLD, ModTags.Blocks.GOLD_NODES),
             DEEPSLATE_DIAMOND_NODE = deepslateNode("deepslate_diamond_node", 20, Tags.Blocks.ORES_DIAMOND, ModTags.Blocks.DIAMOND_NODES);

@@ -44,6 +44,7 @@ public class ModLangGen {
         tag(ModTags.Blocks.DIAMOND_NODES);
         tag(ModTags.Blocks.GOLD_NODES);
         tag(ModTags.Blocks.IRON_NODES);
+        tag(ModTags.Blocks.ZINC_NODES);
         tag(ModTags.Blocks.COPPER_NODES);
 
         // Item tags
