@@ -6,7 +6,7 @@ import net.minecraft.world.item.crafting.RecipeInput;
 
 import javax.annotation.Nonnull;
 
-public record ExtractorRecipeInput(ItemStack drill, BlockPos nodePos) implements RecipeInput {
+public record ExtractingRecipeInput(ItemStack drill, BlockPos nodePos) implements RecipeInput {
     @Nonnull
     @Override
     public ItemStack getItem(int index) {

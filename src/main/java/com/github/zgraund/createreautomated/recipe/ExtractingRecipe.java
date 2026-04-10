@@ -28,12 +28,12 @@ import java.util.List;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class ExtractorRecipe extends ProcessingRecipe<ExtractorRecipeInput, ExtractingRecipeParams> {
+public class ExtractingRecipe extends ProcessingRecipe<ExtractingRecipeInput, ExtractingRecipeParams> {
     private final HolderSet<Block> nodes;
     private final int extractionQuantity;
     private final int durabilityCost;
 
-    public ExtractorRecipe(ExtractingRecipeParams params) {
+    public ExtractingRecipe(ExtractingRecipeParams params) {
         super(ModRecipeTypes.EXTRACTING, params);
         this.nodes = params.nodes;
         this.extractionQuantity = params.extractionQuantity;
@@ -41,7 +41,7 @@ public class ExtractorRecipe extends ProcessingRecipe<ExtractorRecipeInput, Extr
     }
 
     @Override
-    public boolean matches(ExtractorRecipeInput input, Level level) {
+    public boolean matches(ExtractingRecipeInput input, Level level) {
         if (!getDrill().test(input.drill()))
             return false;
         BlockState blockState = level.getBlockState(input.nodePos());
@@ -98,12 +98,12 @@ public class ExtractorRecipe extends ProcessingRecipe<ExtractorRecipeInput, Extr
         }).toList();
     }
 
-    public interface Factory extends ProcessingRecipe.Factory<ExtractingRecipeParams, ExtractorRecipe> {
-        ExtractorRecipe create(ExtractingRecipeParams params);
+    public interface Factory extends ProcessingRecipe.Factory<ExtractingRecipeParams, ExtractingRecipe> {
+        ExtractingRecipe create(ExtractingRecipeParams params);
     }
 
     @SuppressWarnings("unused")
-    public static class Builder extends ProcessingRecipeBuilder<ExtractingRecipeParams, ExtractorRecipe, Builder> {
+    public static class Builder extends ProcessingRecipeBuilder<ExtractingRecipeParams, ExtractingRecipe, Builder> {
         public Builder(Factory factory, ResourceLocation recipeId) {
             super(factory, recipeId);
         }
@@ -156,22 +156,22 @@ public class ExtractorRecipe extends ProcessingRecipe<ExtractorRecipeInput, Extr
         }
     }
 
-    public static class Serializer implements RecipeSerializer<ExtractorRecipe> {
-        private final MapCodec<ExtractorRecipe> codec;
-        private final StreamCodec<RegistryFriendlyByteBuf, ExtractorRecipe> streamCodec;
+    public static class Serializer implements RecipeSerializer<ExtractingRecipe> {
+        private final MapCodec<ExtractingRecipe> codec;
+        private final StreamCodec<RegistryFriendlyByteBuf, ExtractingRecipe> streamCodec;
 
-        public Serializer(ProcessingRecipe.Factory<ExtractingRecipeParams, ExtractorRecipe> factory) {
+        public Serializer(ProcessingRecipe.Factory<ExtractingRecipeParams, ExtractingRecipe> factory) {
             this.codec = ProcessingRecipe.codec(factory, ExtractingRecipeParams.CODEC);
             this.streamCodec = ProcessingRecipe.streamCodec(factory, ExtractingRecipeParams.STREAM_CODEC);
         }
 
         @Override
-        public MapCodec<ExtractorRecipe> codec() {
+        public MapCodec<ExtractingRecipe> codec() {
             return codec;
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, ExtractorRecipe> streamCodec() {
+        public StreamCodec<RegistryFriendlyByteBuf, ExtractingRecipe> streamCodec() {
             return streamCodec;
         }
     }

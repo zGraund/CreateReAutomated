@@ -2,8 +2,8 @@ package com.github.zgraund.createreautomated.block.extractor;
 
 import com.github.zgraund.createreautomated.api.block.Extractable;
 import com.github.zgraund.createreautomated.config.Config;
-import com.github.zgraund.createreautomated.recipe.ExtractorRecipe;
-import com.github.zgraund.createreautomated.recipe.ExtractorRecipeInput;
+import com.github.zgraund.createreautomated.recipe.ExtractingRecipe;
+import com.github.zgraund.createreautomated.recipe.ExtractingRecipeInput;
 import com.github.zgraund.createreautomated.registry.ModBlocks;
 import com.github.zgraund.createreautomated.registry.ModRecipeTypes;
 import com.github.zgraund.createreautomated.registry.ModTags;
@@ -12,6 +12,7 @@ import com.simibubi.create.foundation.item.ItemHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.math.VecHelper;
+import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -61,7 +62,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     private float animationProgress = RETRACTED_DRILL_OFFSET;
     private AnimationStatus animationStatus = AnimationStatus.IDLE;
     @Nullable
-    private ExtractorRecipe lastRecipe;
+    private ExtractingRecipe recipe;
 
     public ExtractorBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
         super(typeIn, pos, state);
@@ -91,36 +92,14 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         super.tick();
         if (level == null) return;
 
-        // TODO: the extractor animation/progress should only tick on server
-        //       partly because in 1.21.2 recipes are no longer synced and and
-        //       so that the animation is not broken by the server running at a
-        //       different tick rate than the client.
-        //       so this method need to be refactored
-
-        tickAnimation();
-
-        if (failPreConditions()) {
-            resetDrill();
-            return;
-        }
-
         BlockPos nodePos = getNodePosition();
-        ExtractorRecipeInput input = new ExtractorRecipeInput(drillInv.getStackInSlot(0), nodePos);
-        if (lastRecipe == null || !lastRecipe.matches(input, level)) {
-            Optional<ExtractorRecipe> recipe = getRecipe(input);
-            if (recipe.isEmpty()) {
-                resetDrill();
-            } else {
-                if (lastRecipe != null && lastRecipe != recipe.get())
-                    progress = 0;
-                lastRecipe = recipe.get();
+        if (failPreConditions()) {
+            resetRecipe();
+        } else {
+            ExtractingRecipeInput input = new ExtractingRecipeInput(drillInv.getStackInSlot(0), nodePos);
+            if (recipe == null || !recipe.matches(input, level)) {
+                getRecipeFor(input).ifPresentOrElse(this::setRecipe, this::resetRecipe);
             }
-            return;
-        }
-
-        if (animationStatus != AnimationStatus.ENGAGED) {
-            animationStatus = AnimationStatus.DEPLOYING;
-            return;
         }
 
         if (level.isClientSide()) {
@@ -128,17 +107,20 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
             return;
         }
 
-        progress += (int) getProcessingSpeed();
+        tickDrill();
 
-        if (progress >= lastRecipe.getProcessingDuration()) {
-            if (level.getBlockState(nodePos).getBlock() instanceof Extractable node) {
-                node.extract(lastRecipe.extractionQuantity(), nodePos, level);
+        if (isExtracting())
+            progress += (int) getProcessingSpeed();
+
+        if (recipe != null && progress >= recipe.getProcessingDuration()) {
+            if (getNode().getBlock() instanceof Extractable node) {
+                node.extract(recipe.extractionQuantity(), nodePos, level);
             }
-            lastRecipe.rollResults(level.random).forEach(result ->
+            recipe.rollResults(level.random).forEach(result ->
                     ItemHandlerHelper.insertItemStacked(outputInv, result, false)
             );
-            drillInv.getStackInSlot(0).hurtAndBreak(lastRecipe.durabilityCost(), (ServerLevel) level, null, item -> {
-                resetDrill(true);
+            drillInv.getStackInSlot(0).hurtAndBreak(recipe.durabilityCost(), (ServerLevel) level, null, item -> {
+                resetRecipe(true);
                 level.playSound(null, getBlockPos().below(), SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 0.5f, 1);
             });
             progress = 0;
@@ -147,25 +129,21 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         notifyUpdate();
     }
 
-    public void tickAnimation() {
+    public void tickDrill() {
         switch (animationStatus) {
             case DEPLOYING -> {
-                animationProgress += 0.01f;
-                float max = getNodeMaxDrillOffset();
-                if (animationProgress >= max) {
+                if (animationProgress >= getNodeMaxDrillOffset())
                     animationStatus = AnimationStatus.ENGAGED;
-                    animationProgress = max;
-                }
+                else
+                    animationProgress += 0.01f;
             }
             case RETRACTING -> {
-                animationProgress -= 0.01f;
-                if (animationProgress <= RETRACTED_DRILL_OFFSET) {
+                if (animationProgress <= RETRACTED_DRILL_OFFSET)
                     animationStatus = AnimationStatus.IDLE;
-                    animationProgress = RETRACTED_DRILL_OFFSET;
-                }
+                else
+                    animationProgress -= 0.01f;
             }
         }
-        sendData();
     }
 
     @Override
@@ -173,9 +151,9 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     public void tickAudio() {
         super.tickAudio();
 
-        if (level == null || failPreConditions() || lastRecipe == null)
+        if (level == null || failPreConditions() || recipe == null)
             return;
-        if (!shouldPlayAudioAndParticles())
+        if (!isExtracting())
             return;
 
         if ((AnimationTickHolder.getTicks() % Math.floor(256 / (getProcessingSpeed() / 2))) == 0)
@@ -183,12 +161,12 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     }
 
     public void spawnParticles() {
-        if (lastRecipe == null || level == null)
+        if (recipe == null || level == null)
             return;
-        if (!shouldPlayAudioAndParticles())
+        if (!isExtracting())
             return;
 
-        ItemParticleOption data = new ItemParticleOption(ParticleTypes.ITEM, lastRecipe.getResultItem(level.registryAccess()));
+        ItemParticleOption data = new ItemParticleOption(ParticleTypes.ITEM, recipe.getResultItem(level.registryAccess()));
         float angle = level.random.nextFloat() * 360;
         Vec3 offset = new Vec3(0, -getDrillOffset(), 0.5f);
         offset = VecHelper.rotate(offset, angle, Direction.Axis.Y);
@@ -200,7 +178,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         level.addParticle(data, center.x, center.y, center.z, target.x, target.y, target.z);
     }
 
-    public boolean shouldPlayAudioAndParticles() {
+    public boolean isExtracting() {
         return animationStatus == AnimationStatus.ENGAGED;
     }
 
@@ -208,13 +186,21 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         return Math.abs(getSpeed());
     }
 
-    public void resetDrill() {
-        resetDrill(false);
+    public void setRecipe(ExtractingRecipe recipe) {
+        // only reset progress on recipe change and not on load from nbt
+        if (this.recipe != null && this.recipe != recipe)
+            progress = 0;
+        this.recipe = recipe;
+        animationStatus = AnimationStatus.DEPLOYING;
     }
 
-    public void resetDrill(boolean hard) {
+    public void resetRecipe() {
+        resetRecipe(false);
+    }
+
+    public void resetRecipe(boolean hard) {
         progress = 0;
-        lastRecipe = null;
+        recipe = null;
         if (hard) {
             animationStatus = AnimationStatus.IDLE;
             animationProgress = RETRACTED_DRILL_OFFSET;
@@ -223,9 +209,9 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         }
     }
 
-    public Optional<ExtractorRecipe> getRecipe(ExtractorRecipeInput input) {
+    public Optional<ExtractingRecipe> getRecipeFor(ExtractingRecipeInput input) {
         if (level == null) return Optional.empty();
-        Optional<RecipeHolder<ExtractorRecipe>> holder = ModRecipeTypes.EXTRACTING.find(input, level);
+        Optional<RecipeHolder<ExtractingRecipe>> holder = ModRecipeTypes.EXTRACTING.find(input, level);
         return holder.map(RecipeHolder::value);
     }
 
@@ -258,6 +244,11 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         return drillInv.getStackInSlot(0).getItem();
     }
 
+    public float getDrillOffset() {
+        if (level == null) return RETRACTED_DRILL_OFFSET;
+        return animationProgress;
+    }
+
     public boolean isOutputFull() {
         for (int i = 0; i < outputInv.getSlots(); i++) {
             ItemStack stack = outputInv.getStackInSlot(i);
@@ -265,11 +256,6 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
                 return true;
         }
         return false;
-    }
-
-    public float getDrillOffset() {
-        if (level == null) return RETRACTED_DRILL_OFFSET;
-        return animationProgress;
     }
 
     @Override
@@ -294,6 +280,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         compound.put("OutputInventory", outputInv.serializeNBT(registries));
         compound.putInt("Progress", progress);
         compound.putFloat("Animation", animationProgress);
+        NBTHelper.writeEnum(compound, "Status", animationStatus);
         super.write(compound, registries, clientPacket);
     }
 
@@ -303,6 +290,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         outputInv.deserializeNBT(registries, compound.getCompound("OutputInventory"));
         progress = compound.getInt("Progress");
         animationProgress = compound.getFloat("Animation");
+        animationStatus = NBTHelper.readEnum(compound, "Status", AnimationStatus.class);
         super.read(compound, registries, clientPacket);
     }
 
@@ -315,13 +303,12 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
         boolean create = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-        boolean reAutomated = false;
-        if (Config.client().debugExtractorOverlay.get() && lastRecipe != null) {
-            reAutomated = true;
+        boolean shouldAddTooltip = Config.client().debugExtractorOverlay.get() && recipe != null;
+        if (shouldAddTooltip) {
             // For this use case the Create lang builder is good enough
             CreateLang.text("Crafting progress: ")
                       .style(ChatFormatting.GRAY)
-                      .add(CreateLang.text((progress * 100) / lastRecipe.getProcessingDuration() + "%").style(ChatFormatting.DARK_GRAY))
+                      .add(CreateLang.text((progress * 100) / recipe.getProcessingDuration() + "%").style(ChatFormatting.DARK_GRAY))
                       .forGoggles(tooltip);
             CreateLang.itemName(drillInv.getStackInSlot(0))
                       .style(ChatFormatting.DARK_GRAY)
@@ -329,7 +316,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
             CreateLang.blockName(getNode())
                       .style(ChatFormatting.DARK_GRAY)
                       .forGoggles(tooltip, 1);
-            lastRecipe.getRollableResults().forEach(output ->
+            recipe.getRollableResults().forEach(output ->
                     CreateLang.text(" -> ")
                               .style(ChatFormatting.DARK_GRAY)
                               .add(CreateLang.text(output.getStack().getCount() + "x ").style(ChatFormatting.DARK_GRAY))
@@ -339,7 +326,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
                               .forGoggles(tooltip, 1)
             );
         }
-        return create || reAutomated;
+        return create || shouldAddTooltip;
     }
 
     public void setVirtualDrill(ItemStack stack) {

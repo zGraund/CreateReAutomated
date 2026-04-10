@@ -1,7 +1,7 @@
 package com.github.zgraund.createreautomated.registry;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
-import com.github.zgraund.createreautomated.recipe.ExtractorRecipe;
+import com.github.zgraund.createreautomated.recipe.ExtractingRecipe;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import net.createmod.catnip.lang.Lang;
 import net.minecraft.core.registries.Registries;
@@ -16,7 +16,7 @@ import javax.annotation.Nonnull;
 import java.util.Optional;
 
 public enum ModRecipeTypes implements IRecipeTypeInfo {
-    EXTRACTING(new ExtractorRecipe.Serializer(ExtractorRecipe::new));
+    EXTRACTING(new ExtractingRecipe.Serializer(ExtractingRecipe::new));
 
     private final ResourceLocation id;
     private final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<?>> serializer;

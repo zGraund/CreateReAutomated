@@ -1,7 +1,7 @@
 package com.github.zgraund.createreautomated.api.datagen;
 
+import com.github.zgraund.createreautomated.recipe.ExtractingRecipe;
 import com.github.zgraund.createreautomated.recipe.ExtractingRecipeParams;
-import com.github.zgraund.createreautomated.recipe.ExtractorRecipe;
 import com.github.zgraund.createreautomated.registry.ModItems;
 import com.github.zgraund.createreautomated.registry.ModRecipeTypes;
 import com.simibubi.create.api.data.recipe.ProcessingRecipeGen;
@@ -13,12 +13,12 @@ import net.minecraft.resources.ResourceLocation;
 import javax.annotation.Nonnull;
 import java.util.concurrent.CompletableFuture;
 
-public class ExtractingRecipeGen extends ProcessingRecipeGen<ExtractingRecipeParams, ExtractorRecipe, ExtractorRecipe.Builder> {
+public class ExtractingRecipeGen extends ProcessingRecipeGen<ExtractingRecipeParams, ExtractingRecipe, ExtractingRecipe.Builder> {
     public ExtractingRecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, String defaultNamespace) {
         super(output, registries, defaultNamespace);
     }
 
-    protected ExtractorRecipe.Builder defaultFrag(@Nonnull ExtractorRecipe.Builder builder) {
+    protected ExtractingRecipe.Builder defaultFrag(@Nonnull ExtractingRecipe.Builder builder) {
         return builder.output(0.01f, ModItems.NODE_FRAGMENT, 1);
     }
 
@@ -28,7 +28,7 @@ public class ExtractingRecipeGen extends ProcessingRecipeGen<ExtractingRecipePar
     }
 
     @Override
-    protected ExtractorRecipe.Builder getBuilder(ResourceLocation id) {
-        return new ExtractorRecipe.Builder(ExtractorRecipe::new, id);
+    protected ExtractingRecipe.Builder getBuilder(ResourceLocation id) {
+        return new ExtractingRecipe.Builder(ExtractingRecipe::new, id);
     }
 }

@@ -1,6 +1,6 @@
 package com.github.zgraund.createreautomated.compat.jei;
 
-import com.github.zgraund.createreautomated.recipe.ExtractorRecipe;
+import com.github.zgraund.createreautomated.recipe.ExtractingRecipe;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
@@ -22,15 +22,15 @@ import java.util.List;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class ExtractorCategory extends CreateRecipeCategory<ExtractorRecipe> {
+public class ExtractingCategory extends CreateRecipeCategory<ExtractingRecipe> {
     private final AnimatedExtractor extractor = new AnimatedExtractor();
 
-    public ExtractorCategory(Info<ExtractorRecipe> info) {
+    public ExtractingCategory(Info<ExtractingRecipe> info) {
         super(info);
     }
 
     @Override
-    protected void setRecipe(IRecipeLayoutBuilder builder, ExtractorRecipe recipe, IFocusGroup focuses) {
+    protected void setRecipe(IRecipeLayoutBuilder builder, ExtractingRecipe recipe, IFocusGroup focuses) {
         builder.addInputSlot(35, 30)
                .addIngredients(recipe.getDrill())
                .setBackground(getRenderedSlot(), -1, -1);
@@ -52,7 +52,7 @@ public class ExtractorCategory extends CreateRecipeCategory<ExtractorRecipe> {
     }
 
     @Override
-    protected void draw(ExtractorRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
+    protected void draw(ExtractingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
         AllGuiTextures.JEI_DOWN_ARROW.render(graphics, 115, 25);
         AllGuiTextures.JEI_SHADOW.render(graphics, 61, 74);
         Block node = recipeSlotsView.getSlotViews()
