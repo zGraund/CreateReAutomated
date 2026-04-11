@@ -69,10 +69,6 @@ public class ModLangGen {
         config("debugOreNode", "Debug Ore Node");
         config("debugExtractor", "Debug Extractor");
         config("worldGen", "Enable World Generation");
-
-        // TODO: remove
-        // Worldgen for testing
-        consumer.accept("generator.createreautomated.ore_node_test", "Node Ore test world");
     }
 
     private void add(String prefix, String suffix, String value) {
