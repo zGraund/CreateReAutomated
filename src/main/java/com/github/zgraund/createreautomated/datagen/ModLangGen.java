@@ -38,6 +38,7 @@ public class ModLangGen {
 
         // Misc
         add("itemGroup", "base", "Create Re-Automated");
+        add("block", "ore_node.depletionLevel", "Depletion Level: ");
 
         // Block tags
         tag(ModTags.Blocks.ORE_NODES);

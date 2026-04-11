@@ -113,9 +113,8 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity>, Extractab
         if (data != null) {
             Integer level = data.get(OreNodeBlock.DEPLETION);
             if (level != null && level != 0) {
-                // TODO: use translatable here
                 tooltipComponents.add(
-                        Component.literal("Depletion Level: ")
+                        Component.translatable("block.createreautomated.ore_node.depletionLevel")
                                  .withStyle(ChatFormatting.GRAY)
                                  .append(Component.literal(String.valueOf(level)).withStyle(ChatFormatting.DARK_GRAY))
                 );
