@@ -4,6 +4,7 @@ import com.github.zgraund.createreautomated.CreateReAutomated;
 import com.github.zgraund.createreautomated.api.OreNodeBlockIndex;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorBlockEntity;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorRenderer;
+import com.github.zgraund.createreautomated.block.extractor.ExtractorVisual;
 import com.github.zgraund.createreautomated.block.node.OreNodeEntity;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
@@ -13,8 +14,9 @@ public class ModBlockEntities {
 
     public static final BlockEntityEntry<ExtractorBlockEntity> EXTRACTOR_BE =
             REGISTRATE.blockEntity("extractor_be", ExtractorBlockEntity::new)
-                      .validBlocks(ModBlocks.EXTRACTOR)
+                      .visual(() -> ExtractorVisual::new, false)
                       .renderer(() -> ExtractorRenderer::new)
+                      .validBlocks(ModBlocks.EXTRACTOR)
                       .register();
 
     public static final BlockEntityEntry<OreNodeEntity> ORE_NODE_BE =

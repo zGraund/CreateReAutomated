@@ -1,5 +1,6 @@
 package com.github.zgraund.createreautomated.block.extractor;
 
+import com.github.zgraund.createreautomated.api.DrillPartialIndex;
 import com.github.zgraund.createreautomated.api.block.Extractable;
 import com.github.zgraund.createreautomated.config.Config;
 import com.github.zgraund.createreautomated.recipe.ExtractingRecipe;
@@ -10,6 +11,7 @@ import com.github.zgraund.createreautomated.registry.ModTags;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.item.ItemHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
+import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.math.VecHelper;
 import net.createmod.catnip.nbt.NBTHelper;
@@ -247,6 +249,10 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     public float getDrillOffset() {
         if (level == null) return RETRACTED_DRILL_OFFSET;
         return animationProgress;
+    }
+
+    public PartialModel getDrillModel() {
+        return DrillPartialIndex.getOrDefaultModel(getDrill());
     }
 
     public boolean isOutputFull() {
