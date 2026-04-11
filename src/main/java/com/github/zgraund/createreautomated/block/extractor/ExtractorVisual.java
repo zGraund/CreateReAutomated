@@ -36,8 +36,13 @@ public class ExtractorVisual extends SingleAxisRotatingVisual<ExtractorBlockEnti
     public void beginFrame(DynamicVisual.Context ctx) {
         drill.setPosition(getVisualPosition())
              .nudge(0, -blockEntity.getDrillOffset(), 0)
-             .setup(be)
              .setChanged();
+    }
+
+    @Override
+    public void update(float pt) {
+        super.update(pt);
+        drill.setup(be).setChanged();
     }
 
     @Override
