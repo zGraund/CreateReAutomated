@@ -72,21 +72,21 @@ public class ModBlocks {
             INFINITE_DIAMOND_NODE = infiniteNode("infinite_diamond_node", ModTags.Blocks.DIAMOND_NODES);
 
     public static final BlockEntry<OreNodeBlock>
-            COPPER_NODE = stoneNode("copper_node", 300, Tags.Blocks.ORES_COPPER, ModTags.Blocks.COPPER_NODES),
-            ZINC_NODE = stoneNode("zinc_node", 300, CommonMetal.ZINC.ores.blocks(), CommonMetal.ZINC.ores.items(), ModTags.Blocks.ZINC_NODES),
-            IRON_NODE = stoneNode("iron_node", 200, Tags.Blocks.ORES_IRON, ModTags.Blocks.IRON_NODES),
-            GOLD_NODE = stoneNode("gold_node", 50, Tags.Blocks.ORES_GOLD, ModTags.Blocks.GOLD_NODES),
-            DIAMOND_NODE = stoneNode("diamond_node", 20, Tags.Blocks.ORES_DIAMOND, ModTags.Blocks.DIAMOND_NODES);
+            COPPER_NODE = stoneNode("copper_node", 240, Tags.Blocks.ORES_COPPER, ModTags.Blocks.COPPER_NODES),
+            ZINC_NODE = stoneNode("zinc_node", 200, CommonMetal.ZINC.ores.blocks(), CommonMetal.ZINC.ores.items(), ModTags.Blocks.ZINC_NODES),
+            IRON_NODE = stoneNode("iron_node", 240, Tags.Blocks.ORES_IRON, ModTags.Blocks.IRON_NODES),
+            GOLD_NODE = stoneNode("gold_node", 180, Tags.Blocks.ORES_GOLD, ModTags.Blocks.GOLD_NODES),
+            DIAMOND_NODE = stoneNode("diamond_node", 108, Tags.Blocks.ORES_DIAMOND, ModTags.Blocks.DIAMOND_NODES);
 
     public static final BlockEntry<OreNodeBlock>
-            DEEPSLATE_COPPER_NODE = deepslateNode("deepslate_copper_node", 350, Tags.Blocks.ORES_COPPER, ModTags.Blocks.COPPER_NODES),
-            DEEPSLATE_ZINC_NODE = stoneNode("deepslate_zinc_node", 300, CommonMetal.ZINC.ores.blocks(), CommonMetal.ZINC.ores.items(), ModTags.Blocks.ZINC_NODES),
-            DEEPSLATE_IRON_NODE = deepslateNode("deepslate_iron_node", 250, Tags.Blocks.ORES_IRON, ModTags.Blocks.IRON_NODES),
-            DEEPSLATE_GOLD_NODE = deepslateNode("deepslate_gold_node", 60, Tags.Blocks.ORES_GOLD, ModTags.Blocks.GOLD_NODES),
-            DEEPSLATE_DIAMOND_NODE = deepslateNode("deepslate_diamond_node", 20, Tags.Blocks.ORES_DIAMOND, ModTags.Blocks.DIAMOND_NODES);
+            DEEPSLATE_COPPER_NODE = deepslateNode("deepslate_copper_node", 300, Tags.Blocks.ORES_COPPER, ModTags.Blocks.COPPER_NODES),
+            DEEPSLATE_ZINC_NODE = deepslateNode("deepslate_zinc_node", 250, CommonMetal.ZINC.ores.blocks(), CommonMetal.ZINC.ores.items(), ModTags.Blocks.ZINC_NODES),
+            DEEPSLATE_IRON_NODE = deepslateNode("deepslate_iron_node", 300, Tags.Blocks.ORES_IRON, ModTags.Blocks.IRON_NODES),
+            DEEPSLATE_GOLD_NODE = deepslateNode("deepslate_gold_node", 225, Tags.Blocks.ORES_GOLD, ModTags.Blocks.GOLD_NODES),
+            DEEPSLATE_DIAMOND_NODE = deepslateNode("deepslate_diamond_node", 135, Tags.Blocks.ORES_DIAMOND, ModTags.Blocks.DIAMOND_NODES);
 
     public static final BlockEntry<OreNodeBlock>
-            NETHER_GOLD_NODE = netherrackNode("nether_gold_node", 250, Tags.Blocks.ORES_GOLD);
+            NETHER_GOLD_NODE = netherrackNode("nether_gold_node", 180, Tags.Blocks.ORES_GOLD);
 
     private static BlockEntry<OreNodeBlock> stoneNode(String name, int limit, TagKey<?>... tags) {
         return node(name, limit, Blocks.COBBLESTONE, stoneNodeProperties(),
