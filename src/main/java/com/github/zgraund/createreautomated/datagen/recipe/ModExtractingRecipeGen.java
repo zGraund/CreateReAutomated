@@ -60,6 +60,14 @@ public class ModExtractingRecipeGen extends ExtractingRecipeGen {
                             .secAtMaxSpeed(5)
                             .output(ModItems.COPPER_BIT, 6)
                     )
+            ),
+            ZINC_BITS = create("zinc_bits", builder ->
+                    defaultFrag(builder
+                            .require(ModTags.Items.AT_LEAST_TIER_1)
+                            .nodes(ModTags.Blocks.ZINC_NODES)
+                            .secAtMaxSpeed(5)
+                            .output(ModItems.ZINC_BIT, 5)
+                    )
             );
 
     public ModExtractingRecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {

@@ -33,6 +33,7 @@ public class ModItems {
 
     public static final ItemEntry<Item>
             COPPER_BIT = simple("copper_bit"),
+            ZINC_BIT = simple("zinc_bit"),
             IRON_BIT = simple("iron_bit"),
             GOLD_BIT = simple("gold_bit"),
             DIAMOND_BIT = simple("diamond_bit");
