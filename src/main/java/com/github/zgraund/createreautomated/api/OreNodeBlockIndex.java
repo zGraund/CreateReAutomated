@@ -3,8 +3,10 @@ package com.github.zgraund.createreautomated.api;
 import com.simibubi.create.api.registry.SimpleRegistry;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.registries.DeferredBlock;
+import org.jetbrains.annotations.Contract;
 
 import javax.annotation.Nonnull;
 import java.util.HashSet;
@@ -30,10 +32,14 @@ public class OreNodeBlockIndex {
     /**
      * The register method must be called before Block Entities registration
      */
-    public static <T extends Block, R> BlockBuilder<T, R> register(@Nonnull BlockBuilder<T, R> builder, int yield) {
-        BLOCKS.add(builder::getEntry);
-        NODE_YIELDS.registerProvider(block -> block == builder.getEntry() ? () -> yield : null);
-        return builder;
+    @Nonnull
+    @Contract(pure = true)
+    public static <T extends Block, R> NonNullUnaryOperator<BlockBuilder<T, R>> register(int yield) {
+        return builder -> {
+            BLOCKS.add(builder::getEntry);
+            NODE_YIELDS.registerProvider(block -> block == builder.getEntry() ? () -> yield : null);
+            return builder;
+        };
     }
 
     public static int getYieldOrDefault(Block node) {
