@@ -1,6 +1,7 @@
 package com.github.zgraund.createreautomated.config;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
+import com.github.zgraund.createreautomated.api.OreNodeBlockIndex;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -29,6 +30,7 @@ public class NodeYields extends ConfigBase {
             if (!builder.getOwner().getModid().equals(CreateReAutomated.MOD_ID))
                 throw new IllegalStateException("Only " + CreateReAutomated.NAME + " blocks can be added to the mod config.");
             DEFAULT_VALUES.put(CreateReAutomated.asResource(builder.getName()), value);
+            OreNodeBlockIndex.BLOCKS.add(builder::getEntry);
             return builder;
         };
     }

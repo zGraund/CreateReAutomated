@@ -1,7 +1,6 @@
 package com.github.zgraund.createreautomated.registry;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
-import com.github.zgraund.createreautomated.api.OreNodeBlockIndex;
 import com.github.zgraund.createreautomated.block.InfiniteNodeBlock;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorBlock;
 import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
@@ -115,7 +114,6 @@ public class ModBlocks {
                          .blockstate(ModCommonBlockModelGen.defaultOverlay())
                          .loot((prov, block) -> prov.add(block, ModBlockLootTableGen.createOreNodeDrop(block)))
                          .transform(NodeYields.setNodeValue(quantity))
-                         .transform(OreNodeBlockIndex::register)
                          .onRegisterAfter(Registries.ITEM, item -> ItemDescription.useKey(item, "block.createreautomated.ore_node"))
                          .register();
     }

@@ -21,4 +21,8 @@ public class DrillPartialIndex {
     public static void register(DeferredItem<Item> drill, PartialModel model) {
         MODELS.registerProvider(item -> item == drill.get() ? model : null);
     }
+
+    public static void register(Item drill, PartialModel model) {
+        MODELS.register(drill, model);
+    }
 }
