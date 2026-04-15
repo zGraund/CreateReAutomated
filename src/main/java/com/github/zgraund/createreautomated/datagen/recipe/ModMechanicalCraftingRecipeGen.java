@@ -11,7 +11,9 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 
+import javax.annotation.Nonnull;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 public class ModMechanicalCraftingRecipeGen extends MechanicalCraftingRecipeGen {
@@ -25,8 +27,8 @@ public class ModMechanicalCraftingRecipeGen extends MechanicalCraftingRecipeGen 
         super(output, registries, CreateReAutomated.MOD_ID);
     }
 
-    private GeneratedRecipe defaultInfiniteNode(ItemLike output, ItemLike... nodes) {
-        return create(() -> output).recipe(builder ->
+    private GeneratedRecipe defaultInfiniteNode(@Nonnull Supplier<? extends ItemLike> output, ItemLike... nodes) {
+        return create(output::get).recipe(builder ->
                 builder.key('A', ModItems.NODE_FRAGMENT)
                        .key('B', Ingredient.of(nodes))
                        .key('C', Blocks.HEAVY_CORE)
