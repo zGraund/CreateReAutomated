@@ -21,6 +21,7 @@ public class ModMechanicalCraftingRecipeGen extends MechanicalCraftingRecipeGen 
             INFINITE_DIAMOND_NODE = defaultInfiniteNode(ModBlocks.INFINITE_DIAMOND_NODE, ModBlocks.DIAMOND_NODE, ModBlocks.DEEPSLATE_DIAMOND_NODE),
             INFINITE_GOLD_NODE = defaultInfiniteNode(ModBlocks.INFINITE_GOLD_NODE, ModBlocks.GOLD_NODE, ModBlocks.DEEPSLATE_GOLD_NODE),
             INFINITE_IRON_NODE = defaultInfiniteNode(ModBlocks.INFINITE_IRON_NODE, ModBlocks.IRON_NODE, ModBlocks.DEEPSLATE_IRON_NODE),
+            INFINITE_ZINC_NODE = defaultInfiniteNode(ModBlocks.INFINITE_ZINC_NODE, ModBlocks.ZINC_NODE, ModBlocks.DEEPSLATE_ZINC_NODE),
             INFINITE_COPPER_NODE = defaultInfiniteNode(ModBlocks.INFINITE_COPPER_NODE, ModBlocks.COPPER_NODE, ModBlocks.DEEPSLATE_COPPER_NODE);
 
     public ModMechanicalCraftingRecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
