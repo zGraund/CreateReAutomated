@@ -134,16 +134,18 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     public void tickDrill() {
         switch (animationStatus) {
             case DEPLOYING -> {
-                if (animationProgress >= getNodeMaxDrillOffset())
+                animationProgress += 0.01f;
+                if (animationProgress >= getNodeMaxDrillOffset()) {
                     animationStatus = AnimationStatus.ENGAGED;
-                else
-                    animationProgress += 0.01f;
+                    animationProgress = getNodeMaxDrillOffset();
+                }
             }
             case RETRACTING -> {
-                if (animationProgress <= RETRACTED_DRILL_OFFSET)
+                animationProgress -= 0.01f;
+                if (animationProgress <= RETRACTED_DRILL_OFFSET) {
                     animationStatus = AnimationStatus.IDLE;
-                else
-                    animationProgress -= 0.01f;
+                    animationProgress = RETRACTED_DRILL_OFFSET;
+                }
             }
         }
     }
