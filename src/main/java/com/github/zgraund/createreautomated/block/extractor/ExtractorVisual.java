@@ -13,11 +13,13 @@ import dev.engine_room.flywheel.lib.model.Models;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import dev.engine_room.flywheel.lib.visual.SimpleDynamicVisual;
 
+import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
 public class ExtractorVisual extends SingleAxisRotatingVisual<ExtractorBlockEntity> implements SimpleDynamicVisual {
     private final RotatingInstance drill;
     private final ExtractorBlockEntity be;
+    @Nullable
     private PartialModel model;
 
     public ExtractorVisual(VisualizationContext context, ExtractorBlockEntity blockEntity, float partialTick) {
@@ -49,16 +51,19 @@ public class ExtractorVisual extends SingleAxisRotatingVisual<ExtractorBlockEnti
     public void tick(TickableVisual.Context context) {
         super.tick(context);
         if (be.hasDrill()) {
-            drill.setVisible(true);
             PartialModel newModel = be.getDrillModel();
             if (model != newModel) {
                 model = newModel;
+                drill.setVisible(true);
                 setModel(drill, model);
                 setModel(rotatingModel, ModPartialModels.HALF_COG);
             }
         } else {
-            drill.setVisible(false);
-            setModel(rotatingModel, AllPartialModels.COGWHEEL);
+            if (model != null) {
+                model = null;
+                drill.setVisible(false);
+                setModel(rotatingModel, AllPartialModels.COGWHEEL);
+            }
         }
     }
 
