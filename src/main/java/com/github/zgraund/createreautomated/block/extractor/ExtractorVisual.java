@@ -50,12 +50,12 @@ public class ExtractorVisual extends SingleAxisRotatingVisual<ExtractorBlockEnti
         super.tick(context);
         if (be.hasDrill()) {
             drill.setVisible(true);
-            PartialModel currentModel = be.getDrillModel();
-            if (model != currentModel) {
-                model = currentModel;
+            PartialModel newModel = be.getDrillModel();
+            if (model != newModel) {
+                model = newModel;
                 setModel(drill, model);
+                setModel(rotatingModel, ModPartialModels.HALF_COG);
             }
-            setModel(rotatingModel, ModPartialModels.HALF_COG);
         } else {
             drill.setVisible(false);
             setModel(rotatingModel, AllPartialModels.COGWHEEL);
