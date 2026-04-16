@@ -1,6 +1,7 @@
 package com.github.zgraund.createreautomated.recipe;
 
 import com.github.zgraund.createreautomated.api.block.Extractable;
+import com.github.zgraund.createreautomated.registry.ModItems;
 import com.github.zgraund.createreautomated.registry.ModRecipeTypes;
 import com.mojang.serialization.MapCodec;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
@@ -115,39 +116,46 @@ public class ExtractingRecipe extends ProcessingRecipe<ExtractingRecipeInput, Ex
 
         public Builder nodes(HolderSet<Block> nodes) {
             params.nodes = nodes;
-            return this;
+            return self();
         }
 
         @SuppressWarnings("deprecation")
         public Builder nodes(TagKey<Block> tag) {
             params.nodes = HolderSet.emptyNamed(BuiltInRegistries.BLOCK.holderOwner(), tag);
-            return this;
+            return self();
         }
 
         @SafeVarargs
         public final Builder nodes(BlockEntry<? extends Block>... blocks) {
             params.nodes = HolderSet.direct(blocks);
-            return this;
+            return self();
         }
 
         public Builder durabilityCost(int cost) {
             params.durabilityCost = cost;
-            return this;
+            return self();
         }
 
         public Builder noDurability() {
             params.durabilityCost = 0;
-            return this;
+            return self();
+        }
+
+        public Builder fragments(int quantity, float chance) {
+            return output(chance, ModItems.NODE_FRAGMENT, quantity);
+        }
+
+        public Builder defaultFragments() {
+            return fragments(1, 0.01f);
         }
 
         public Builder extract(int quantity) {
             params.extractionQuantity = quantity;
-            return this;
+            return self();
         }
 
         public Builder secAtMaxSpeed(int seconds) {
-            duration(seconds * 256 * 20);
-            return this;
+            return duration(seconds * 256 * 20);
         }
 
         @Override
