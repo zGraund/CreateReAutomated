@@ -1,0 +1,37 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "item": "createreautomated:copper_bit"
+    },
+    {
+      "item": "createreautomated:copper_bit"
+    },
+    {
+      "item": "createreautomated:copper_bit"
+    },
+    {
+      "item": "createreautomated:copper_bit"
+    },
+    {
+      "item": "createreautomated:copper_bit"
+    },
+    {
+      "item": "createreautomated:copper_bit"
+    },
+    {
+      "item": "createreautomated:copper_bit"
+    },
+    {
+      "item": "createreautomated:copper_bit"
+    },
+    {
+      "item": "createreautomated:copper_bit"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:raw_copper"
+    }
+  ]
+}

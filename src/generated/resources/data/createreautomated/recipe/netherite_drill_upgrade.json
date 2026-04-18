@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:netherite_ingot"
+  },
+  "base": {
+    "item": "createreautomated:diamond_drill"
+  },
+  "result": {
+    "count": 1,
+    "id": "createreautomated:netherite_drill"
+  },
+  "template": [ ]
+}

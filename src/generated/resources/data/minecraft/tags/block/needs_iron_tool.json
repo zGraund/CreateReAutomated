@@ -1,0 +1,20 @@
+{
+  "values": [
+    "createreautomated:infinite_copper_node",
+    "createreautomated:infinite_zinc_node",
+    "createreautomated:infinite_iron_node",
+    "createreautomated:infinite_gold_node",
+    "createreautomated:infinite_diamond_node",
+    "createreautomated:copper_node",
+    "createreautomated:zinc_node",
+    "createreautomated:iron_node",
+    "createreautomated:gold_node",
+    "createreautomated:diamond_node",
+    "createreautomated:deepslate_copper_node",
+    "createreautomated:deepslate_zinc_node",
+    "createreautomated:deepslate_iron_node",
+    "createreautomated:deepslate_gold_node",
+    "createreautomated:deepslate_diamond_node",
+    "createreautomated:nether_gold_node"
+  ]
+}

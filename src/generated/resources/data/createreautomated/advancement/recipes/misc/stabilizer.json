@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_node_fragment": {
+      "conditions": {
+        "items": [
+          {
+            "items": "createreautomated:node_fragment"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "createreautomated:stabilizer"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_node_fragment"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "createreautomated:stabilizer"
+    ]
+  }
+}

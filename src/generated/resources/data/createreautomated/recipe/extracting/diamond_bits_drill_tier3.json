@@ -1,0 +1,20 @@
+{
+  "type": "createreautomated:extracting",
+  "ingredients": [
+    {
+      "tag": "createreautomated:drills/at_least_tier_3"
+    }
+  ],
+  "node": "#createreautomated:ore_nodes/diamond_nodes",
+  "processing_time": 25600,
+  "results": [
+    {
+      "count": 4,
+      "id": "createreautomated:diamond_bit"
+    },
+    {
+      "chance": 0.01,
+      "id": "createreautomated:node_fragment"
+    }
+  ]
+}

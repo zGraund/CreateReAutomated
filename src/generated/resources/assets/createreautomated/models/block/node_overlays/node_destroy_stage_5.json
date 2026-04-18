@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "all": "createreautomated:block/node_overlays/node_destroy_stage_5"
+  }
+}

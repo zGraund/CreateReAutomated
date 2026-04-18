@@ -1,0 +1,6 @@
+{
+  "parent": "createreautomated:block/extractor/drill",
+  "textures": {
+    "0": "createreautomated:block/netherite_drill"
+  }
+}

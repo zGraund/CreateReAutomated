@@ -1,0 +1,37 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "item": "createreautomated:iron_bit"
+    },
+    {
+      "item": "createreautomated:iron_bit"
+    },
+    {
+      "item": "createreautomated:iron_bit"
+    },
+    {
+      "item": "createreautomated:iron_bit"
+    },
+    {
+      "item": "createreautomated:iron_bit"
+    },
+    {
+      "item": "createreautomated:iron_bit"
+    },
+    {
+      "item": "createreautomated:iron_bit"
+    },
+    {
+      "item": "createreautomated:iron_bit"
+    },
+    {
+      "item": "createreautomated:iron_bit"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:raw_iron"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "parent": "create:base/processing_with_time",
+  "hidden": false,
+  "keys": [
+    {
+      "type": "createreautomated:node",
+      "alternative_names": [
+        "node"
+      ],
+      "name": "node",
+      "role": "input"
+    },
+    {
+      "type": {
+        "type": "int",
+        "min": 0
+      },
+      "alternative_names": [
+        "durabilityCost"
+      ],
+      "name": "durabilityCost",
+      "optional": 1
+    },
+    {
+      "type": {
+        "type": "int",
+        "min": 0
+      },
+      "alternative_names": [
+        "extractionQuantity"
+      ],
+      "name": "extractionQuantity",
+      "optional": 1
+    }
+  ],
+  "mappings": [
+    "extracting"
+  ],
+  "merge": {
+    "constructors": true,
+    "keys": true,
+    "post_processors": true,
+    "unique": true
+  }
+}

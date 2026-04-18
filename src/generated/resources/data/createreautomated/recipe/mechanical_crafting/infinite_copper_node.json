@@ -1,0 +1,36 @@
+{
+  "type": "create:mechanical_crafting",
+  "accept_mirrored": false,
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "createreautomated:node_fragment"
+    },
+    "B": [
+      {
+        "item": "createreautomated:copper_node"
+      },
+      {
+        "item": "createreautomated:deepslate_copper_node"
+      }
+    ],
+    "C": {
+      "item": "minecraft:heavy_core"
+    },
+    "D": {
+      "item": "minecraft:echo_shard"
+    }
+  },
+  "pattern": [
+    " AAA ",
+    "ABDBA",
+    "ADCDA",
+    "ABDBA",
+    " AAA "
+  ],
+  "result": {
+    "count": 1,
+    "id": "createreautomated:infinite_copper_node"
+  },
+  "show_notification": false
+}

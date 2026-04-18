@@ -1,0 +1,34 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "createreautomated:diamond_bit"
+  },
+  "loops": 8,
+  "results": [
+    {
+      "chance": 100.0,
+      "id": "createreautomated:unbaked_diamond"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "createreautomated:incomplete_diamond"
+        },
+        {
+          "item": "createreautomated:diamond_bit"
+        }
+      ],
+      "results": [
+        {
+          "id": "createreautomated:incomplete_diamond"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "createreautomated:incomplete_diamond"
+  }
+}

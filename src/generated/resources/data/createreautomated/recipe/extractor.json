@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "create:brass_casing"
+    },
+    "E": {
+      "item": "create:electron_tube"
+    },
+    "I": {
+      "item": "create:brass_ingot"
+    },
+    "O": {
+      "item": "create:cogwheel"
+    }
+  },
+  "pattern": [
+    "ICI",
+    "IOI",
+    "IEI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "createreautomated:extractor"
+  }
+}

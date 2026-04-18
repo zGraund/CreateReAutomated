@@ -1,0 +1,9 @@
+{
+  "values": [
+    "createreautomated:deepslate_copper_node",
+    "createreautomated:deepslate_zinc_node",
+    "createreautomated:deepslate_iron_node",
+    "createreautomated:deepslate_gold_node",
+    "createreautomated:deepslate_diamond_node"
+  ]
+}

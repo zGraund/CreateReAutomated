@@ -1,0 +1,41 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "block": "createreautomated:nether_gold_node",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "stable": "true"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "block": "createreautomated:nether_gold_node",
+              "function": "minecraft:copy_state",
+              "properties": [
+                "depletion"
+              ]
+            },
+            {
+              "function": "minecraft:copy_components",
+              "include": [
+                "createreautomated:remaining"
+              ],
+              "source": "block_entity"
+            }
+          ],
+          "name": "createreautomated:nether_gold_node"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "createreautomated:blocks/nether_gold_node"
+}

@@ -1,0 +1,38 @@
+{
+  "type": "create:compacting",
+  "heat_requirement": "heated",
+  "ingredients": [
+    {
+      "item": "createreautomated:gold_bit"
+    },
+    {
+      "item": "createreautomated:gold_bit"
+    },
+    {
+      "item": "createreautomated:gold_bit"
+    },
+    {
+      "item": "createreautomated:gold_bit"
+    },
+    {
+      "item": "createreautomated:gold_bit"
+    },
+    {
+      "item": "createreautomated:gold_bit"
+    },
+    {
+      "item": "createreautomated:gold_bit"
+    },
+    {
+      "item": "createreautomated:gold_bit"
+    },
+    {
+      "item": "createreautomated:gold_bit"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:raw_gold"
+    }
+  ]
+}

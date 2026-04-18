@@ -1,0 +1,7 @@
+{
+  "parent": "createreautomated:block/infinite_node_base",
+  "render_type": "minecraft:cutout_mipped",
+  "textures": {
+    "node": "createreautomated:block/infinite_copper_node"
+  }
+}

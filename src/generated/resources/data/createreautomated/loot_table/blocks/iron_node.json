@@ -1,0 +1,41 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "block": "createreautomated:iron_node",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "stable": "true"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "block": "createreautomated:iron_node",
+              "function": "minecraft:copy_state",
+              "properties": [
+                "depletion"
+              ]
+            },
+            {
+              "function": "minecraft:copy_components",
+              "include": [
+                "createreautomated:remaining"
+              ],
+              "source": "block_entity"
+            }
+          ],
+          "name": "createreautomated:iron_node"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "createreautomated:blocks/iron_node"
+}
