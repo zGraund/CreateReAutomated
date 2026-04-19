@@ -8,6 +8,11 @@ import javax.annotation.Nonnull;
 import java.util.function.DoubleSupplier;
 
 public class Server extends ConfigBase {
+    public final ConfigBool useDrillDurability = b(
+            true,
+            "useDrillDurability",
+            "When True the Extractor will consume the durability of the Drill when mining."
+    );
     public final ConfigFloat extractorImpact = f(
             64,
             0,
@@ -27,5 +32,4 @@ public class Server extends ConfigBase {
     public String getName() {
         return "server";
     }
-
 }

@@ -121,10 +121,12 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
             recipe.rollResults(level.random).forEach(result ->
                     ItemHandlerHelper.insertItemStacked(outputInv, result, false)
             );
-            drillInv.getStackInSlot(0).hurtAndBreak(recipe.durabilityCost(), (ServerLevel) level, null, item -> {
-                resetRecipe(true);
-                level.playSound(null, getBlockPos().below(), SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 0.5f, 1);
-            });
+            if (Config.server().useDrillDurability.get()) {
+                drillInv.getStackInSlot(0).hurtAndBreak(recipe.durabilityCost(), (ServerLevel) level, null, item -> {
+                    resetRecipe(true);
+                    level.playSound(null, getBlockPos().below(), SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 0.5f, 1);
+                });
+            }
             progress = 0;
         }
 
