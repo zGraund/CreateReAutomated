@@ -52,7 +52,7 @@ public class ModArmInteractionPointTypes {
 
         @Override
         protected Vec3 getInteractionPositionVector() {
-            return mode == Mode.TAKE ? Vec3.atCenterOf(getPos()) : Vec3.upFromBottomCenterOf(getPos(), -((double) 1 / 16));
+            return mode == Mode.TAKE ? Vec3.atCenterOf(getPos()) : Vec3.upFromBottomCenterOf(getPos(), -(1 / 16f));
         }
 
         @Override

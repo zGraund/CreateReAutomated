@@ -9,6 +9,8 @@ import com.github.zgraund.createreautomated.registry.ModBlocks;
 import com.github.zgraund.createreautomated.registry.ModRecipeTypes;
 import com.github.zgraund.createreautomated.registry.ModTags;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
+import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.item.ItemHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
@@ -87,6 +89,12 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
                 },
                 ModBlocks.EXTRACTOR.get()
         );
+    }
+
+    @Override
+    public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
+        super.addBehaviours(behaviours);
+        behaviours.add(new DirectBeltInputBehaviour(this).considerOccupiedWhen(d -> hasDrill()));
     }
 
     @Override
