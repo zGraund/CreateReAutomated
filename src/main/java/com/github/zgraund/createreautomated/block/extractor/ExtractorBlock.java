@@ -61,7 +61,6 @@ public class ExtractorBlock extends KineticBlock implements IBE<ExtractorBlockEn
             Block.box(13, 0, 0, 16, 17, 3),
             Block.box(0, 17, 0, 16, 31, 16)
     ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
-    public static final SpeedLevel MIN_SPEED = SpeedLevel.MEDIUM;
 
     public static BlockState getTop() {
         return getBottom().setValue(HALF, DoubleBlockHalf.UPPER);
@@ -122,7 +121,7 @@ public class ExtractorBlock extends KineticBlock implements IBE<ExtractorBlockEn
 
     @Override
     public SpeedLevel getMinimumRequiredSpeedLevel() {
-        return MIN_SPEED;
+        return SpeedLevel.MEDIUM;
     }
 
     @Override
