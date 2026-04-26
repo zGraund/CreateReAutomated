@@ -1,0 +1,37 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "item": "createreautomated:zinc_bit"
+    },
+    {
+      "item": "createreautomated:zinc_bit"
+    },
+    {
+      "item": "createreautomated:zinc_bit"
+    },
+    {
+      "item": "createreautomated:zinc_bit"
+    },
+    {
+      "item": "createreautomated:zinc_bit"
+    },
+    {
+      "item": "createreautomated:zinc_bit"
+    },
+    {
+      "item": "createreautomated:zinc_bit"
+    },
+    {
+      "item": "createreautomated:zinc_bit"
+    },
+    {
+      "item": "createreautomated:zinc_bit"
+    }
+  ],
+  "results": [
+    {
+      "id": "create:raw_zinc"
+    }
+  ]
+}
