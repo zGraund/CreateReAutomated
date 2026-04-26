@@ -16,7 +16,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
-public class ModMechanicalCraftingRecipeGen extends MechanicalCraftingRecipeGen {
+public final class ModMechanicalCraftingRecipeGen extends MechanicalCraftingRecipeGen {
     GeneratedRecipe
             INFINITE_DIAMOND_NODE = defaultInfiniteNode(ModBlocks.INFINITE_DIAMOND_NODE, ModBlocks.DIAMOND_NODE, ModBlocks.DEEPSLATE_DIAMOND_NODE),
             INFINITE_GOLD_NODE = defaultInfiniteNode(ModBlocks.INFINITE_GOLD_NODE, ModBlocks.GOLD_NODE, ModBlocks.DEEPSLATE_GOLD_NODE),
@@ -28,7 +28,7 @@ public class ModMechanicalCraftingRecipeGen extends MechanicalCraftingRecipeGen 
         super(output, registries, CreateReAutomated.MOD_ID);
     }
 
-    private GeneratedRecipe defaultInfiniteNode(@Nonnull Supplier<? extends ItemLike> output, ItemLike... nodes) {
+    GeneratedRecipe defaultInfiniteNode(@Nonnull Supplier<? extends ItemLike> output, ItemLike... nodes) {
         return create(output::get).recipe(builder ->
                 builder.key('A', ModItems.NODE_FRAGMENT)
                        .key('B', Ingredient.of(nodes))

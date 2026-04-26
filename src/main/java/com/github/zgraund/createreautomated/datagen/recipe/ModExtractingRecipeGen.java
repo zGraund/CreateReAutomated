@@ -11,7 +11,7 @@ import net.minecraft.data.PackOutput;
 import java.util.concurrent.CompletableFuture;
 
 @SuppressWarnings("unused")
-public class ModExtractingRecipeGen extends ExtractingRecipeGen {
+public final class ModExtractingRecipeGen extends ExtractingRecipeGen {
     GeneratedRecipe
             DIAMOND_BITS_EXTRA = create("diamond_bits_drill_tier3", builder ->
             builder.require(ModTags.Items.AT_LEAST_TIER_3)
