@@ -14,7 +14,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import javax.annotation.Nonnull;
 import java.util.concurrent.CompletableFuture;
 
-public class ModRecipeProvider extends RecipeProvider {
+public final class ModRecipeProvider extends RecipeProvider {
     public ModRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries);
     }

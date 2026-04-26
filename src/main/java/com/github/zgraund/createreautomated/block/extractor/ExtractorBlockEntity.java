@@ -9,6 +9,8 @@ import com.github.zgraund.createreautomated.registry.ModBlocks;
 import com.github.zgraund.createreautomated.registry.ModRecipeTypes;
 import com.github.zgraund.createreautomated.registry.ModTags;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
+import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.item.ItemHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
@@ -90,6 +92,12 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     }
 
     @Override
+    public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
+        super.addBehaviours(behaviours);
+        behaviours.add(new DirectBeltInputBehaviour(this).considerOccupiedWhen(d -> hasDrill()));
+    }
+
+    @Override
     public void tick() {
         super.tick();
         if (level == null) return;
@@ -121,10 +129,12 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
             recipe.rollResults(level.random).forEach(result ->
                     ItemHandlerHelper.insertItemStacked(outputInv, result, false)
             );
-            drillInv.getStackInSlot(0).hurtAndBreak(recipe.durabilityCost(), (ServerLevel) level, null, item -> {
-                resetRecipe(true);
-                level.playSound(null, getBlockPos().below(), SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 0.5f, 1);
-            });
+            if (Config.server().useDrillDurability.get()) {
+                drillInv.getStackInSlot(0).hurtAndBreak(recipe.durabilityCost(), (ServerLevel) level, null, item -> {
+                    resetRecipe(true);
+                    level.playSound(null, getBlockPos().below(), SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 0.5f, 1);
+                });
+            }
             progress = 0;
         }
 

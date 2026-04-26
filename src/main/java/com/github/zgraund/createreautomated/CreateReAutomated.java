@@ -48,6 +48,8 @@ public class CreateReAutomated {
 
         ModPartialModels.init();
 
+        ModArmInteractionPointTypes.register(modEventBus);
+
         Config.register(modContainer);
     }
 
