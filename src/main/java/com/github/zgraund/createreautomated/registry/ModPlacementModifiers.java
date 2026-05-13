@@ -1,7 +1,8 @@
 package com.github.zgraund.createreautomated.registry;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
-import com.github.zgraund.createreautomated.worldgen.ConfigPlacementFilter;
+import com.github.zgraund.createreautomated.worldgen.config.ConfigNodePlacement;
+import com.github.zgraund.createreautomated.worldgen.config.ConfigPlacementFilter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 import net.neoforged.bus.api.IEventBus;
@@ -15,6 +16,8 @@ public class ModPlacementModifiers {
 
     public static final DeferredHolder<PlacementModifierType<?>, PlacementModifierType<ConfigPlacementFilter>> CONFIG_FILTER =
             PLACEMENT_MODIFIER_TYPES.register("config_filter", () -> () -> ConfigPlacementFilter.CODEC);
+    public static final DeferredHolder<PlacementModifierType<?>, PlacementModifierType<ConfigNodePlacement>> CONFIG_NODE_PLACEMENT =
+            PLACEMENT_MODIFIER_TYPES.register("config_node_placement", () -> () -> ConfigNodePlacement.CODEC);
 
     @ApiStatus.Internal
     public static void register(IEventBus modEventBus) {

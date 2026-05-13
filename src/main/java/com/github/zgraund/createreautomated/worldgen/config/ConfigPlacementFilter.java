@@ -1,4 +1,4 @@
-package com.github.zgraund.createreautomated.worldgen;
+package com.github.zgraund.createreautomated.worldgen.config;
 
 import com.github.zgraund.createreautomated.config.Config;
 import com.github.zgraund.createreautomated.registry.ModPlacementModifiers;
@@ -19,7 +19,7 @@ public class ConfigPlacementFilter extends PlacementFilter {
 
     @Override
     protected boolean shouldPlace(PlacementContext context, RandomSource random, BlockPos pos) {
-        return Config.common().worldgen.get();
+        return Config.common().worldgen.enabled.get();
     }
 
     @Nonnull
