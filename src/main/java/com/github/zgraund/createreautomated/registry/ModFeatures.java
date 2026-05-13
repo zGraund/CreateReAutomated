@@ -1,7 +1,7 @@
 package com.github.zgraund.createreautomated.registry;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
-import com.github.zgraund.createreautomated.worldgen.OreNodeFeature;
+import com.github.zgraund.createreautomated.worldgen.feature.EncasedNodeFeature;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.neoforged.bus.api.IEventBus;
@@ -13,8 +13,8 @@ public class ModFeatures {
     private static final DeferredRegister<Feature<?>> FEATURES =
             DeferredRegister.create(BuiltInRegistries.FEATURE, CreateReAutomated.MOD_ID);
 
-    public static final DeferredHolder<Feature<?>, OreNodeFeature> ORE_NODE_FEATURE =
-            FEATURES.register("ore_node", OreNodeFeature::new);
+    public static final DeferredHolder<Feature<?>, EncasedNodeFeature> ORE_NODE_FEATURE =
+            FEATURES.register("encased_node", EncasedNodeFeature::new);
 
     @ApiStatus.Internal
     public static void register(IEventBus modEventBus) {

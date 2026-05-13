@@ -3,6 +3,7 @@ package com.github.zgraund.createreautomated.worldgen;
 import com.github.zgraund.createreautomated.CreateReAutomated;
 import com.github.zgraund.createreautomated.registry.ModBlocks;
 import com.github.zgraund.createreautomated.registry.ModFeatures;
+import com.github.zgraund.createreautomated.worldgen.feature.EncasedNodeConfiguration;
 import com.simibubi.create.AllBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -10,7 +11,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.ReplaceBlockConfiguration;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
 
 import javax.annotation.Nonnull;
@@ -41,8 +41,8 @@ public class ModConfiguredFeatures {
                 OreConfiguration.target(new BlockMatchTest(Blocks.NETHER_GOLD_ORE), ModBlocks.NETHER_GOLD_NODE.get().unstable())
         );
 
-        register(context, OVERWORLD_ORE_NODE_KEY, ModFeatures.ORE_NODE_FEATURE.get(), new ReplaceBlockConfiguration(overworld));
-        register(context, NETHER_ORE_NODE_KEY, ModFeatures.ORE_NODE_FEATURE.get(), new ReplaceBlockConfiguration(nether));
+        register(context, OVERWORLD_ORE_NODE_KEY, ModFeatures.ORE_NODE_FEATURE.get(), new EncasedNodeConfiguration(overworld));
+        register(context, NETHER_ORE_NODE_KEY, ModFeatures.ORE_NODE_FEATURE.get(), new EncasedNodeConfiguration(nether));
     }
 
     @Nonnull

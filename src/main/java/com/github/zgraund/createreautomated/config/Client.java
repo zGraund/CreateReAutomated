@@ -5,6 +5,11 @@ import net.createmod.catnip.config.ConfigBase;
 import javax.annotation.Nonnull;
 
 public class Client extends ConfigBase {
+    public final ConfigBool nodeParticles = b(
+            true,
+            "nodeParticles",
+            "Enable/disable unstable Ore Node particles."
+    );
     public final ConfigBool debugOreNodeOverlay = b(
             false,
             "debugOreNode",
