@@ -10,7 +10,7 @@ import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.DustColorTransitionOptions;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.ParticleUtils;
 import net.minecraft.util.RandomSource;
@@ -40,6 +40,8 @@ import java.util.List;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class OreNodeBlock extends Block implements IBE<OreNodeEntity>, Extractable {
+    public static final DustColorTransitionOptions PARTICLE =
+            new DustColorTransitionOptions(new Vector3f(1, 1, 1), new Vector3f(0.5f, 0.5f, 0.5f), 0.75f);
     public static final IntegerProperty DEPLETION = IntegerProperty.create("depletion", 0, 10);
     public static final BooleanProperty STABLE = BooleanProperty.create("stable");
 
@@ -95,13 +97,11 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity>, Extractab
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         super.animateTick(state, level, pos, random);
-        if (!state.getValue(STABLE) && random.nextInt(10) == 0) {
+        if (Config.client().nodeParticles.get() && !state.getValue(STABLE) && random.nextInt(10) == 0) {
             for (Direction dir : Direction.values()) {
                 BlockPos neighbor = pos.relative(dir);
                 if (!level.getBlockState(neighbor).isSolidRender(level, neighbor)) {
-                    // TODO: choose better particle
-                    ParticleUtils.spawnParticleOnFace(level, pos, dir,
-                            new DustParticleOptions(new Vector3f(1, 0, 1), 0.75f), Vec3.ZERO, 0.57);
+                    ParticleUtils.spawnParticleOnFace(level, pos, dir, PARTICLE, Vec3.ZERO, 0.57);
                 }
             }
         }

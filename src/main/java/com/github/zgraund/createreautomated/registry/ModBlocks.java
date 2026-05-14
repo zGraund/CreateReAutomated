@@ -151,11 +151,11 @@ public class ModBlocks {
     }
 
     public static BlockBehaviour.Properties netherrackNodeProperties() {
-        return stoneNodeProperties().sound(SoundType.NETHERRACK).strength(26f);
+        return stoneNodeProperties().mapColor(MapColor.NETHER).sound(SoundType.NETHERRACK).strength(26f);
     }
 
     public static BlockBehaviour.Properties deepslateNodeProperties() {
-        return stoneNodeProperties().sound(SoundType.DEEPSLATE).strength(30f);
+        return stoneNodeProperties().mapColor(MapColor.DEEPSLATE).sound(SoundType.DEEPSLATE).strength(30f);
     }
 
     public static BlockBehaviour.Properties stoneNodeProperties() {
@@ -163,6 +163,7 @@ public class ModBlocks {
                                         .requiresCorrectToolForDrops()
                                         .lightLevel(state -> 10 - state.getValue(OreNodeBlock.DEPLETION))
                                         .sound(SoundType.STONE)
+                                        .mapColor(MapColor.STONE)
                                         .pushReaction(PushReaction.BLOCK)
                                         .strength(28f);
     }

@@ -1,15 +1,15 @@
 package com.github.zgraund.createreautomated.worldgen;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
+import com.github.zgraund.createreautomated.worldgen.config.ConfigNodePlacement;
+import com.github.zgraund.createreautomated.worldgen.config.ConfigPlacementFilter;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.placement.*;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.Unmodifiable;
+import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -27,31 +27,22 @@ public class ModPlacedFeatures {
                 context,
                 OVERWORLD_ORE_NODE_PLACED_KEY,
                 configuredFeatures.getOrThrow(ModConfiguredFeatures.OVERWORLD_ORE_NODE_KEY),
-                defaultNodePlacement()
+                List.of(
+                        ConfigPlacementFilter.INSTANCE,
+                        ConfigNodePlacement.overworld(),
+                        InSquarePlacement.spread()
+                )
         );
 
         register(
                 context,
                 NETHER_ORE_NODE_PLACED_KEY,
                 configuredFeatures.getOrThrow(ModConfiguredFeatures.NETHER_ORE_NODE_KEY),
-                nodePlacement(50, 0, 128)
-        );
-    }
-
-    @Nonnull
-    @Contract(" -> new")
-    public static @Unmodifiable List<PlacementModifier> defaultNodePlacement() {
-        return nodePlacement(35, -64, 64);
-    }
-
-    @Nonnull
-    @Contract("_, _, _ -> new")
-    public static @Unmodifiable List<PlacementModifier> nodePlacement(int count, int min, int max) {
-        return List.of(
-                ConfigPlacementFilter.INSTANCE,
-                CountPlacement.of(count),
-                InSquarePlacement.spread(),
-                HeightRangePlacement.uniform(VerticalAnchor.absolute(min), VerticalAnchor.absolute(max))
+                List.of(
+                        ConfigPlacementFilter.INSTANCE,
+                        ConfigNodePlacement.nether(),
+                        InSquarePlacement.spread()
+                )
         );
     }
 

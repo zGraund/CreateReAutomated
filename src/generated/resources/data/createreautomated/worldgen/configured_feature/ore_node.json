@@ -1,5 +1,5 @@
 {
-  "type": "createreautomated:ore_node",
+  "type": "createreautomated:encased_node",
   "config": {
     "targets": [
       {
