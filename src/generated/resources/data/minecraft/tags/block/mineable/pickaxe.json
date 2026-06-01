@@ -1,6 +1,7 @@
 {
   "values": [
     "createreautomated:extractor",
+    "createreautomated:liquid_cooled_extractor",
     "createreautomated:infinite_copper_node",
     "createreautomated:infinite_zinc_node",
     "createreautomated:infinite_iron_node",

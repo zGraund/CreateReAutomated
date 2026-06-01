@@ -2,6 +2,8 @@ package com.github.zgraund.createreautomated.registry;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
 import com.github.zgraund.createreautomated.block.InfiniteNodeBlock;
+import com.github.zgraund.createreautomated.block.LCExtractor.LCExtractorBlock;
+import com.github.zgraund.createreautomated.block.base.AbstractExtractorBlock;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorBlock;
 import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
 import com.github.zgraund.createreautomated.config.NodeYields;
@@ -50,17 +52,33 @@ public class ModBlocks {
                                         .sound(SoundType.METAL)
                                         .pushReaction(PushReaction.BLOCK)
                       )
-                      .loot((prov, block) ->
-                              prov.add(block, ModBlockLootTableGen.createSinglePropConditionTable(block, ExtractorBlock.HALF, DoubleBlockHalf.LOWER))
-                      )
+                      .loot(ModBlockLootTableGen.createExtractorLootTable())
                       .blockstate((ctx, prov) ->
                               BlockStateGen.simpleBlock(ctx, prov, state ->
-                                      prov.models().getExistingFile(prov.modLoc("block/extractor/" + state.getValue(ExtractorBlock.HALF)))
+                                      prov.models().getExistingFile(prov.modLoc("block/extractor/" + state.getValue(AbstractExtractorBlock.HALF)))
                               )
                       )
                       .transform(TagGen.pickaxeOnly())
                       .item(DoubleHighBlockItem::new)
                       .transform(ModelGen.customItemModel())
+                      .register();
+    public static final BlockEntry<LCExtractorBlock> LC_EXTRACTOR =
+            REGISTRATE.block("liquid_cooled_extractor", LCExtractorBlock::new)
+                      .initialProperties(EXTRACTOR)
+                      .loot(ModBlockLootTableGen.createExtractorLootTable())
+                      .blockstate((ctx, prov) ->
+                              BlockStateGen.simpleBlock(ctx, prov, state -> {
+                                          DoubleBlockHalf half = state.getValue(AbstractExtractorBlock.HALF);
+                                          // FIXME: temporary hack
+                                          return prov.models().getExistingFile(
+                                                  prov.modLoc("block/extractor/" + (half == DoubleBlockHalf.LOWER ? half : "lc_" + half))
+                                          );
+                                      }
+                              )
+                      )
+                      .transform(TagGen.pickaxeOnly())
+                      .item(DoubleHighBlockItem::new)
+                      .transform(ModelGen.customItemModel("extractor/lc_item"))
                       .register();
 
     public static final BlockEntry<InfiniteNodeBlock>

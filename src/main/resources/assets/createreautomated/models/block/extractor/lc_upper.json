@@ -2,8 +2,9 @@
   "format_version": "1.21.11",
   "credit": "Made with Blockbench",
   "textures": {
-    "0": "createreautomated:extractor"
+    "0": "createreautomated:block/extractor"
   },
+  "render_type": "minecraft:cutout",
   "elements": [
     {
       "from": [0, 10, 0],

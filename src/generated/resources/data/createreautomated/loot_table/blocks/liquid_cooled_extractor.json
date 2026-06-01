@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "minecraft:survives_explosion"
+            },
+            {
+              "block": "createreautomated:liquid_cooled_extractor",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "half": "lower"
+              }
+            }
+          ],
+          "name": "createreautomated:liquid_cooled_extractor"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "createreautomated:blocks/liquid_cooled_extractor"
+}

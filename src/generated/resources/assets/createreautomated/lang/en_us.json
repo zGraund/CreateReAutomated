@@ -15,6 +15,7 @@
   "block.createreautomated.infinite_node.tooltip.summary": "A node that emanates _powerful_ energy, it could be extracted for a very long time.",
   "block.createreautomated.infinite_zinc_node": "Infinite Zinc Node",
   "block.createreautomated.iron_node": "Iron Node",
+  "block.createreautomated.liquid_cooled_extractor": "Liquid Cooled Extractor",
   "block.createreautomated.nether_gold_node": "Nether Gold Node",
   "block.createreautomated.ore_node.depletionLevel": "Depletion Level: ",
   "block.createreautomated.ore_node.tooltip.summary": "A _mysterious_ node too hard to extract by hand",
