@@ -1,8 +1,9 @@
-package com.github.zgraund.createreautomated.block.LCExtractor;
+package com.github.zgraund.createreautomated.block.liquidcooledextractor;
 
 import com.github.zgraund.createreautomated.block.base.AbstractExtractorBlock;
 import com.github.zgraund.createreautomated.registry.ModBlockEntities;
 import com.mojang.serialization.MapCodec;
+import com.simibubi.create.foundation.fluid.FluidHelper;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -29,8 +30,21 @@ public class LCExtractorBlock extends AbstractExtractorBlock<LCExtractorBlockEnt
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand,
                                               BlockHitResult hitResult) {
-        // TODO:
-        return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
+        if (level.isClientSide())
+            return ItemInteractionResult.SUCCESS;
+        return onBlockEntityUseItemOn(level, pos, be -> {
+            if (FluidHelper.tryEmptyItemIntoBE(level, player, hand, stack, be)) {
+                be.notifyUpdate();
+                // TODO: sound
+                return ItemInteractionResult.SUCCESS;
+            }
+            if (FluidHelper.tryFillItemFromBE(level, player, hand, stack, be)) {
+                be.notifyUpdate();
+                // TODO: sound
+                return ItemInteractionResult.SUCCESS;
+            }
+            return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
+        });
     }
 
     @Override

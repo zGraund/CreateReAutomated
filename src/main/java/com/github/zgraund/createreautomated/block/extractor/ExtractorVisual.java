@@ -1,5 +1,6 @@
 package com.github.zgraund.createreautomated.block.extractor;
 
+import com.github.zgraund.createreautomated.block.base.AbstractExtractorBlockEntity;
 import com.github.zgraund.createreautomated.registry.ModPartialModels;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.RotatingInstance;
@@ -16,13 +17,13 @@ import dev.engine_room.flywheel.lib.visual.SimpleDynamicVisual;
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
-public class ExtractorVisual extends SingleAxisRotatingVisual<ExtractorBlockEntity> implements SimpleDynamicVisual {
+public class ExtractorVisual<T extends AbstractExtractorBlockEntity> extends SingleAxisRotatingVisual<T> implements SimpleDynamicVisual {
     private final RotatingInstance drill;
-    private final ExtractorBlockEntity be;
+    private final T be;
     @Nullable
     private PartialModel model;
 
-    public ExtractorVisual(VisualizationContext context, ExtractorBlockEntity blockEntity, float partialTick) {
+    public ExtractorVisual(VisualizationContext context, T blockEntity, float partialTick) {
         super(context, blockEntity, partialTick, Models.partial(blockEntity.hasDrill() ? ModPartialModels.HALF_COG : AllPartialModels.COGWHEEL));
         this.be = blockEntity;
         this.model = blockEntity.getDrillModel();

@@ -1,5 +1,6 @@
 package com.github.zgraund.createreautomated.block.extractor;
 
+import com.github.zgraund.createreautomated.block.base.AbstractExtractorBlockEntity;
 import com.github.zgraund.createreautomated.registry.ModPartialModels;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -15,13 +16,13 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nonnull;
 
-public class ExtractorRenderer extends KineticBlockEntityRenderer<ExtractorBlockEntity> {
+public class ExtractorRenderer<T extends AbstractExtractorBlockEntity> extends KineticBlockEntityRenderer<T> {
     public ExtractorRenderer(BlockEntityRendererProvider.Context context) {
         super(context);
     }
 
     @Override
-    protected void renderSafe(@Nonnull ExtractorBlockEntity be, float partialTicks, PoseStack ms, @Nonnull MultiBufferSource buffer, int light, int overlay) {
+    protected void renderSafe(@Nonnull T be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
         if (VisualizationManager.supportsVisualization(be.getLevel())) return;
 
         BlockState blockState = be.getBlockState();

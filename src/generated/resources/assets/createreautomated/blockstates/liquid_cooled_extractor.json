@@ -1,10 +1,10 @@
 {
   "variants": {
     "half=lower": {
-      "model": "createreautomated:block/extractor/lower"
+      "model": "createreautomated:block/liquid_cooled_extractor/lower"
     },
     "half=upper": {
-      "model": "createreautomated:block/extractor/lc_upper"
+      "model": "createreautomated:block/liquid_cooled_extractor/upper"
     }
   }
 }

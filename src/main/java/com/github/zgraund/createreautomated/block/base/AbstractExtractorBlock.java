@@ -72,7 +72,7 @@ public abstract class AbstractExtractorBlock<T extends AbstractExtractorBlockEnt
         if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
             pos = pos.relative(Direction.UP);
             state = level.getBlockState(pos);
-            if (!state.is(this)) return ItemInteractionResult.CONSUME;
+            if (!state.is(this)) return ItemInteractionResult.FAIL;
         }
 
         return onBlockEntityUseItemOn(level, pos, extractor -> {

@@ -1,7 +1,9 @@
 package com.github.zgraund.createreautomated.datagen;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
+import com.github.zgraund.createreautomated.block.base.AbstractExtractorBlock;
 import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
+import com.simibubi.create.foundation.data.BlockStateGen;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
@@ -52,6 +54,15 @@ public class ModCommonBlockModelGen extends BlockStateProvider {
                      .condition(OreNodeBlock.STABLE, true)
                      .end();
         };
+    }
+
+    @Nonnull
+    @Contract(pure = true)
+    public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> extractorModel() {
+        return (ctx, prov) ->
+                BlockStateGen.simpleBlock(ctx, prov, state ->
+                        prov.models().getExistingFile(prov.modLoc("block/" + ctx.getName() + "/" + state.getValue(AbstractExtractorBlock.HALF)))
+                );
     }
 
     @Override

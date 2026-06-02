@@ -2,15 +2,13 @@ package com.github.zgraund.createreautomated.registry;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
 import com.github.zgraund.createreautomated.block.InfiniteNodeBlock;
-import com.github.zgraund.createreautomated.block.LCExtractor.LCExtractorBlock;
-import com.github.zgraund.createreautomated.block.base.AbstractExtractorBlock;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorBlock;
+import com.github.zgraund.createreautomated.block.liquidcooledextractor.LCExtractorBlock;
 import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
 import com.github.zgraund.createreautomated.config.NodeYields;
 import com.github.zgraund.createreautomated.datagen.ModBlockLootTableGen;
 import com.github.zgraund.createreautomated.datagen.ModCommonBlockModelGen;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.ModelGen;
 import com.simibubi.create.foundation.data.TagGen;
@@ -30,7 +28,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.common.Tags;
@@ -53,11 +50,7 @@ public class ModBlocks {
                                         .pushReaction(PushReaction.BLOCK)
                       )
                       .loot(ModBlockLootTableGen.createExtractorLootTable())
-                      .blockstate((ctx, prov) ->
-                              BlockStateGen.simpleBlock(ctx, prov, state ->
-                                      prov.models().getExistingFile(prov.modLoc("block/extractor/" + state.getValue(AbstractExtractorBlock.HALF)))
-                              )
-                      )
+                      .blockstate(ModCommonBlockModelGen.extractorModel())
                       .transform(TagGen.pickaxeOnly())
                       .item(DoubleHighBlockItem::new)
                       .transform(ModelGen.customItemModel())
@@ -66,19 +59,10 @@ public class ModBlocks {
             REGISTRATE.block("liquid_cooled_extractor", LCExtractorBlock::new)
                       .initialProperties(EXTRACTOR)
                       .loot(ModBlockLootTableGen.createExtractorLootTable())
-                      .blockstate((ctx, prov) ->
-                              BlockStateGen.simpleBlock(ctx, prov, state -> {
-                                          DoubleBlockHalf half = state.getValue(AbstractExtractorBlock.HALF);
-                                          // FIXME: temporary hack
-                                          return prov.models().getExistingFile(
-                                                  prov.modLoc("block/extractor/" + (half == DoubleBlockHalf.LOWER ? half : "lc_" + half))
-                                          );
-                                      }
-                              )
-                      )
+                      .blockstate(ModCommonBlockModelGen.extractorModel())
                       .transform(TagGen.pickaxeOnly())
                       .item(DoubleHighBlockItem::new)
-                      .transform(ModelGen.customItemModel("extractor/lc_item"))
+                      .transform(ModelGen.customItemModel())
                       .register();
 
     public static final BlockEntry<InfiniteNodeBlock>

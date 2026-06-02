@@ -2,10 +2,10 @@ package com.github.zgraund.createreautomated.registry;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
 import com.github.zgraund.createreautomated.api.OreNodeBlockIndex;
-import com.github.zgraund.createreautomated.block.LCExtractor.LCExtractorBlockEntity;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorBlockEntity;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorRenderer;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorVisual;
+import com.github.zgraund.createreautomated.block.liquidcooledextractor.LCExtractorBlockEntity;
 import com.github.zgraund.createreautomated.block.node.OreNodeEntity;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
@@ -21,8 +21,8 @@ public class ModBlockEntities {
                       .register();
     public static final BlockEntityEntry<LCExtractorBlockEntity> LC_EXTRACTOR_BE =
             REGISTRATE.blockEntity("lc_extractor_be", LCExtractorBlockEntity::new)
-//                      .visual(() -> ExtractorVisual::new, false)
-//                      .renderer(() -> ExtractorRenderer::new)
+                      .visual(() -> ExtractorVisual::new, false)
+                      .renderer(() -> ExtractorRenderer::new)
                       .validBlocks(ModBlocks.LC_EXTRACTOR)
                       .register();
 
