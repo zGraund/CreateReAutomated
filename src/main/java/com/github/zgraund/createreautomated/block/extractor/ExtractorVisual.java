@@ -51,24 +51,35 @@ public class ExtractorVisual<T extends AbstractExtractorBlockEntity> extends Sin
     @Override
     public void tick(TickableVisual.Context context) {
         super.tick(context);
+        setRotatingModel();
+        setDrillModel();
+    }
+
+    protected void setDrillModel() {
         if (be.hasDrill()) {
             PartialModel newModel = be.getDrillModel();
             if (model != newModel) {
                 model = newModel;
                 drill.setVisible(true);
                 setModel(drill, model);
-                setModel(rotatingModel, ModPartialModels.HALF_COG);
             }
         } else {
             if (model != null) {
                 model = null;
                 drill.setVisible(false);
-                setModel(rotatingModel, AllPartialModels.COGWHEEL);
             }
         }
     }
 
-    private void setModel(RotatingInstance instance, PartialModel model) {
+    protected void setRotatingModel() {
+        if (be.hasDrill()) {
+            setModel(rotatingModel, ModPartialModels.HALF_COG);
+        } else {
+            setModel(rotatingModel, AllPartialModels.COGWHEEL);
+        }
+    }
+
+    protected void setModel(RotatingInstance instance, PartialModel model) {
         instancerProvider().instancer(AllInstanceTypes.ROTATING, Models.partial(model))
                            .stealInstance(instance);
     }

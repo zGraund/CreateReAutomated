@@ -61,6 +61,22 @@ public abstract class AbstractExtractorBlock<T extends AbstractExtractorBlockEnt
         this.registerDefaultState(this.defaultBlockState().setValue(HALF, DoubleBlockHalf.LOWER));
     }
 
+    public static boolean isUpper(Level level, BlockPos pos) {
+        return isUpper(level.getBlockState(pos));
+    }
+
+    public static boolean isUpper(BlockState state) {
+        return state.getBlock() instanceof AbstractExtractorBlock<?> && state.hasProperty(HALF) && state.getValue(HALF) == DoubleBlockHalf.UPPER;
+    }
+
+    public static boolean isLower(Level level, BlockPos pos) {
+        return isLower(level.getBlockState(pos));
+    }
+
+    public static boolean isLower(BlockState state) {
+        return state.getBlock() instanceof AbstractExtractorBlock<?> && state.hasProperty(HALF) && state.getValue(HALF) == DoubleBlockHalf.LOWER;
+    }
+
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand,
                                               BlockHitResult hitResult) {
@@ -69,10 +85,9 @@ public abstract class AbstractExtractorBlock<T extends AbstractExtractorBlockEnt
         if (level.isClientSide())
             return ItemInteractionResult.SUCCESS;
 
-        if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
-            pos = pos.relative(Direction.UP);
-            state = level.getBlockState(pos);
-            if (!state.is(this)) return ItemInteractionResult.FAIL;
+        if (isLower(state)) {
+            pos = pos.above();
+            if (!isUpper(level.getBlockState(pos))) return ItemInteractionResult.FAIL;
         }
 
         return onBlockEntityUseItemOn(level, pos, extractor -> {

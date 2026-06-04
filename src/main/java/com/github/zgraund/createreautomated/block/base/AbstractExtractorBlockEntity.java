@@ -35,7 +35,6 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
@@ -80,15 +79,14 @@ public abstract class AbstractExtractorBlockEntity extends KineticBlockEntity {
         event.registerBlock(
                 Capabilities.ItemHandler.BLOCK,
                 (level, pos, state, blockEntity, context) -> {
-                    if (state.getValue(AbstractExtractorBlock.HALF) == DoubleBlockHalf.LOWER) {
+                    if (AbstractExtractorBlock.isLower(state)) {
                         pos = pos.above();
                         state = level.getBlockState(pos);
                         blockEntity = level.getBlockEntity(pos);
                         // in case I need to change the capability based on direction
                         // context = Direction.DOWN;
                     }
-                    if (state.getValue(AbstractExtractorBlock.HALF) == DoubleBlockHalf.UPPER &&
-                        blockEntity instanceof AbstractExtractorBlockEntity extractor)
+                    if (AbstractExtractorBlock.isUpper(state) && blockEntity instanceof AbstractExtractorBlockEntity extractor)
                         return extractor.capabilities;
                     return null;
                 },
