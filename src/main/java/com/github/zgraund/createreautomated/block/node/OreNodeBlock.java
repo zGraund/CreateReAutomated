@@ -78,6 +78,8 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity>, Extractab
     }
 
     public int getStateFromQuantity(int quantity) {
+        if (isInfinite())
+            return 100;
         int percentage = (100 * quantity) / getMaxExtractions();
         return Math.min(10, (100 - percentage + 9) / 10);
     }
