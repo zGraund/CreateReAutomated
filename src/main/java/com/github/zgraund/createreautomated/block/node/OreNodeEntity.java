@@ -1,5 +1,6 @@
 package com.github.zgraund.createreautomated.block.node;
 
+import com.github.zgraund.createreautomated.config.Config;
 import com.github.zgraund.createreautomated.registry.ModDataComponents;
 import com.simibubi.create.foundation.blockEntity.SyncedBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -22,7 +23,7 @@ public class OreNodeEntity extends SyncedBlockEntity {
     }
 
     public void extract(int quantity) {
-        if (level == null || level.isClientSide() || !canExtract(quantity)) return;
+        if (level == null || level.isClientSide() || !canExtract(quantity) || Config.server().nodeYields.infiniteNodes.get()) return;
 
         yield -= quantity;
 
