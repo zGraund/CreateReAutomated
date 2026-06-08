@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Unmodifiable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Arrays;
 import java.util.List;
 
 @ParametersAreNonnullByDefault
@@ -35,7 +36,11 @@ public class ExtractingRecipe extends ProcessingRecipe<ExtractingRecipeInput, Ex
     private final int durabilityCost;
 
     public ExtractingRecipe(ExtractingRecipeParams params) {
-        super(ModRecipeTypes.EXTRACTING, params);
+        this(ModRecipeTypes.EXTRACTING, params);
+    }
+
+    public ExtractingRecipe(ModRecipeTypes type, ExtractingRecipeParams params) {
+        super(type, params);
         this.nodes = params.nodes;
         this.extractionQuantity = params.extractionQuantity;
         this.durabilityCost = params.durabilityCost;
@@ -45,7 +50,7 @@ public class ExtractingRecipe extends ProcessingRecipe<ExtractingRecipeInput, Ex
     public boolean matches(ExtractingRecipeInput input, Level level) {
         if (!getDrill().test(input.drill()))
             return false;
-        BlockState blockState = level.getBlockState(input.nodePos());
+        BlockState blockState = input.node();
         if (!getNodes().contains(blockState.getBlockHolder()))
             return false;
         if (!(blockState.getBlock() instanceof Extractable nodeBlock))
@@ -99,13 +104,13 @@ public class ExtractingRecipe extends ProcessingRecipe<ExtractingRecipeInput, Ex
         }).toList();
     }
 
-    public interface Factory extends ProcessingRecipe.Factory<ExtractingRecipeParams, ExtractingRecipe> {
-        ExtractingRecipe create(ExtractingRecipeParams params);
+    public interface Factory<T extends ExtractingRecipe> extends ProcessingRecipe.Factory<ExtractingRecipeParams, T> {
+        T create(ExtractingRecipeParams params);
     }
 
     @SuppressWarnings("unused")
-    public static class Builder extends ProcessingRecipeBuilder<ExtractingRecipeParams, ExtractingRecipe, Builder> {
-        public Builder(Factory factory, ResourceLocation recipeId) {
+    public static class Builder<T extends ExtractingRecipe> extends ProcessingRecipeBuilder<ExtractingRecipeParams, T, Builder<T>> {
+        public Builder(Factory<T> factory, ResourceLocation recipeId) {
             super(factory, recipeId);
         }
 
@@ -114,72 +119,78 @@ public class ExtractingRecipe extends ProcessingRecipe<ExtractingRecipeInput, Ex
             return new ExtractingRecipeParams();
         }
 
-        public Builder nodes(HolderSet<Block> nodes) {
+        public Builder<T> nodes(HolderSet<Block> nodes) {
             params.nodes = nodes;
             return self();
         }
 
         @SuppressWarnings("deprecation")
-        public Builder nodes(TagKey<Block> tag) {
+        public Builder<T> nodes(TagKey<Block> tag) {
             params.nodes = HolderSet.emptyNamed(BuiltInRegistries.BLOCK.holderOwner(), tag);
             return self();
         }
 
         @SafeVarargs
-        public final Builder nodes(BlockEntry<? extends Block>... blocks) {
+        public final Builder<T> nodes(BlockEntry<? extends Block>... blocks) {
             params.nodes = HolderSet.direct(blocks);
             return self();
         }
 
-        public Builder durabilityCost(int cost) {
+        @SuppressWarnings("deprecation")
+        public Builder<T> nodes(Block... blocks) {
+            params.nodes = HolderSet.direct(Arrays.stream(blocks).map(Block::builtInRegistryHolder).toList());
+            return self();
+        }
+
+        public Builder<T> durabilityCost(int cost) {
             params.durabilityCost = cost;
             return self();
         }
 
-        public Builder noDurability() {
+        public Builder<T> noDurability() {
             params.durabilityCost = 0;
             return self();
         }
 
-        public Builder fragments(int quantity, float chance) {
+        public Builder<T> fragments(int quantity, float chance) {
             return output(chance, ModItems.NODE_FRAGMENT, quantity);
         }
 
-        public Builder defaultFragments() {
+        public Builder<T> defaultFragments() {
             return fragments(1, 0.01f);
         }
 
-        public Builder extract(int quantity) {
+        public Builder<T> extract(int quantity) {
             params.extractionQuantity = quantity;
             return self();
         }
 
-        public Builder secAtMaxSpeed(int seconds) {
+        public Builder<T> secAtMaxSpeed(int seconds) {
             return duration(seconds * 256 * 20);
         }
 
         @Override
-        public Builder self() {
+        public Builder<T> self() {
             return this;
         }
     }
 
-    public static class Serializer implements RecipeSerializer<ExtractingRecipe> {
-        private final MapCodec<ExtractingRecipe> codec;
-        private final StreamCodec<RegistryFriendlyByteBuf, ExtractingRecipe> streamCodec;
+    public static class Serializer<T extends ExtractingRecipe> implements RecipeSerializer<T> {
+        private final MapCodec<T> codec;
+        private final StreamCodec<RegistryFriendlyByteBuf, T> streamCodec;
 
-        public Serializer(ProcessingRecipe.Factory<ExtractingRecipeParams, ExtractingRecipe> factory) {
+        public Serializer(ProcessingRecipe.Factory<ExtractingRecipeParams, T> factory) {
             this.codec = ProcessingRecipe.codec(factory, ExtractingRecipeParams.CODEC);
             this.streamCodec = ProcessingRecipe.streamCodec(factory, ExtractingRecipeParams.STREAM_CODEC);
         }
 
         @Override
-        public MapCodec<ExtractingRecipe> codec() {
+        public MapCodec<T> codec() {
             return codec;
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, ExtractingRecipe> streamCodec() {
+        public StreamCodec<RegistryFriendlyByteBuf, T> streamCodec() {
             return streamCodec;
         }
     }

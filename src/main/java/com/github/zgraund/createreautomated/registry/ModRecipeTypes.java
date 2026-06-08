@@ -1,6 +1,7 @@
 package com.github.zgraund.createreautomated.registry;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
+import com.github.zgraund.createreautomated.recipe.AdvancedExtractingRecipe;
 import com.github.zgraund.createreautomated.recipe.ExtractingRecipe;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import net.createmod.catnip.lang.Lang;
@@ -13,10 +14,12 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Optional;
 
 public enum ModRecipeTypes implements IRecipeTypeInfo {
-    EXTRACTING(new ExtractingRecipe.Serializer(ExtractingRecipe::new));
+    EXTRACTING(new ExtractingRecipe.Serializer<>(ExtractingRecipe::new)),
+    ADVANCED_EXTRACTING(new ExtractingRecipe.Serializer<>(AdvancedExtractingRecipe::new));
 
     private final ResourceLocation id;
     private final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<?>> serializer;
@@ -54,8 +57,8 @@ public enum ModRecipeTypes implements IRecipeTypeInfo {
     }
 
     @Nonnull
-    public <I extends RecipeInput, R extends Recipe<I>> Optional<RecipeHolder<R>> find(I input, @Nonnull Level level) {
-        return level.getRecipeManager().getRecipeFor(getType(), input, level);
+    public <I extends RecipeInput, R extends Recipe<I>> Optional<RecipeHolder<R>> find(I input, @Nullable Level level) {
+        return level == null ? Optional.empty() : level.getRecipeManager().getRecipeFor(getType(), input, level);
     }
 
     private static class ModRegistries {
