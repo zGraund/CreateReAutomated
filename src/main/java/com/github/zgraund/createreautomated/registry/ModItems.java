@@ -49,7 +49,7 @@ public class ModItems {
                          .model((ctx, prov) -> {
                              prov.generated(ctx);
                              ResourceLocation path = ctx.getId();
-                             prov.singleTexture(path.withPrefix(ModPartialModels.PATH).toString(), prov.modLoc("block/extractor/drill"),
+                             prov.singleTexture(path.withPrefix(ModPartialModels.PATH).toString(), prov.modLoc("partial/drill"),
                                      "0", path.withPrefix("block/"));
                          })
                          .onRegister(item -> DrillPartialIndex.MODELS.register(item, model))

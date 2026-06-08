@@ -1,4 +1,4 @@
-package com.github.zgraund.createreautomated.block.liquidcooledextractor;
+package com.github.zgraund.createreautomated.block.advancedextractor;
 
 import com.github.zgraund.createreautomated.block.base.AbstractExtractorBlock;
 import com.github.zgraund.createreautomated.registry.ModBlockEntities;
@@ -20,15 +20,17 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class LCExtractorBlock extends AbstractExtractorBlock<LCExtractorBlockEntity> {
-    public static final MapCodec<LCExtractorBlock> CODEC = simpleCodec(LCExtractorBlock::new);
+public class AdvancedExtractorBlock extends AbstractExtractorBlock<AdvancedExtractorBlockEntity> {
+    public static final MapCodec<AdvancedExtractorBlock> CODEC = simpleCodec(AdvancedExtractorBlock::new);
 
-    public LCExtractorBlock(Properties properties) {
+    public AdvancedExtractorBlock(Properties properties) {
         super(properties);
     }
 
@@ -41,13 +43,14 @@ public class LCExtractorBlock extends AbstractExtractorBlock<LCExtractorBlockEnt
         return onBlockEntityUseItemOn(level, pos, be -> {
             SoundEvent sound = null;
             if (FluidHelper.tryEmptyItemIntoBE(level, player, hand, stack, be)) {
-                sound = FluidHelper.getEmptySound(be.tank.getFluid());
+                sound = FluidHelper.getEmptySound(be.getFluid());
             }
+            FluidStack oldFluid = be.getFluid().copy();
             if (FluidHelper.tryFillItemFromBE(level, player, hand, stack, be)) {
-                sound = FluidHelper.getFillSound(be.tank.getFluid());
+                sound = FluidHelper.getFillSound(oldFluid);
             }
             if (sound != null && !level.isClientSide()) {
-                level.playSound(null, be.getBlockPos(), sound, SoundSource.BLOCKS);
+                level.playSound(null, be.getBlockPos(), sound, SoundSource.BLOCKS, 0.5f, 0.9f);
                 be.notifyUpdate();
             }
             return ItemInteractionResult.SUCCESS;
@@ -56,12 +59,13 @@ public class LCExtractorBlock extends AbstractExtractorBlock<LCExtractorBlockEnt
 
     @Override
     public boolean hasDynamicLightEmission(BlockState state) {
-        return true;
+        return isUpper(state);
     }
 
     @Override
     public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-        return getBlockEntityOptional(level, pos).map(be -> be.luminosity).orElse(0);
+        AuxiliaryLightManager lightManager = level.getAuxLightManager(pos);
+        return lightManager != null ? lightManager.getLightAt(pos) : 0;
     }
 
     @Override
@@ -70,12 +74,12 @@ public class LCExtractorBlock extends AbstractExtractorBlock<LCExtractorBlockEnt
     }
 
     @Override
-    public Class<LCExtractorBlockEntity> getBlockEntityClass() {
-        return LCExtractorBlockEntity.class;
+    public Class<AdvancedExtractorBlockEntity> getBlockEntityClass() {
+        return AdvancedExtractorBlockEntity.class;
     }
 
     @Override
-    public BlockEntityType<LCExtractorBlockEntity> getBlockEntityType() {
+    public BlockEntityType<AdvancedExtractorBlockEntity> getBlockEntityType() {
         return ModBlockEntities.LC_EXTRACTOR_BE.get();
     }
 }

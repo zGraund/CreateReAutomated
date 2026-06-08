@@ -1,5 +1,6 @@
 package com.github.zgraund.createreautomated.block.base;
 
+import com.github.zgraund.createreautomated.block.extractor.ExtractorBlockEntity;
 import com.github.zgraund.createreautomated.registry.ModTags;
 import com.simibubi.create.content.kinetics.base.KineticBlock;
 import com.simibubi.create.foundation.block.IBE;
@@ -39,7 +40,7 @@ import java.util.stream.Stream;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public abstract class AbstractExtractorBlock<T extends AbstractExtractorBlockEntity> extends KineticBlock implements IBE<T> {
+public abstract class AbstractExtractorBlock<T extends ExtractorBlockEntity> extends KineticBlock implements IBE<T> {
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
     public static final VoxelShape SHAPE_UPPER = Stream.of(
             Block.box(0, 1, 0, 16, 15, 16),

@@ -1,4 +1,4 @@
-package com.github.zgraund.createreautomated.block.liquidcooledextractor;
+package com.github.zgraund.createreautomated.block.advancedextractor;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -16,13 +16,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
-public class LCExtractorRenderer extends KineticBlockEntityRenderer<LCExtractorBlockEntity> {
-    public LCExtractorRenderer(BlockEntityRendererProvider.Context context) {
+public class AdvancedExtractorRenderer extends KineticBlockEntityRenderer<AdvancedExtractorBlockEntity> {
+    public AdvancedExtractorRenderer(BlockEntityRendererProvider.Context context) {
         super(context);
     }
 
     @Override
-    protected void renderSafe(LCExtractorBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
+    protected void renderSafe(AdvancedExtractorBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
         // The drill render is handled by the visual if supported
         if (!VisualizationManager.supportsVisualization(be.getLevel())) {
             BlockState blockState = be.getBlockState();
@@ -41,14 +41,14 @@ public class LCExtractorRenderer extends KineticBlockEntityRenderer<LCExtractorB
 
         float minX = 1 / 16f;
         float maxX = 15 / 16f;
-        float minY = 5 / 16f;
+        float minY = 6 / 16f;
         float maxY = 10 / 16f;
         float fluidLevel = minY + (be.getFillPercentage() * (maxY - minY));
 
-        if (!be.tank.isEmpty()) {
+        if (!be.isEmpty()) {
             ms.pushPose();
             NeoForgeCatnipServices.FLUID_RENDERER.renderFluidBox(
-                    be.tank.getFluid(), minX, minY, minX, maxX, fluidLevel, maxX, buffer, ms, light, false, true
+                    be.getFluid(), minX, minY, minX, maxX, fluidLevel, maxX, buffer, ms, light, false, true
             );
             ms.popPose();
         }

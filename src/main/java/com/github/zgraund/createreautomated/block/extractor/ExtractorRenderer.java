@@ -1,6 +1,5 @@
 package com.github.zgraund.createreautomated.block.extractor;
 
-import com.github.zgraund.createreautomated.block.base.AbstractExtractorBlockEntity;
 import com.github.zgraund.createreautomated.registry.ModPartialModels;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -16,7 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nonnull;
 
-public class ExtractorRenderer<T extends AbstractExtractorBlockEntity> extends KineticBlockEntityRenderer<T> {
+public class ExtractorRenderer<T extends ExtractorBlockEntity> extends KineticBlockEntityRenderer<T> {
     public ExtractorRenderer(BlockEntityRendererProvider.Context context) {
         super(context);
     }
@@ -36,10 +35,6 @@ public class ExtractorRenderer<T extends AbstractExtractorBlockEntity> extends K
             float drillOffset = be.getDrillOffset();
             SuperByteBuffer drill = CachedBuffers.partial(be.getDrillModel(), blockState);
             // TODO: fix drill render when offset > 1
-//            if (drillOffset > 1f) {
-//                SuperByteBuffer shaft = CachedBuffers.partial(AllPartialModels.SHAFT, blockState);
-//                standardKineticRotationTransform(shaft, be, light).translate(0, -0.42, 0).renderInto(ms, vb);
-//            }
             standardKineticRotationTransform(drill, be, light).translate(0, -drillOffset, 0).renderInto(ms, vb);
         }
     }
