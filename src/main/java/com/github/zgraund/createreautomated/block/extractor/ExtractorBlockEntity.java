@@ -4,6 +4,7 @@ import com.github.zgraund.createreautomated.api.DrillPartialIndex;
 import com.github.zgraund.createreautomated.api.block.Extractable;
 import com.github.zgraund.createreautomated.block.base.AbstractExtractorBlock;
 import com.github.zgraund.createreautomated.config.Config;
+import com.github.zgraund.createreautomated.config.RecipeModifiers;
 import com.github.zgraund.createreautomated.recipe.ExtractingRecipe;
 import com.github.zgraund.createreautomated.recipe.ExtractingRecipeInput;
 import com.github.zgraund.createreautomated.registry.ModRecipeTypes;
@@ -59,6 +60,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     public static final float DEFAULT_DRILL_OFFSET = 0.8f;
     public static final float RETRACTED_DRILL_OFFSET = 0.55f;
 
+    protected final RecipeModifiers recipeModifiers = Config.server().recipeModifiers;
     protected final ItemStackHandler drillInv = new ItemStackHandler(1) {
         @Override
         protected int getStackLimit(int slot, ItemStack stack) {
@@ -127,15 +129,17 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         if (isExtracting())
             tickProgress();
 
-        if (recipe != null && progress >= recipe.getProcessingDuration()) {
+        if (recipe != null && progress >= recipe.getProcessingDurationModified()) {
             if (getNode().getBlock() instanceof Extractable node) {
-                node.extract(recipe.extractionQuantity(), nodePos, level);
+                node.extract(recipe.getExtractionQuantityModified(), nodePos, level);
             }
             recipe.rollResults(level.random).forEach(result ->
-                    ItemHandlerHelper.insertItemStacked(outputInv, result, false)
+                    ItemHandlerHelper.insertItemStacked(outputInv, recipe.applyOutputModifiers(result), false)
             );
-            if (Config.server().useDrillDurability.get()) {
-                drillInv.getStackInSlot(0).hurtAndBreak(recipe.durabilityCost(), (ServerLevel) level, null, this::onDrillBreak);
+            if (Config.server().extractorConfig.useDrillDurability.get()) {
+                drillInv.getStackInSlot(0).hurtAndBreak(
+                        recipe.getDurabilityCostModified(), (ServerLevel) level, null, this::onDrillBreak
+                );
             }
             progress = 0;
         }
@@ -358,9 +362,10 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         boolean shouldAddTooltip = Config.client().debugExtractorOverlay.get() && recipe != null;
         if (shouldAddTooltip) {
             // For this use case the Create lang builder is good enough
+            int duration = recipe.getProcessingDurationModified();
             CreateLang.text("Crafting progress: ")
                       .style(ChatFormatting.GRAY)
-                      .add(CreateLang.text((progress * 100) / recipe.getProcessingDuration() + "%").style(ChatFormatting.DARK_GRAY))
+                      .add(CreateLang.text((duration == 0 ? 100 : (progress / duration) * 100) + "%").style(ChatFormatting.DARK_GRAY))
                       .forGoggles(tooltip);
             CreateLang.itemName(drillInv.getStackInSlot(0))
                       .style(ChatFormatting.DARK_GRAY)

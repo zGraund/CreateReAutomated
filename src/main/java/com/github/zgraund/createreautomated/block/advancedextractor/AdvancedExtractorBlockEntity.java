@@ -68,7 +68,7 @@ public class AdvancedExtractorBlockEntity extends ExtractorBlockEntity {
     public void tickProgress() {
         super.tickProgress();
         if (recipe instanceof AdvancedExtractingRecipe advancedRecipe)
-            tank.drain(advancedRecipe.getFluid().amount(), IFluidHandler.FluidAction.EXECUTE);
+            tank.drain(advancedRecipe.getFluidAmountModified(), IFluidHandler.FluidAction.EXECUTE);
     }
 
     @Nonnull
@@ -126,5 +126,4 @@ public class AdvancedExtractorBlockEntity extends ExtractorBlockEntity {
         super.write(compound, registries, clientPacket);
         this.tank.writeToNBT(registries, compound);
     }
-
 }

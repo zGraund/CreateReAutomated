@@ -11,6 +11,6 @@ public class ModEvents {
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         ExtractorBlockEntity.registerInventoryCapabilities(event, ModBlocks.EXTRACTOR);
-        AdvancedExtractorBlockEntity.registerAllCapabilities(event, ModBlocks.LC_EXTRACTOR);
+        AdvancedExtractorBlockEntity.registerAllCapabilities(event, ModBlocks.ADVANCED_EXTRACTOR);
     }
 }

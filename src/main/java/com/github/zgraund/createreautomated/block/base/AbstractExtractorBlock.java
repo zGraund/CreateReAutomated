@@ -1,6 +1,7 @@
 package com.github.zgraund.createreautomated.block.base;
 
 import com.github.zgraund.createreautomated.block.extractor.ExtractorBlockEntity;
+import com.github.zgraund.createreautomated.config.Config;
 import com.github.zgraund.createreautomated.registry.ModTags;
 import com.simibubi.create.content.kinetics.base.KineticBlock;
 import com.simibubi.create.foundation.block.IBE;
@@ -36,6 +37,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 @ParametersAreNonnullByDefault
@@ -115,7 +117,8 @@ public abstract class AbstractExtractorBlock<T extends ExtractorBlockEntity> ext
 
     @Override
     public SpeedLevel getMinimumRequiredSpeedLevel() {
-        return SpeedLevel.MEDIUM;
+        Supplier<SpeedLevel> speed = Config.server().extractorConfig.getExtractorSpeed(this);
+        return speed == null ? SpeedLevel.MEDIUM : speed.get();
     }
 
     @Override

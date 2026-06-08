@@ -25,7 +25,7 @@ public class ModBlockEntities {
             REGISTRATE.blockEntity("lc_extractor_be", AdvancedExtractorBlockEntity::new)
                       .visual(() -> AdvancedExtractorVisual::new, true)
                       .renderer(() -> AdvancedExtractorRenderer::new)
-                      .validBlocks(ModBlocks.LC_EXTRACTOR)
+                      .validBlocks(ModBlocks.ADVANCED_EXTRACTOR)
                       .register();
 
     public static final BlockEntityEntry<OreNodeEntity> ORE_NODE_BE =
