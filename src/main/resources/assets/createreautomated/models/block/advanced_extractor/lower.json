@@ -3,7 +3,7 @@
   "credit": "Made with Blockbench",
   "parent": "createreautomated:block/extractor/lower",
   "textures": {
-    "0": "createreautomated:block/extractor_lc",
-    "particle": "create:block/andesite_block"
+    "0": "createreautomated:block/advanced_extractor",
+    "particle": "create:block/brass_casing"
   }
 }

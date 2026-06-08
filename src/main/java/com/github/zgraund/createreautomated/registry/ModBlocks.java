@@ -2,13 +2,14 @@ package com.github.zgraund.createreautomated.registry;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
 import com.github.zgraund.createreautomated.block.InfiniteNodeBlock;
+import com.github.zgraund.createreautomated.block.advancedextractor.AdvancedExtractorBlock;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorBlock;
-import com.github.zgraund.createreautomated.block.liquidcooledextractor.LCExtractorBlock;
 import com.github.zgraund.createreautomated.block.node.OreNodeBlock;
 import com.github.zgraund.createreautomated.config.NodeYields;
 import com.github.zgraund.createreautomated.datagen.ModBlockLootTableGen;
 import com.github.zgraund.createreautomated.datagen.ModCommonBlockModelGen;
 import com.simibubi.create.AllTags;
+import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.ModelGen;
 import com.simibubi.create.foundation.data.TagGen;
@@ -55,14 +56,16 @@ public class ModBlocks {
                       .item(DoubleHighBlockItem::new)
                       .transform(ModelGen.customItemModel())
                       .register();
-    public static final BlockEntry<LCExtractorBlock> LC_EXTRACTOR =
-            REGISTRATE.block("liquid_cooled_extractor", LCExtractorBlock::new)
+    public static final BlockEntry<AdvancedExtractorBlock> LC_EXTRACTOR =
+            REGISTRATE.block("advanced_extractor", AdvancedExtractorBlock::new)
                       .initialProperties(EXTRACTOR)
                       .loot(ModBlockLootTableGen.createExtractorLootTable())
                       .blockstate(ModCommonBlockModelGen.extractorModel())
                       .transform(TagGen.pickaxeOnly())
                       .item(DoubleHighBlockItem::new)
                       .transform(ModelGen.customItemModel())
+                      // TODO: move in config
+                      .onRegister(t -> BlockStressValues.IMPACTS.register(t, () -> 64))
                       .register();
 
     public static final BlockEntry<InfiniteNodeBlock>
