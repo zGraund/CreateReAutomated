@@ -11,18 +11,18 @@
               "condition": "minecraft:survives_explosion"
             },
             {
-              "block": "createreautomated:liquid_cooled_extractor",
+              "block": "createreautomated:advanced_extractor",
               "condition": "minecraft:block_state_property",
               "properties": {
                 "half": "lower"
               }
             }
           ],
-          "name": "createreautomated:liquid_cooled_extractor"
+          "name": "createreautomated:advanced_extractor"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "createreautomated:blocks/liquid_cooled_extractor"
+  "random_sequence": "createreautomated:blocks/advanced_extractor"
 }
