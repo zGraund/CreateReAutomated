@@ -2,6 +2,7 @@ package com.github.zgraund.createreautomated.block.advancedextractor;
 
 import com.github.zgraund.createreautomated.block.base.AbstractExtractorBlock;
 import com.github.zgraund.createreautomated.registry.ModBlockEntities;
+import com.github.zgraund.createreautomated.registry.ModBlocks;
 import com.mojang.serialization.MapCodec;
 import com.simibubi.create.content.fluids.transfer.GenericItemEmptying;
 import com.simibubi.create.content.fluids.transfer.GenericItemFilling;
@@ -19,6 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -29,6 +31,14 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 public class AdvancedExtractorBlock extends AbstractExtractorBlock<AdvancedExtractorBlockEntity> {
     public static final MapCodec<AdvancedExtractorBlock> CODEC = simpleCodec(AdvancedExtractorBlock::new);
+
+    public static BlockState getTop() {
+        return getBottom().setValue(HALF, DoubleBlockHalf.UPPER);
+    }
+
+    public static BlockState getBottom() {
+        return ModBlocks.ADVANCED_EXTRACTOR.getDefaultState();
+    }
 
     public AdvancedExtractorBlock(Properties properties) {
         super(properties);

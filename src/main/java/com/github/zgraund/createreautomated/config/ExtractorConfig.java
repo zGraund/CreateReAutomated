@@ -51,8 +51,8 @@ public class ExtractorConfig extends ConfigBase {
         private final String name;
 
         public KineticConfig(@Nonnull BlockEntry<?> block, float impact, IRotate.SpeedLevel speed) {
-            this.name = block.getRegisteredName();
-            this.impact = f(impact, 0, "impact", Comments.su, Comments.info);
+            this.name = block.getId().getPath();
+            this.impact = f(impact, 0, "impact", Comments.su);
             this.speed = e(speed, "speed", Comments.speed);
         }
 
@@ -75,8 +75,6 @@ public class ExtractorConfig extends ConfigBase {
 
     public static class Comments {
         public static final String su = "[in Stress Units]";
-        public static final String info =
-                "How much stress impact does the block generate. Note that this cost is doubled for every speed increase it receives.";
         public static final String speed = "The minimum speed required to power the block.";
     }
 }
