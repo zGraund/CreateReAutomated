@@ -25,9 +25,6 @@ public class ExtractorScenes {
         scene.title("extractor", "Mining Ore Nodes");
         scene.configureBasePlate(0, 0, 5);
 
-//        scene.world().setKineticSpeed(util.select().layer(0), -16);
-//        scene.world().setKineticSpeed(util.select().layer(1), 32);
-//        scene.world().setKineticSpeed(util.select().layersFrom(2), 32);
         scene.world().showSection(util.select().layer(0), Direction.UP);
 
         scene.idle(20);
@@ -56,7 +53,6 @@ public class ExtractorScenes {
         // Show Extractor
         BlockPos extTop = util.grid().at(2, 3, 2);
         BlockPos extBot = util.grid().at(2, 2, 2);
-//        scene.world().setKineticSpeed(util.select().position(extTop), -32);
         scene.world().showSection(util.select().fromTo(extBot, extTop), Direction.DOWN);
 
         scene.idle(10);
@@ -183,7 +179,6 @@ public class ExtractorScenes {
         scene.configureBasePlate(0, 0, 5);
 
         scene.world().showSection(util.select().layer(0), Direction.DOWN);
-//        scene.world().setKineticSpeed(util.select().layer(0), -16);
 
         scene.idle(10);
 
@@ -202,20 +197,15 @@ public class ExtractorScenes {
 
         // Power part 1
         Selection p1 = util.select().fromTo(1, 1, 5, 1, 1, 4);
-//        scene.world().setKineticSpeed(p1, 32);
         scene.world().showSection(p1, Direction.DOWN);
         scene.idle(10);
         // Power part 2 (column)
         Selection p2 = util.select().column(1, 3);
-//        scene.world().setKineticSpeed(p2, 32);
         scene.world().showSection(p2, Direction.DOWN);
         scene.idle(10);
         // Power part 3 (cog)
         Selection p3 = util.select().position(1, 4, 2);
-//        scene.world().setKineticSpeed(p3, -32);
         scene.world().showSection(p3, Direction.DOWN);
-
-//        scene.world().setKineticSpeed(extractor, -32);
 
         scene.idle(10);
 
@@ -241,11 +231,9 @@ public class ExtractorScenes {
         BlockPos pumpPos = top.east();
         Selection pump = util.select().position(pumpPos);
         Selection pumpCog = util.select().position(top.east().south());
-//        scene.world().setKineticSpeed(pumpCog, -32);
         scene.world().showSection(pump, Direction.SOUTH);
         scene.idle(10);
         scene.world().showSection(pumpCog, Direction.DOWN);
-//        scene.world().setKineticSpeed(pump, 32);
         scene.world().propagatePipeChange(pumpPos);
 
         FluidStack lava = new FluidStack(Fluids.LAVA.getSource(), 16000);
@@ -267,7 +255,6 @@ public class ExtractorScenes {
 
         // Show belt
         Selection belt = util.select().fromTo(0, 1, 0, 0, 1, 4);
-//        scene.world().setKineticSpeed(belt, -32);
         scene.world().showSection(belt, Direction.DOWN);
 
         scene.idle(10);
