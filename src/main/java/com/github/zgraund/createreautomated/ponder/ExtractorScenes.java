@@ -1,7 +1,9 @@
 package com.github.zgraund.createreautomated.ponder;
 
+import com.github.zgraund.createreautomated.block.advancedextractor.AdvancedExtractorBlockEntity;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorBlockEntity;
 import com.github.zgraund.createreautomated.registry.ModItems;
+import com.simibubi.create.content.fluids.tank.FluidTankBlockEntity;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
 import net.createmod.catnip.math.Pointing;
 import net.createmod.ponder.api.scene.SceneBuilder;
@@ -11,18 +13,21 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nonnull;
 
-public class ExtractorScene {
+public class ExtractorScenes {
     public static void extractor(@Nonnull SceneBuilder builder, @Nonnull SceneBuildingUtil util) {
         CreateSceneBuilder scene = new CreateSceneBuilder(builder);
         scene.title("extractor", "Mining Ore Nodes");
         scene.configureBasePlate(0, 0, 5);
 
-        scene.world().setKineticSpeed(util.select().layer(0), -16);
-        scene.world().setKineticSpeed(util.select().layer(1), 32);
-        scene.world().setKineticSpeed(util.select().layersFrom(2), 32);
+//        scene.world().setKineticSpeed(util.select().layer(0), -16);
+//        scene.world().setKineticSpeed(util.select().layer(1), 32);
+//        scene.world().setKineticSpeed(util.select().layersFrom(2), 32);
         scene.world().showSection(util.select().layer(0), Direction.UP);
 
         scene.idle(20);
@@ -51,7 +56,7 @@ public class ExtractorScene {
         // Show Extractor
         BlockPos extTop = util.grid().at(2, 3, 2);
         BlockPos extBot = util.grid().at(2, 2, 2);
-        scene.world().setKineticSpeed(util.select().position(extTop), -32);
+//        scene.world().setKineticSpeed(util.select().position(extTop), -32);
         scene.world().showSection(util.select().fromTo(extBot, extTop), Direction.DOWN);
 
         scene.idle(10);
@@ -158,12 +163,137 @@ public class ExtractorScene {
              .pointAt(util.vector().blockSurface(funnelOut, Direction.SOUTH))
              .text("or with automation");
 
-        scene.idle(60);
+        scene.idle(40);
+
+        scene.world().modifyBlockEntity(extTop, ExtractorBlockEntity.class, be -> be.simulateExtraction(80));
+
+        scene.idle(110);
 
         scene.world().createItemOnBeltLike(funnelOut.below(2), Direction.DOWN, diamondStack);
         scene.world().flapFunnel(funnelOut, true);
 
         scene.idle(40);
+
+        scene.markAsFinished();
+    }
+
+    public static void advancedExtractor(SceneBuilder builder, @Nonnull SceneBuildingUtil util) {
+        CreateSceneBuilder scene = new CreateSceneBuilder(builder);
+        scene.title("advanced_extractor", "Using Advanced Extractors");
+        scene.configureBasePlate(0, 0, 5);
+
+        scene.world().showSection(util.select().layer(0), Direction.DOWN);
+//        scene.world().setKineticSpeed(util.select().layer(0), -16);
+
+        scene.idle(10);
+
+        // Node
+        scene.world().showSection(util.select().position(1, 1, 2), Direction.DOWN);
+
+        scene.idle(10);
+
+        // Extractor
+        BlockPos top = util.grid().at(1, 3, 2);
+        BlockPos bottom = util.grid().at(1, 2, 2);
+        Selection extractor = util.select().fromTo(top, bottom);
+        scene.world().showSection(extractor, Direction.DOWN);
+
+        scene.idle(10);
+
+        // Power part 1
+        Selection p1 = util.select().fromTo(1, 1, 5, 1, 1, 4);
+//        scene.world().setKineticSpeed(p1, 32);
+        scene.world().showSection(p1, Direction.DOWN);
+        scene.idle(10);
+        // Power part 2 (column)
+        Selection p2 = util.select().column(1, 3);
+//        scene.world().setKineticSpeed(p2, 32);
+        scene.world().showSection(p2, Direction.DOWN);
+        scene.idle(10);
+        // Power part 3 (cog)
+        Selection p3 = util.select().position(1, 4, 2);
+//        scene.world().setKineticSpeed(p3, -32);
+        scene.world().showSection(p3, Direction.DOWN);
+
+//        scene.world().setKineticSpeed(extractor, -32);
+
+        scene.idle(10);
+
+        scene.overlay().showText(80)
+             .placeNearTarget()
+             .pointAt(util.vector().blockSurface(top, Direction.WEST))
+             .attachKeyFrame()
+             .text("The Advanced Extractor require a fluid to work");
+
+        scene.idle(60);
+
+        // Tank
+        BlockPos tankTop = util.grid().at(3, 2, 2);
+        BlockPos tankBottom = util.grid().at(3, 1, 2);
+        scene.world().showSection(util.select().fromTo(tankTop, tankBottom), Direction.DOWN);
+        scene.idle(10);
+
+        // Pipe
+        scene.world().showSection(util.select().position(tankTop.above()), Direction.DOWN);
+        scene.idle(10);
+
+        // Pump and pump power
+        BlockPos pumpPos = top.east();
+        Selection pump = util.select().position(pumpPos);
+        Selection pumpCog = util.select().position(top.east().south());
+//        scene.world().setKineticSpeed(pumpCog, -32);
+        scene.world().showSection(pump, Direction.SOUTH);
+        scene.idle(10);
+        scene.world().showSection(pumpCog, Direction.DOWN);
+//        scene.world().setKineticSpeed(pump, 32);
+        scene.world().propagatePipeChange(pumpPos);
+
+        FluidStack lava = new FluidStack(Fluids.LAVA.getSource(), 16000);
+        scene.idle(10);
+        scene.world()
+             .modifyBlockEntity(tankBottom, FluidTankBlockEntity.class, tank ->
+                     tank.getTankInventory().fill(lava, IFluidHandler.FluidAction.EXECUTE)
+             );
+
+        scene.idle(20);
+
+        scene.overlay().showText(80)
+             .placeNearTarget()
+             .pointAt(util.vector().blockSurface(top, Direction.WEST))
+             .attachKeyFrame()
+             .text("A small amount of fluid will be used each tick");
+
+        scene.idle(80);
+
+        // Show belt
+        Selection belt = util.select().fromTo(0, 1, 0, 0, 1, 4);
+//        scene.world().setKineticSpeed(belt, -32);
+        scene.world().showSection(belt, Direction.DOWN);
+
+        scene.idle(10);
+
+        // Show funnel
+        BlockPos funnel = top.west();
+        scene.world().showSection(util.select().position(funnel), Direction.DOWN);
+
+        scene.idle(20);
+
+        // Set drill and simulate extraction
+        scene.world().modifyBlockEntity(top, AdvancedExtractorBlockEntity.class, be ->
+                be.setVirtualDrill(new ItemStack(ModItems.DIAMOND_DRILL.get()))
+        );
+        scene.idle(5);
+        scene.world().modifyBlockEntity(top, AdvancedExtractorBlockEntity.class, be -> be.simulateExtraction(120));
+
+        scene.idle(30);
+
+        // Spawn result
+        ItemStack diamond = new ItemStack(Items.DIAMOND);
+        for (int i = 0; i < 3; i++) {
+            scene.idle(40);
+            scene.world().createItemOnBeltLike(funnel.below(2), Direction.DOWN, diamond.copy());
+            scene.world().flapFunnel(funnel, true);
+        }
 
         scene.markAsFinished();
     }
