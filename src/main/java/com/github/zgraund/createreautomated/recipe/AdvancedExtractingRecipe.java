@@ -18,9 +18,9 @@ public class AdvancedExtractingRecipe extends ExtractingRecipe {
         if (!(input.extractor() instanceof AdvancedExtractorBlockEntity extractor))
             return false;
         // check for modified amount manually because FluidIngredient is immutable
-        if (getFluidAmountModified() > extractor.getFluid().getAmount())
+        if (getFluidAmountModified() > extractor.getFluidStack().getAmount())
             return false;
-        return getFluid().test(extractor.getFluid()) && super.matches(input, level);
+        return getFluid().test(extractor.getFluidStack()) && super.matches(input, level);
     }
 
     public SizedFluidIngredient getFluid() {
