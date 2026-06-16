@@ -13,6 +13,7 @@ import dev.engine_room.flywheel.lib.model.Models;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import dev.engine_room.flywheel.lib.visual.SimpleDynamicVisual;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
@@ -35,9 +36,9 @@ public class ExtractorVisual<T extends ExtractorBlockEntity> extends SingleAxisR
     }
 
     @Override
-    public void beginFrame(DynamicVisual.Context ctx) {
+    public void beginFrame(@Nonnull DynamicVisual.Context ctx) {
         drill.setPosition(getVisualPosition())
-             .nudge(0, -blockEntity.getDrillOffset(), 0)
+             .nudge(0, -blockEntity.getDrillOffset(ctx.partialTick()), 0)
              .setChanged();
     }
 

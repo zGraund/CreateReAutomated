@@ -53,9 +53,9 @@ public class AdvancedExtractorBlock extends AbstractExtractorBlock<AdvancedExtra
         return onBlockEntityUseItemOn(level, pos, be -> {
             SoundEvent sound = null;
             if (FluidHelper.tryEmptyItemIntoBE(level, player, hand, stack, be)) {
-                sound = FluidHelper.getEmptySound(be.getFluid());
+                sound = FluidHelper.getEmptySound(be.getFluidStack());
             }
-            FluidStack oldFluid = be.getFluid().copy();
+            FluidStack oldFluid = be.getFluidStack().copy();
             if (FluidHelper.tryFillItemFromBE(level, player, hand, stack, be)) {
                 sound = FluidHelper.getFillSound(oldFluid);
             }

@@ -14,8 +14,6 @@ import net.minecraft.core.particles.DustColorTransitionOptions;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.ParticleUtils;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -29,7 +27,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
@@ -54,18 +51,6 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity>, Extractab
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        if (!level.isClientSide() && player.getMainHandItem().isEmpty() && Config.client().debugOreNodeOverlay.get()) {
-            player.sendSystemMessage(Component.literal(
-                    level.getBlockEntity(pos) instanceof OreNodeEntity oreNode
-                            ? "The remaining ore is: " + oreNode.getYield()
-                            : "The node is unlimited"
-            ));
-        }
-        return super.useWithoutItem(state, level, pos, player, hitResult);
-    }
-
-    @Override
     public boolean canExtract(int quantity, BlockPos pos, BlockGetter level) {
         return getBlockEntityOptional(level, pos)
                 .map(be -> be.canExtract(quantity))
@@ -74,7 +59,17 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity>, Extractab
 
     @Override
     public void extract(int quantity, BlockPos pos, BlockGetter level) {
+        if (isInfinite())
+            return;
         withBlockEntityDo(level, pos, be -> be.extract(quantity));
+    }
+
+    public boolean isInfinite() {
+        return getMaxExtractions() <= 0 || Config.server().nodeYields.infiniteNodes.get();
+    }
+
+    public int getMaxExtractions() {
+        return OreNodeBlockIndex.getYieldOrDefault(this);
     }
 
     public int getStateFromQuantity(int quantity) {
@@ -82,14 +77,6 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity>, Extractab
             return 100;
         int percentage = (100 * quantity) / getMaxExtractions();
         return Math.min(10, (100 - percentage + 9) / 10);
-    }
-
-    public boolean isInfinite() {
-        return getMaxExtractions() <= 0;
-    }
-
-    public int getMaxExtractions() {
-        return OreNodeBlockIndex.getYieldOrDefault(this);
     }
 
     public BlockState unstable() {

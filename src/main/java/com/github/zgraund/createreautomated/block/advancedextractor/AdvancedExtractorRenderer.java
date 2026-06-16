@@ -1,43 +1,24 @@
 package com.github.zgraund.createreautomated.block.advancedextractor;
 
+import com.github.zgraund.createreautomated.block.extractor.ExtractorRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.simibubi.create.AllPartialModels;
-import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
-import dev.engine_room.flywheel.api.visualization.VisualizationManager;
+import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import net.createmod.catnip.platform.NeoForgeCatnipServices;
-import net.createmod.catnip.render.CachedBuffers;
-import net.createmod.catnip.render.SuperByteBuffer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
-public class AdvancedExtractorRenderer extends KineticBlockEntityRenderer<AdvancedExtractorBlockEntity> {
+public class AdvancedExtractorRenderer extends ExtractorRenderer<AdvancedExtractorBlockEntity> {
     public AdvancedExtractorRenderer(BlockEntityRendererProvider.Context context) {
         super(context);
     }
 
     @Override
     protected void renderSafe(AdvancedExtractorBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
-        // The drill render is handled by the visual if supported
-        if (!VisualizationManager.supportsVisualization(be.getLevel())) {
-            BlockState blockState = be.getBlockState();
-
-            VertexConsumer vb = buffer.getBuffer(RenderType.cutoutMipped());
-
-            SuperByteBuffer shaft = CachedBuffers.partial(AllPartialModels.SHAFT, blockState);
-            standardKineticRotationTransform(shaft, be, light).renderInto(ms, vb);
-
-            if (be.hasDrill()) {
-                float drillOffset = be.getDrillOffset();
-                SuperByteBuffer drill = CachedBuffers.partial(be.getDrillModel(), blockState);
-                standardKineticRotationTransform(drill, be, light).translate(0, -drillOffset, 0).renderInto(ms, vb);
-            }
-        }
+        super.renderSafe(be, partialTicks, ms, buffer, light, overlay);
 
         float minX = 1 / 16f;
         float maxX = 15 / 16f;
@@ -48,9 +29,14 @@ public class AdvancedExtractorRenderer extends KineticBlockEntityRenderer<Advanc
         if (!be.isEmpty()) {
             ms.pushPose();
             NeoForgeCatnipServices.FLUID_RENDERER.renderFluidBox(
-                    be.getFluid(), minX, minY, minX, maxX, fluidLevel, maxX, buffer, ms, light, false, true
+                    be.getFluidStack(), minX, minY, minX, maxX, fluidLevel, maxX, buffer, ms, light, false, true
             );
             ms.popPose();
         }
+    }
+
+    @Override
+    protected PartialModel getInnerModel(AdvancedExtractorBlockEntity be) {
+        return AllPartialModels.SHAFT;
     }
 }

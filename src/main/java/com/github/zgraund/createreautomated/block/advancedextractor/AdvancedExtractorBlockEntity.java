@@ -2,19 +2,28 @@ package com.github.zgraund.createreautomated.block.advancedextractor;
 
 import com.github.zgraund.createreautomated.block.base.AbstractExtractorBlock;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorBlockEntity;
+import com.github.zgraund.createreautomated.config.Config;
+import com.github.zgraund.createreautomated.config.RecipeModifiers;
 import com.github.zgraund.createreautomated.recipe.AdvancedExtractingRecipe;
 import com.github.zgraund.createreautomated.recipe.ExtractingRecipe;
 import com.github.zgraund.createreautomated.recipe.ExtractingRecipeInput;
 import com.github.zgraund.createreautomated.registry.ModRecipeTypes;
+import com.github.zgraund.createreautomated.util.CreateRALang;
+import com.simibubi.create.AllParticleTypes;
+import com.simibubi.create.content.fluids.particle.FluidParticleData;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+import net.createmod.catnip.math.VecHelper;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
@@ -57,11 +66,11 @@ public class AdvancedExtractorBlockEntity extends ExtractorBlockEntity {
     }
 
     protected void onFluidChanged(FluidStack fluid) {
-        if (level == null)
+        if (level == null || isVirtual())
             return;
         AuxiliaryLightManager lightManager = level.getAuxLightManager(getBlockPos());
         if (lightManager != null)
-            lightManager.setLightAt(getBlockPos(), getFluid().getFluidType().getLightLevel());
+            lightManager.setLightAt(getBlockPos(), getFluidStack().getFluidType().getLightLevel());
     }
 
     @Override
@@ -71,20 +80,28 @@ public class AdvancedExtractorBlockEntity extends ExtractorBlockEntity {
             tank.drain(advancedRecipe.getFluidAmountModified(), IFluidHandler.FluidAction.EXECUTE);
     }
 
-    @Nonnull
-    @Override
-    public Optional<ExtractingRecipe> getRecipeFor(ExtractingRecipeInput input) {
-        Optional<RecipeHolder<AdvancedExtractingRecipe>> holder = ModRecipeTypes.ADVANCED_EXTRACTING.find(input, level);
-        return holder.map(RecipeHolder::value);
-    }
-
     @Override
     public void spawnParticles() {
-        // TODO: liquid particles when extracting
+        if (level == null || !isExtracting())
+            return;
+        if (isEmpty())
+            return;
+
         super.spawnParticles();
+
+        FluidParticleData data = new FluidParticleData(AllParticleTypes.FLUID_PARTICLE.get(), getFluidStack());
+        float angle = level.random.nextFloat() * 360;
+        Vec3 offset = new Vec3(0, -getDrillOffset(1), 0.5f);
+        offset = VecHelper.rotate(offset, angle, Direction.Axis.Y);
+        float particlesSpeed = Math.abs(Math.clamp(getProcessingSpeed() / 2, 1, 15));
+        Vec3 rotation = VecHelper.rotate(offset, particlesSpeed, Direction.Axis.Y);
+
+        Vec3 target = offset.add(Vec3.atBottomCenterOf(worldPosition));
+//        rotation = VecHelper.offsetRandomly(rotation.subtract(offset), level.random, 1 / 128f);
+        level.addParticle(data, target.x, target.y, target.z, rotation.x, rotation.y + 0.2, rotation.z);
     }
 
-    public FluidStack getFluid() {
+    public FluidStack getFluidStack() {
         return tank.getFluid();
     }
 
@@ -97,6 +114,18 @@ public class AdvancedExtractorBlockEntity extends ExtractorBlockEntity {
     }
 
     @Override
+    public boolean failPreConditions() {
+        return tank.isEmpty() || super.failPreConditions();
+    }
+
+    @Nonnull
+    @Override
+    public Optional<ExtractingRecipe> getRecipeFor(ExtractingRecipeInput input) {
+        Optional<RecipeHolder<AdvancedExtractingRecipe>> holder = ModRecipeTypes.ADVANCED_EXTRACTING.find(input, level);
+        return holder.map(RecipeHolder::value);
+    }
+
+    @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
         boolean sup = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
         boolean fluid = containedFluidTooltip(tooltip, isPlayerSneaking, tank);
@@ -104,21 +133,43 @@ public class AdvancedExtractorBlockEntity extends ExtractorBlockEntity {
     }
 
     @Override
-    public boolean failPreConditions() {
-        return tank.isEmpty() || super.failPreConditions();
+    protected boolean addRecipeInfoTooltip(List<Component> tooltip) {
+        boolean added = super.addRecipeInfoTooltip(tooltip);
+
+        if (!(recipe instanceof AdvancedExtractingRecipe adv))
+            return added;
+
+        CreateRALang.text("Fluid: ")
+                    .style(ChatFormatting.GRAY)
+                    .add(RecipeModifiers.formatModifier(Config.server().recipeModifiers.fluid))
+                    .forGoggles(tooltip);
+
+        CreateRALang.text(adv.getFluidAmountModified() + " mB/t")
+                    .style(ChatFormatting.GOLD)
+                    .forGoggles(tooltip, 1);
+
+        if (Config.client().advancedExtractorInfo.get()) {
+            int totalMb = Math.round(adv.getFluidAmountModified() * (adv.getProcessingDurationModified() / getAbsTheoreticalSpeed()));
+            CreateRALang.number(totalMb)
+                        .text(" mB")
+                        .style(ChatFormatting.GOLD)
+                        .forGoggles(tooltip, 1);
+        }
+
+        return true;
     }
 
     @Override
     protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
         super.read(compound, registries, clientPacket);
-        FluidStack oldFluid = getFluid();
+        FluidStack oldFluid = getFluidStack();
         this.tank.readFromNBT(registries, compound);
 
         if (level == null || !clientPacket)
             return;
 
-        if (getFluid() != oldFluid)
-            onFluidChanged(getFluid());
+        if (getFluidStack() != oldFluid)
+            onFluidChanged(getFluidStack());
     }
 
     @Override
