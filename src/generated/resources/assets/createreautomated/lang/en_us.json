@@ -28,6 +28,8 @@
   "createreautomated.configuration.section.createreautomated.common.toml.title": "Create Re-Automated Common Configurations",
   "createreautomated.configuration.title": "Create Re-Automated Configurations",
   "createreautomated.configuration.worldGen": "Enable World Generation",
+  "createreautomated.ponder.advanced_extractor.header": "Using Advanced Extractors",
+  "createreautomated.ponder.advanced_extractor.text_1": "The Advanced Extractor require a fluid to work",
   "createreautomated.ponder.extractor.header": "Mining Ore Nodes",
   "createreautomated.ponder.extractor.text_1": "Nodes are too hard to mine by hand",
   "createreautomated.ponder.extractor.text_2": "An Extractor can be used to mine them",
