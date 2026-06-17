@@ -70,7 +70,7 @@ public class AdvancedExtractorBlockEntity extends ExtractorBlockEntity {
             return;
         AuxiliaryLightManager lightManager = level.getAuxLightManager(getBlockPos());
         if (lightManager != null)
-            lightManager.setLightAt(getBlockPos(), getFluidStack().getFluidType().getLightLevel());
+            lightManager.setLightAt(getBlockPos(), fluid.getFluidType().getLightLevel());
     }
 
     @Override
@@ -93,11 +93,10 @@ public class AdvancedExtractorBlockEntity extends ExtractorBlockEntity {
         float angle = level.random.nextFloat() * 360;
         Vec3 offset = new Vec3(0, -getDrillOffset(1), 0.5f);
         offset = VecHelper.rotate(offset, angle, Direction.Axis.Y);
-        float particlesSpeed = Math.abs(Math.clamp(getProcessingSpeed() / 2, 1, 15));
+        float particlesSpeed = Math.abs(Math.clamp(getProcessingSpeed() / 2, 1, 10));
         Vec3 rotation = VecHelper.rotate(offset, particlesSpeed, Direction.Axis.Y);
 
         Vec3 target = offset.add(Vec3.atBottomCenterOf(worldPosition));
-//        rotation = VecHelper.offsetRandomly(rotation.subtract(offset), level.random, 1 / 128f);
         level.addParticle(data, target.x, target.y, target.z, rotation.x, rotation.y + 0.2, rotation.z);
     }
 

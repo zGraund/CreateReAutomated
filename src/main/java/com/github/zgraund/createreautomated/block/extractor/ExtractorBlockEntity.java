@@ -112,7 +112,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
         if (failPreConditions()) {
             resetRecipe();
         } else {
-            ExtractingRecipeInput input = new ExtractingRecipeInput(this);
+            ExtractingRecipeInput input = ExtractingRecipeInput.of(this);
             if (recipe == null || !recipe.matches(input, level)) {
                 getRecipeFor(input).ifPresentOrElse(this::setRecipe, this::resetRecipe);
             }

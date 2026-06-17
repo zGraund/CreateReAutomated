@@ -11,6 +11,11 @@ import javax.annotation.Nonnull;
 public class ExtractingRecipeInput implements RecipeInput {
     private final ExtractorBlockEntity extractor;
 
+    @Nonnull
+    public static ExtractingRecipeInput of(ExtractorBlockEntity be) {
+        return new ExtractingRecipeInput(be);
+    }
+
     public ExtractingRecipeInput(ExtractorBlockEntity extractor) {
         this.extractor = extractor;
     }

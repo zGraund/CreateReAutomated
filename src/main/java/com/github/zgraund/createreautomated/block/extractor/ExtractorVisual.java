@@ -12,12 +12,16 @@ import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.model.Models;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import dev.engine_room.flywheel.lib.visual.SimpleDynamicVisual;
+import net.createmod.catnip.animation.AnimationTickHolder;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.RandomSource;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
 public class ExtractorVisual<T extends ExtractorBlockEntity> extends SingleAxisRotatingVisual<T> implements SimpleDynamicVisual {
+    private final RandomSource random = RandomSource.createNewThreadLocalInstance();
     private final RotatingInstance drill;
     private final T be;
     @Nullable
@@ -37,8 +41,17 @@ public class ExtractorVisual<T extends ExtractorBlockEntity> extends SingleAxisR
 
     @Override
     public void beginFrame(@Nonnull DynamicVisual.Context ctx) {
+        float x = 0;
+        float y = -blockEntity.getDrillOffset(ctx.partialTick());
+        float z = 0;
+        if (blockEntity.isExtracting() && !Minecraft.getInstance().isPaused() && AnimationTickHolder.getTicks() % 2 == 0) {
+            float factor = 1 / 32f;
+            x = (float) (x + (random.nextFloat() - 0.5) * factor);
+            y = (float) (y + (random.nextFloat() - 0.5) * factor);
+            z = (float) (z + (random.nextFloat() - 0.5) * factor);
+        }
         drill.setPosition(getVisualPosition())
-             .nudge(0, -blockEntity.getDrillOffset(ctx.partialTick()), 0)
+             .nudge(x, y, z)
              .setChanged();
     }
 

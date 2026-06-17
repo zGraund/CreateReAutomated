@@ -275,10 +275,9 @@ public class ExtractorScenes {
         scene.idle(30);
 
         // Spawn result
-        ItemStack diamond = new ItemStack(Items.DIAMOND);
         for (int i = 0; i < 3; i++) {
             scene.idle(40);
-            scene.world().createItemOnBeltLike(funnel.below(2), Direction.DOWN, diamond.copy());
+            scene.world().createItemOnBeltLike(funnel.below(2), Direction.DOWN, new ItemStack(Items.DIAMOND));
             scene.world().flapFunnel(funnel, true);
         }
 
