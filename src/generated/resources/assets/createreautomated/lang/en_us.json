@@ -30,6 +30,7 @@
   "createreautomated.configuration.worldGen": "Enable World Generation",
   "createreautomated.ponder.advanced_extractor.header": "Using Advanced Extractors",
   "createreautomated.ponder.advanced_extractor.text_1": "The Advanced Extractor require a fluid to work",
+  "createreautomated.ponder.advanced_extractor.text_2": "A small amount of fluid will be used each tick",
   "createreautomated.ponder.extractor.header": "Mining Ore Nodes",
   "createreautomated.ponder.extractor.text_1": "Nodes are too hard to mine by hand",
   "createreautomated.ponder.extractor.text_2": "An Extractor can be used to mine them",

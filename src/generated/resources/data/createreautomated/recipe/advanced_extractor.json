@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "create:brass_casing"
+    },
+    "I": {
+      "item": "create:brass_ingot"
+    },
+    "M": {
+      "item": "create:precision_mechanism"
+    },
+    "T": {
+      "item": "create:fluid_tank"
+    }
+  },
+  "pattern": [
+    "ICI",
+    "ITI",
+    "IMI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "createreautomated:advanced_extractor"
+  }
+}

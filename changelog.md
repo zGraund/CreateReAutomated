@@ -7,12 +7,16 @@ Create ReAutomated 0.3.0
     - Like the base Extractor but also require a liquid to function.
 - New recipe type advanced_extracting.
 
+#### Changes
+
+- Updated Extractor crafting.
+
 #### Configs
 
 - Server:
     - Added option to set all nodes infinite.
     - Added option to modify both Extractors stats (Stress / Speed required).
-    - Added Extracting recipe global modifiers to change various recipe parameters without using a datapack.
+    - Added Extracting recipe global modifiers to change various recipe values without a datapack.
 
 #### Art Changes
 

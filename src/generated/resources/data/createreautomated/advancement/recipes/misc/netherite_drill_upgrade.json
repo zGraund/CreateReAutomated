@@ -1,6 +1,16 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
+    "has_advanced_extractor": {
+      "conditions": {
+        "items": [
+          {
+            "items": "createreautomated:advanced_extractor"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "has_extractor": {
       "conditions": {
         "items": [
@@ -11,7 +21,7 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_netherite": {
+    "has_netherite_ingot": {
       "conditions": {
         "items": [
           {
@@ -31,8 +41,9 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_netherite",
-      "has_extractor"
+      "has_netherite_ingot",
+      "has_extractor",
+      "has_advanced_extractor"
     ]
   ],
   "rewards": {

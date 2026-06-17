@@ -23,20 +23,34 @@ public final class ModRecipeProvider extends RecipeProvider {
     protected void buildRecipes(@Nonnull RecipeOutput recipeOutput) {
         // Extractor
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.EXTRACTOR)
-                           .unlockedBy("has_", has(AllBlocks.BRASS_CASING))
-                           .define('I', AllItems.BRASS_INGOT)
-                           .define('C', AllBlocks.BRASS_CASING)
+                           .unlockedBy(getHasName(AllBlocks.BRASS_CASING), has(AllBlocks.BRASS_CASING))
+                           .unlockedBy(getHasName(AllBlocks.COGWHEEL), has(AllBlocks.COGWHEEL))
+                           .define('I', AllItems.ANDESITE_ALLOY)
+                           .define('C', AllBlocks.ANDESITE_CASING)
                            .define('O', AllBlocks.COGWHEEL)
-                           .define('E', AllItems.ELECTRON_TUBE)
                            .pattern("ICI")
                            .pattern("IOI")
-                           .pattern("IEI")
+                           .pattern("ICI")
+                           .save(recipeOutput);
+
+        // Advanced Extractor
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.ADVANCED_EXTRACTOR)
+                           .unlockedBy(getHasName(AllBlocks.BRASS_CASING), has(AllBlocks.BRASS_CASING))
+                           .unlockedBy(getHasName(AllBlocks.FLUID_TANK), has(AllBlocks.FLUID_TANK))
+                           .define('I', AllItems.BRASS_INGOT)
+                           .define('C', AllBlocks.BRASS_CASING)
+                           .define('T', AllBlocks.FLUID_TANK)
+                           .define('M', AllItems.PRECISION_MECHANISM)
+                           .pattern("ICI")
+                           .pattern("ITI")
+                           .pattern("IMI")
                            .save(recipeOutput);
 
         // Drills
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.IRON_DRILL)
-                           .unlockedBy("has_iron", has(Items.IRON_INGOT))
-                           .unlockedBy("has_extractor", has(ModBlocks.EXTRACTOR))
+                           .unlockedBy(getHasName(Items.IRON_INGOT), has(Items.IRON_INGOT))
+                           .unlockedBy(getHasName(ModBlocks.EXTRACTOR), has(ModBlocks.EXTRACTOR))
+                           .unlockedBy(getHasName(ModBlocks.ADVANCED_EXTRACTOR), has(ModBlocks.ADVANCED_EXTRACTOR))
                            .define('I', Items.IRON_INGOT)
                            .define('A', AllItems.ANDESITE_ALLOY)
                            .pattern(" A ")
@@ -45,8 +59,9 @@ public final class ModRecipeProvider extends RecipeProvider {
                            .save(recipeOutput);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.DIAMOND_DRILL)
-                           .unlockedBy("has_diamond", has(Items.DIAMOND))
-                           .unlockedBy("has_extractor", has(ModBlocks.EXTRACTOR))
+                           .unlockedBy(getHasName(Items.DIAMOND), has(Items.DIAMOND))
+                           .unlockedBy(getHasName(ModBlocks.EXTRACTOR), has(ModBlocks.EXTRACTOR))
+                           .unlockedBy(getHasName(ModBlocks.ADVANCED_EXTRACTOR), has(ModBlocks.ADVANCED_EXTRACTOR))
                            .define('P', AllItems.PRECISION_MECHANISM)
                            .define('I', ModItems.IRON_DRILL)
                            .define('D', Items.DIAMOND)
@@ -62,8 +77,9 @@ public final class ModRecipeProvider extends RecipeProvider {
                                               RecipeCategory.MISC,
                                               ModItems.NETHERITE_DRILL.get()
                                       )
-                                      .unlocks("has_netherite", has(Items.NETHERITE_INGOT))
-                                      .unlocks("has_extractor", has(ModBlocks.EXTRACTOR))
+                                      .unlocks(getHasName(Items.NETHERITE_INGOT), has(Items.NETHERITE_INGOT))
+                                      .unlocks(getHasName(ModBlocks.EXTRACTOR), has(ModBlocks.EXTRACTOR))
+                                      .unlocks(getHasName(ModBlocks.ADVANCED_EXTRACTOR), has(ModBlocks.ADVANCED_EXTRACTOR))
                                       .save(recipeOutput, CreateReAutomated.asResource("netherite_drill_upgrade"));
 
         // Node Stabilizer
