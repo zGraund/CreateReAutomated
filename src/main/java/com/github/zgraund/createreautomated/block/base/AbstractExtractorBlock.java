@@ -30,7 +30,6 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -38,26 +37,25 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public abstract class AbstractExtractorBlock<T extends ExtractorBlockEntity> extends KineticBlock implements IBE<T> {
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
-    public static final VoxelShape SHAPE_UPPER = Stream.of(
+    public static final VoxelShape SHAPE_UPPER = Shapes.or(
             Block.box(0, 1, 0, 16, 15, 16),
             Block.box(0, -16, 0, 3, 1, 3),
             Block.box(0, -16, 13, 3, 1, 16),
             Block.box(13, -16, 13, 16, 1, 16),
             Block.box(13, -16, 0, 16, 1, 3)
-    ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
-    public static final VoxelShape SHAPE_LOWER = Stream.of(
+    );
+    public static final VoxelShape SHAPE_LOWER = Shapes.or(
             Block.box(0, 0, 0, 3, 17, 3),
             Block.box(0, 0, 13, 3, 17, 16),
             Block.box(13, 0, 13, 16, 17, 16),
             Block.box(13, 0, 0, 16, 17, 3),
             Block.box(0, 17, 0, 16, 31, 16)
-    ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+    );
 
     public AbstractExtractorBlock(Properties properties) {
         super(properties);

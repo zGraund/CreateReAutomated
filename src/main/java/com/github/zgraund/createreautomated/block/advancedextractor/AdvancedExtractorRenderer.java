@@ -1,6 +1,7 @@
 package com.github.zgraund.createreautomated.block.advancedextractor;
 
 import com.github.zgraund.createreautomated.block.extractor.ExtractorRenderer;
+import com.github.zgraund.createreautomated.registry.ModPartialModels;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.AllPartialModels;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
@@ -37,6 +38,6 @@ public class AdvancedExtractorRenderer extends ExtractorRenderer<AdvancedExtract
 
     @Override
     protected PartialModel getInnerModel(AdvancedExtractorBlockEntity be) {
-        return AllPartialModels.SHAFT;
+        return be.hasDrill() ? ModPartialModels.SHORT_SHAFT : AllPartialModels.SHAFT;
     }
 }

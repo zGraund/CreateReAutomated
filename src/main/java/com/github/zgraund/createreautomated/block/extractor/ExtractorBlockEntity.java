@@ -57,7 +57,7 @@ import java.util.Optional;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class ExtractorBlockEntity extends KineticBlockEntity {
-    public static final float DEFAULT_DRILL_OFFSET = 0.8f;
+    public static final float DEFAULT_DRILL_OFFSET = 0.85f;
     public static final float RETRACTED_DRILL_OFFSET = 0.55f;
 
     protected final ItemStackHandler drillInv = new ItemStackHandler(1) {

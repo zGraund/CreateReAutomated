@@ -21,11 +21,11 @@ import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
 public class ExtractorVisual<T extends ExtractorBlockEntity> extends SingleAxisRotatingVisual<T> implements SimpleDynamicVisual {
-    private final RandomSource random = RandomSource.createNewThreadLocalInstance();
-    private final RotatingInstance drill;
-    private final T be;
+    protected final RandomSource random = RandomSource.createNewThreadLocalInstance();
+    protected final RotatingInstance drill;
+    protected final T be;
     @Nullable
-    private PartialModel model;
+    protected PartialModel model;
 
     public ExtractorVisual(VisualizationContext context, T blockEntity, float partialTick) {
         super(context, blockEntity, partialTick, Models.partial(blockEntity.hasDrill() ? ModPartialModels.HALF_COG : AllPartialModels.COGWHEEL));
