@@ -1,0 +1,25 @@
+{
+  "type": "createreautomated:advanced_extracting",
+  "ingredients": [
+    {
+      "item": "createreautomated:netherite_drill"
+    },
+    {
+      "type": "neoforge:single",
+      "amount": 1,
+      "fluid": "minecraft:lava"
+    }
+  ],
+  "node": "createreautomated:ancient_debris_node",
+  "processing_time": 1075200,
+  "results": [
+    {
+      "count": 2,
+      "id": "createreautomated:ancient_debris_bit"
+    },
+    {
+      "chance": 0.02,
+      "id": "createreautomated:node_fragment"
+    }
+  ]
+}

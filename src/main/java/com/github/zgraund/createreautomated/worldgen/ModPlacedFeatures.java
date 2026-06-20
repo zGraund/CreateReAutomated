@@ -7,7 +7,10 @@ import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.placement.CountPlacement;
+import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
 import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
@@ -19,6 +22,7 @@ import static net.minecraft.data.worldgen.placement.PlacementUtils.register;
 public class ModPlacedFeatures {
     public static final ResourceKey<PlacedFeature> OVERWORLD_ORE_NODE_PLACED_KEY = registerKey("ore_node_placed");
     public static final ResourceKey<PlacedFeature> NETHER_ORE_NODE_PLACED_KEY = registerKey("nether_ore_node_placed");
+    public static final ResourceKey<PlacedFeature> ANCIENT_DEBRIS_NODE_PLACED_KEY = registerKey("ancient_debris_node_placed");
 
     public static void bootstrap(@Nonnull BootstrapContext<PlacedFeature> context) {
         HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
@@ -41,6 +45,18 @@ public class ModPlacedFeatures {
                 List.of(
                         ConfigPlacementFilter.INSTANCE,
                         ConfigNodePlacement.nether(),
+                        InSquarePlacement.spread()
+                )
+        );
+
+        register(
+                context,
+                ANCIENT_DEBRIS_NODE_PLACED_KEY,
+                configuredFeatures.getOrThrow(ModConfiguredFeatures.ANCIENT_DEBRIS_NODE_KEY),
+                List.of(
+                        ConfigPlacementFilter.INSTANCE,
+                        CountPlacement.of(20),
+                        HeightRangePlacement.triangle(VerticalAnchor.absolute(5), VerticalAnchor.absolute(25)),
                         InSquarePlacement.spread()
                 )
         );

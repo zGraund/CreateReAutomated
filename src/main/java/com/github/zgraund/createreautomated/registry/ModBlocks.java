@@ -16,7 +16,10 @@ import com.simibubi.create.foundation.data.recipe.CommonMetal;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.builders.ItemBuilder;
+import com.tterrag.registrate.providers.DataGenContext;
+import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 import com.tterrag.registrate.util.entry.BlockEntry;
+import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.registries.Registries;
@@ -89,6 +92,15 @@ public class ModBlocks {
     public static final BlockEntry<OreNodeBlock>
             NETHER_GOLD_NODE = netherrackNode("nether_gold_node", 180, Tags.Blocks.ORES_GOLD);
 
+    public static final BlockEntry<OreNodeBlock> ANCIENT_DEBRIS_NODE =
+            node(
+                    "ancient_debris_node",
+                    90,
+                    Blocks.NETHERRACK,
+                    deepslateNodeProperties().mapColor(MapColor.COLOR_BLACK).sound(SoundType.ANCIENT_DEBRIS),
+                    ModCommonBlockModelGen.topSideNodeWithOverlay()
+            );
+
     private static BlockEntry<OreNodeBlock> stoneNode(String name, int limit, TagKey<?>... tags) {
         return node(name, limit, Blocks.COBBLESTONE, stoneNodeProperties(),
                 addTags(tags, Tags.Blocks.ORES_IN_GROUND_STONE, Tags.Items.ORES_IN_GROUND_STONE));
@@ -107,13 +119,20 @@ public class ModBlocks {
     private static BlockEntry<OreNodeBlock> node(
             String name, int quantity, Block baseStone, BlockBehaviour.Properties properties, TagKey<?>... tags
     ) {
+        return node(name, quantity, baseStone, properties, ModCommonBlockModelGen.defaultOverlay(), tags);
+    }
+
+    private static BlockEntry<OreNodeBlock> node(
+            String name, int quantity, Block baseStone, BlockBehaviour.Properties properties, NonNullBiConsumer<DataGenContext<Block, OreNodeBlock>,
+                    RegistrateBlockstateProvider> model, TagKey<?>... tags
+    ) {
         return REGISTRATE.block(name, (prop) -> new OreNodeBlock(properties, baseStone.defaultBlockState()))
                          .transform(tagBlockOrItem(tags))
                          .tag(Tags.Items.ORES)
                          .build()
                          .tag(BlockTags.NEEDS_IRON_TOOL, Tags.Blocks.ORES, ModTags.Blocks.ORE_NODES, AllTags.AllBlockTags.NON_BREAKABLE.tag)
                          .transform(TagGen.pickaxeOnly())
-                         .blockstate(ModCommonBlockModelGen.defaultOverlay())
+                         .blockstate(model)
                          .loot((prov, block) -> prov.add(block, ModBlockLootTableGen.createOreNodeDrop(block)))
                          .transform(NodeYields.setNodeValue(quantity))
                          .onRegisterAfter(Registries.ITEM, item -> ItemDescription.useKey(item, "block.createreautomated.ore_node"))
@@ -153,11 +172,11 @@ public class ModBlocks {
     }
 
     public static BlockBehaviour.Properties netherrackNodeProperties() {
-        return stoneNodeProperties().mapColor(MapColor.NETHER).sound(SoundType.NETHERRACK).strength(26f);
+        return stoneNodeProperties().mapColor(MapColor.NETHER).sound(SoundType.NETHERRACK).strength(26f, 1500f);
     }
 
     public static BlockBehaviour.Properties deepslateNodeProperties() {
-        return stoneNodeProperties().mapColor(MapColor.DEEPSLATE).sound(SoundType.DEEPSLATE).strength(30f);
+        return stoneNodeProperties().mapColor(MapColor.DEEPSLATE).sound(SoundType.DEEPSLATE).strength(30f, 1500f);
     }
 
     public static BlockBehaviour.Properties stoneNodeProperties() {
@@ -167,7 +186,7 @@ public class ModBlocks {
                                         .sound(SoundType.STONE)
                                         .mapColor(MapColor.STONE)
                                         .pushReaction(PushReaction.BLOCK)
-                                        .strength(28f);
+                                        .strength(28f, 1500f);
     }
 
     public static TagKey<?>[] addTags(TagKey<?>[] original, @Nonnull TagKey<?>... toAdd) {

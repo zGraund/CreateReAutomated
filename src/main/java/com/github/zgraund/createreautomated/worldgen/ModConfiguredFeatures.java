@@ -21,6 +21,7 @@ import static net.minecraft.data.worldgen.features.FeatureUtils.register;
 public class ModConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> OVERWORLD_ORE_NODE_KEY = registerKey("ore_node");
     public static final ResourceKey<ConfiguredFeature<?, ?>> NETHER_ORE_NODE_KEY = registerKey("nether_ore_node");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> ANCIENT_DEBRIS_NODE_KEY = registerKey("ancient_debris_node");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         List<OreConfiguration.TargetBlockState> overworld = List.of(
@@ -38,11 +39,17 @@ public class ModConfiguredFeatures {
         );
 
         List<OreConfiguration.TargetBlockState> nether = List.of(
-                OreConfiguration.target(new BlockMatchTest(Blocks.NETHER_GOLD_ORE), ModBlocks.NETHER_GOLD_NODE.get().unstable())
+                OreConfiguration.target(new BlockMatchTest(Blocks.NETHER_GOLD_ORE), ModBlocks.NETHER_GOLD_NODE.get().unstable()),
+                OreConfiguration.target(new BlockMatchTest(Blocks.ANCIENT_DEBRIS), ModBlocks.ANCIENT_DEBRIS_NODE.get().unstable())
+        );
+
+        List<OreConfiguration.TargetBlockState> ancientDebris = List.of(
+                OreConfiguration.target(new BlockMatchTest(Blocks.ANCIENT_DEBRIS), ModBlocks.ANCIENT_DEBRIS_NODE.get().unstable())
         );
 
         register(context, OVERWORLD_ORE_NODE_KEY, ModFeatures.ORE_NODE_FEATURE.get(), new EncasedNodeConfiguration(overworld));
         register(context, NETHER_ORE_NODE_KEY, ModFeatures.ORE_NODE_FEATURE.get(), new EncasedNodeConfiguration(nether));
+        register(context, ANCIENT_DEBRIS_NODE_KEY, ModFeatures.ORE_NODE_FEATURE.get(), new EncasedNodeConfiguration(ancientDebris, 1));
     }
 
     @Nonnull

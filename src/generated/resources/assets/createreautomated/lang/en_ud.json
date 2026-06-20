@@ -1,5 +1,6 @@
 {
   "block.createreautomated.advanced_extractor": "ɹoʇɔɐɹʇxƎ pǝɔuɐʌpⱯ",
+  "block.createreautomated.ancient_debris_node": "ǝpoN sıɹqǝᗡ ʇuǝıɔuⱯ",
   "block.createreautomated.copper_node": "ǝpoN ɹǝddoƆ",
   "block.createreautomated.deepslate_copper_node": "ǝpoN ɹǝddoƆ ǝʇɐןsdǝǝᗡ",
   "block.createreautomated.deepslate_diamond_node": "ǝpoN puoɯɐıᗡ ǝʇɐןsdǝǝᗡ",
@@ -41,6 +42,7 @@
   "createreautomated.ponder.extractor.text_7": "uoıʇɐɯoʇnɐ ɥʇıʍ ɹo",
   "createreautomated.recipe.advanced_extracting": "buıʇɔɐɹʇxƎ pǝɔuɐʌpⱯ",
   "createreautomated.recipe.extracting": "buıʇɔɐɹʇxƎ",
+  "item.createreautomated.ancient_debris_bit": "ʇıᗺ sıɹqǝᗡ ʇuǝıɔuⱯ",
   "item.createreautomated.copper_bit": "ʇıᗺ ɹǝddoƆ",
   "item.createreautomated.diamond_bit": "ʇıᗺ puoɯɐıᗡ",
   "item.createreautomated.diamond_drill": "ןןıɹᗡ puoɯɐıᗡ",

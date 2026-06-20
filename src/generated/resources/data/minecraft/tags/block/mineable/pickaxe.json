@@ -17,6 +17,7 @@
     "createreautomated:deepslate_iron_node",
     "createreautomated:deepslate_gold_node",
     "createreautomated:deepslate_diamond_node",
-    "createreautomated:nether_gold_node"
+    "createreautomated:nether_gold_node",
+    "createreautomated:ancient_debris_node"
   ]
 }

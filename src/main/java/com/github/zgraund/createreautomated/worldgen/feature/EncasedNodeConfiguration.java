@@ -4,6 +4,7 @@ import com.github.zgraund.createreautomated.config.Config;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.ReplaceBlockConfiguration;
@@ -22,6 +23,10 @@ public class EncasedNodeConfiguration extends ReplaceBlockConfiguration {
 
     public EncasedNodeConfiguration(List<OreConfiguration.TargetBlockState> targetStates) {
         this(targetStates, Optional.empty());
+    }
+
+    public EncasedNodeConfiguration(List<OreConfiguration.TargetBlockState> targetStates, int override) {
+        this(targetStates, Optional.of(ConstantInt.of(override)));
     }
 
     public EncasedNodeConfiguration(List<OreConfiguration.TargetBlockState> targetStates, Optional<IntProvider> override) {

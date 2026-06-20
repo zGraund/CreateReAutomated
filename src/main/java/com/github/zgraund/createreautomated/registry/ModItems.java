@@ -36,7 +36,8 @@ public class ModItems {
             ZINC_BIT = simple("zinc_bit"),
             IRON_BIT = simple("iron_bit"),
             GOLD_BIT = simple("gold_bit"),
-            DIAMOND_BIT = simple("diamond_bit");
+            DIAMOND_BIT = simple("diamond_bit"),
+            NETHERITE_BIT = simple("ancient_debris_bit");
 
     public static final ItemEntry<Item> UNBAKED_DIAMOND = hidden("unbaked_diamond");
     public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_DIAMOND = sequencedAssembly("incomplete_diamond");

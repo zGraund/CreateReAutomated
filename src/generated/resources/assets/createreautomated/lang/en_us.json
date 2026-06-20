@@ -1,5 +1,6 @@
 {
   "block.createreautomated.advanced_extractor": "Advanced Extractor",
+  "block.createreautomated.ancient_debris_node": "Ancient Debris Node",
   "block.createreautomated.copper_node": "Copper Node",
   "block.createreautomated.deepslate_copper_node": "Deepslate Copper Node",
   "block.createreautomated.deepslate_diamond_node": "Deepslate Diamond Node",
@@ -41,6 +42,7 @@
   "createreautomated.ponder.extractor.text_7": "or with automation",
   "createreautomated.recipe.advanced_extracting": "Advanced Extracting",
   "createreautomated.recipe.extracting": "Extracting",
+  "item.createreautomated.ancient_debris_bit": "Ancient Debris Bit",
   "item.createreautomated.copper_bit": "Copper Bit",
   "item.createreautomated.diamond_bit": "Diamond Bit",
   "item.createreautomated.diamond_drill": "Diamond Drill",

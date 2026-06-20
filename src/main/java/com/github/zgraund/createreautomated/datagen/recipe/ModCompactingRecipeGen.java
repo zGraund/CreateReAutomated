@@ -20,11 +20,20 @@ public final class ModCompactingRecipeGen extends CompactingRecipeGen {
             "bake_diamond",
             builder -> builder.require(ModItems.UNBAKED_DIAMOND).output(Items.DIAMOND).requiresHeat(HeatCondition.SUPERHEATED)
     );
+
     GeneratedRecipe
             RAW_COPPER = compactBits(ModItems.COPPER_BIT, Items.RAW_COPPER, HeatCondition.NONE),
             RAW_ZINC = compactBits(ModItems.ZINC_BIT, AllItems.RAW_ZINC, HeatCondition.NONE),
             RAW_IRON = compactBits(ModItems.IRON_BIT, Items.RAW_IRON, HeatCondition.NONE),
             RAW_GOLD = compactBits(ModItems.GOLD_BIT, Items.RAW_GOLD, HeatCondition.HEATED);
+
+    GeneratedRecipe SCRAPS = create("netherite_scraps_from_bits", builder -> {
+                for (int i = 0; i < 8; i++)
+                    builder.require(ModItems.NETHERITE_BIT);
+                builder.require(AllItems.STURDY_SHEET);
+                return builder.output(Items.NETHERITE_SCRAP).requiresHeat(HeatCondition.SUPERHEATED);
+            }
+    );
 
     GeneratedRecipe compactBits(ItemLike bit, @Nonnull ItemLike output, HeatCondition heat) {
         return create(
