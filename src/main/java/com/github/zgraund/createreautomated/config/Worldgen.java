@@ -1,54 +1,88 @@
 package com.github.zgraund.createreautomated.config;
 
+import com.mojang.serialization.Codec;
 import net.createmod.catnip.config.ConfigBase;
 import net.minecraft.MethodsReturnNonnullByDefault;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.Level;
+import net.minecraft.util.StringRepresentable;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.annotation.Nonnull;
+import java.util.Arrays;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 @MethodsReturnNonnullByDefault
+@SuppressWarnings("unused")
 public class Worldgen extends ConfigBase {
     public final ConfigBool enabled =
             b(true, "enabled", "Whether Create Re-Automated should generate nodes in the world.");
-    public final ConfigInt requiredFaces =
-            i(3, 0, 6, "requiredFaces", "Number of faces that must touch the respective ore for a node to spawn");
-    public final DimensionConfig overworld = nested(1, DimensionConfig::overworld, "Overworld specific configs.");
-    public final DimensionConfig nether = nested(1, DimensionConfig::nether, "Nether specific configs.");
+
+    @Override
+    public void registerAll(@Nonnull ModConfigSpec.Builder builder) {
+        for (NodeGroup group : NodeGroup.values())
+            group.register(this);
+        super.registerAll(builder);
+    }
 
     @Override
     public String getName() {
         return "worldgen";
     }
 
-    public DimensionConfig getConfig(ResourceKey<Level> key) {
-        if (key == Level.OVERWORLD) return overworld;
-        if (key == Level.NETHER) return nether;
-        throw new IllegalStateException("Dimension type: " + key + " not supported in current version config.");
+    public enum NodeGroup implements StringRepresentable {
+        COPPER(3, 50, -16, 64),
+        ZINC(3, 50, -64, 64),
+        IRON(3, 50, -64, 64),
+        GOLD(3, 50, -64, 32),
+        DIAMOND(3, 50, -64, 16),
+        NETHER_GOLD(3, 60, 10, 118),
+        ANCIENT_DEBRIS(1, 100, 8, 24);
+
+        public static final Codec<NodeGroup> CODEC = StringRepresentable.fromEnum(NodeGroup::values);
+
+        private final NodeConfig config;
+
+        NodeGroup(int faces, int tries, int minY, int maxY) {
+            this.config = new NodeConfig(this, faces, tries, minY, maxY);
+        }
+
+        public NodeConfig getConfig() {
+            return config;
+        }
+
+        public void register(@Nonnull Worldgen worldgen) {
+            worldgen.nested(1, this::getConfig, getFormattedName() + " nodes specific configs.");
+        }
+
+        public String getFormattedName() {
+            return Arrays.stream(getSerializedName().split("_")).map(StringUtils::capitalize).collect(Collectors.joining(" "));
+        }
+
+        @Override
+        public String getSerializedName() {
+            return name().toLowerCase(Locale.ROOT);
+        }
     }
 
-    public static class DimensionConfig extends ConfigBase {
-        public final ResourceKey<Level> dimension;
+    public static class NodeConfig extends ConfigBase {
+        public final NodeGroup group;
+        public final ConfigInt requiredFaces;
         public final ConfigInt tries;
         public final ConfigInt minY;
         public final ConfigInt maxY;
 
-        public DimensionConfig(ResourceKey<Level> dimension, int tries, int minY, int maxY) {
-            this.dimension = dimension;
-            this.tries = i(tries, 0, 512, "tries", "Attempts per chunk to spawn a Node.");
-            this.minY = i(minY, "fromY", "Max Y level where nodes can spawn.");
-            this.maxY = i(maxY, "toY", "Min Y level where nodes can spawn.");
-        }
-
-        public static DimensionConfig overworld() {
-            return new DimensionConfig(Level.OVERWORLD, 35, -64, 64);
-        }
-
-        public static DimensionConfig nether() {
-            return new DimensionConfig(Level.NETHER, 50, 0, 128);
+        private NodeConfig(NodeGroup group, int faces, int tries, int minY, int maxY) {
+            this.group = group;
+            this.requiredFaces = i(faces, 0, 6, "faces");
+            this.tries = i(tries, 0, 512, "tries");
+            this.minY = i(minY, "fromY");
+            this.maxY = i(maxY, "toY");
         }
 
         @Override
         public String getName() {
-            return dimension.location().getPath();
+            return group.getSerializedName();
         }
     }
 }

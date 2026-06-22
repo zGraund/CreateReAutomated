@@ -1,12 +1,12 @@
 {
-  "feature": "createreautomated:ancient_debris_node",
+  "feature": "createreautomated:copper_node",
   "placement": [
     {
       "type": "createreautomated:config_filter"
     },
     {
       "type": "createreautomated:config_node_placement",
-      "group": "ancient_debris"
+      "group": "copper"
     },
     {
       "type": "minecraft:in_square"

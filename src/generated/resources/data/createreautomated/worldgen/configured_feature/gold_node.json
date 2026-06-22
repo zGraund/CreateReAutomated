@@ -1,0 +1,34 @@
+{
+  "type": "createreautomated:encased_node",
+  "config": {
+    "group": "gold",
+    "targets": [
+      {
+        "state": {
+          "Name": "createreautomated:gold_node",
+          "Properties": {
+            "depletion": "0",
+            "stable": "false"
+          }
+        },
+        "target": {
+          "block": "minecraft:gold_ore",
+          "predicate_type": "minecraft:block_match"
+        }
+      },
+      {
+        "state": {
+          "Name": "createreautomated:deepslate_gold_node",
+          "Properties": {
+            "depletion": "0",
+            "stable": "false"
+          }
+        },
+        "target": {
+          "block": "minecraft:deepslate_gold_ore",
+          "predicate_type": "minecraft:block_match"
+        }
+      }
+    ]
+  }
+}

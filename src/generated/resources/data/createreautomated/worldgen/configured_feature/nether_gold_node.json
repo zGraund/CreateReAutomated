@@ -1,18 +1,18 @@
 {
   "type": "createreautomated:encased_node",
   "config": {
-    "group": "ancient_debris",
+    "group": "nether_gold",
     "targets": [
       {
         "state": {
-          "Name": "createreautomated:ancient_debris_node",
+          "Name": "createreautomated:nether_gold_node",
           "Properties": {
             "depletion": "0",
             "stable": "false"
           }
         },
         "target": {
-          "block": "minecraft:ancient_debris",
+          "block": "minecraft:nether_gold_ore",
           "predicate_type": "minecraft:block_match"
         }
       }
