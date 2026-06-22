@@ -13,7 +13,6 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 @MethodsReturnNonnullByDefault
-@SuppressWarnings("unused")
 public class Worldgen extends ConfigBase {
     public final ConfigBool enabled =
             b(true, "enabled", "Whether Create Re-Automated should generate nodes in the world.");
