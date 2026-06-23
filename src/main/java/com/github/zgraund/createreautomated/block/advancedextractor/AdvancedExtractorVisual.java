@@ -12,7 +12,7 @@ public class AdvancedExtractorVisual extends ExtractorVisual<AdvancedExtractorBl
     }
 
     @Override
-    protected void setRotatingModel() {
+    protected void updateInnerModel() {
         if (be.hasDrill()) {
             setModel(rotatingModel, ModPartialModels.SHORT_SHAFT);
         } else {

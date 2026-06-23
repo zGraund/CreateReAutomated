@@ -10,6 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.function.DoubleSupplier;
 
 public class DrillingBehaviour extends BlockEntityBehaviour {
@@ -18,6 +19,12 @@ public class DrillingBehaviour extends BlockEntityBehaviour {
     protected DoubleSupplier start = () -> 0f;
     protected DoubleSupplier end = () -> 1f;
     protected Status status = Status.IDLE;
+
+    @Nullable
+    protected LerpedFloat bobbing;
+    protected DoubleSupplier bobbingSpeed = () -> 0f;
+    protected float bobbingTarget = 0.025f;
+
     protected boolean simulating;
     protected int holdTicks;
 
@@ -43,6 +50,16 @@ public class DrillingBehaviour extends BlockEntityBehaviour {
 
     public void setSpeed(double speed) {
         progress.updateChaseSpeed(speed);
+    }
+
+    public DrillingBehaviour bobbing(@Nonnull DoubleSupplier speed) {
+        this.bobbingSpeed = speed;
+        this.bobbing = LerpedFloat.linear().chase(0.05f, speed.getAsDouble(), LerpedFloat.Chaser.LINEAR);
+        return this;
+    }
+
+    public void setBobbingSpeed(DoubleSupplier speed) {
+        this.bobbingSpeed = speed;
     }
 
     public void start() {
@@ -76,15 +93,27 @@ public class DrillingBehaviour extends BlockEntityBehaviour {
     @Override
     public void tick() {
         Level level = blockEntity.getLevel();
-        if (level != null && level.isClientSide() && !simulating)
-            return;
 
-        if (simulating) {
-            if (isWorking() && --holdTicks <= 0)
-                stop();
+        if (level != null && level.isClientSide()) {
+            if (bobbing != null) {
+                if (isWorking()) {
+                    bobbing.updateChaseSpeed(bobbingSpeed.getAsDouble());
+                    bobbing.tickChaser();
+                    if (bobbing.settled()) {
+                        bobbing.updateChaseTarget(bobbing.getChaseTarget() == bobbingTarget ? 0 : bobbingTarget);
+                    }
+                } else {
+                    bobbing.setValue(0);
+                }
+            }
 
-            if (isIdle())
-                simulating = false;
+            if (simulating) {
+                if (isWorking() && --holdTicks <= 0)
+                    stop();
+
+                if (isIdle())
+                    simulating = false;
+            }
         }
 
         if (isIdle() || isWorking())
@@ -114,7 +143,10 @@ public class DrillingBehaviour extends BlockEntityBehaviour {
     }
 
     public float getValue(float partialTicks) {
-        return progress.getValue(partialTicks);
+        float val = progress.getValue(partialTicks);
+        if (bobbing != null)
+            return val - bobbing.getValue(partialTicks);
+        return val;
     }
 
     @Override

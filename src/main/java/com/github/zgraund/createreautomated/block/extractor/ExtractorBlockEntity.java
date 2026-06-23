@@ -14,6 +14,7 @@ import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.item.ItemHelper;
+import com.simibubi.create.infrastructure.config.AllConfigs;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import net.createmod.catnip.animation.AnimationTickHolder;
@@ -30,6 +31,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -100,7 +102,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
         super.addBehaviours(behaviours);
         behaviours.add(new DirectBeltInputBehaviour(this).considerOccupiedWhen(d -> hasDrill()));
-        animation = new DrillingBehaviour(this).startAt(RETRACTED_DRILL_OFFSET).to(this::getNodeDrillOffset);
+        animation = new DrillingBehaviour(this).startAt(RETRACTED_DRILL_OFFSET).to(this::getNodeDrillOffset).bobbing(this::getBobbingSpeed);
         behaviours.add(animation);
     }
 
@@ -120,12 +122,7 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
 
         super.tick();
 
-        if (level.isClientSide()) {
-            spawnParticles();
-            return;
-        }
-
-        if (!isExtracting() || recipe == null)
+        if (level.isClientSide() || !isExtracting() || recipe == null)
             return;
 
         tickProgress();
@@ -155,17 +152,19 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
     public void tickAudio() {
         super.tickAudio();
 
-        if (level == null || failPreConditions() || recipe == null)
+        if (level == null || recipe == null)
             return;
         if (!isExtracting())
             return;
+
+        spawnParticles();
 
         if ((AnimationTickHolder.getTicks() % Math.floor(256 / (getProcessingSpeed() / 2f))) == 0)
             level.playLocalSound(getNodePosition(), SoundEvents.STONE_HIT, SoundSource.BLOCKS, 0.5f, 0.1f, true);
     }
 
     public void spawnParticles() {
-        if (recipe == null || level == null)
+        if (level == null || recipe == null)
             return;
         if (!isExtracting())
             return;
@@ -175,15 +174,21 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
             item = new ItemStack(getNode().getBlock().asItem());
 
         ItemParticleOption data = new ItemParticleOption(ParticleTypes.ITEM, item);
-        float angle = level.random.nextFloat() * 360;
-        Vec3 offset = new Vec3(0, -getDrillOffset(1), 0.5f);
-        offset = VecHelper.rotate(offset, angle, Direction.Axis.Y);
-        float particlesSpeed = Math.clamp(getProcessingSpeed() / 2, 1, 25);
-        Vec3 target = VecHelper.rotate(offset, getSpeed() < 0 ? -particlesSpeed : particlesSpeed, Direction.Axis.Y);
+        RandomSource random = level.getRandom();
 
-        Vec3 center = offset.add(Vec3.atBottomCenterOf(worldPosition));
-        target = VecHelper.offsetRandomly(target.subtract(offset), level.random, 1 / 128f);
-        level.addParticle(data, center.x, center.y, center.z, target.x, target.y, target.z);
+        float drillOffset = -getDrillOffset(1);
+        float offsetDeg = random.nextFloat() * 360;
+        Vec3 offset = VecHelper.rotate(new Vec3(0, drillOffset, 0.5f), offsetDeg, Direction.Axis.Y);
+
+        float particlesSpeed = Math.clamp(getProcessingSpeed() / 2, 1, 25);
+        float dirRot = getSpeed() < 0 ? -particlesSpeed : particlesSpeed;
+        Vec3 direction = VecHelper.rotate(offset, dirRot, Direction.Axis.Y)
+                                  .subtract(offset)
+                                  .offsetRandom(level.getRandom(), 1 / 64f);
+
+        Vec3 origin = offset.add(Vec3.atBottomCenterOf(worldPosition));
+
+        level.addParticle(data, origin.x, origin.y, origin.z, direction.x, direction.y, direction.z);
     }
 
     public boolean isExtracting() {
@@ -196,6 +201,13 @@ public class ExtractorBlockEntity extends KineticBlockEntity {
 
     public float getAbsTheoreticalSpeed() {
         return Math.abs(getTheoreticalSpeed());
+    }
+
+    public float getBobbingSpeed() {
+        float speed = Math.abs(getSpeed());
+        float maxBob = 0.02f;
+        float minBob = 0.0015f;
+        return minBob + (speed / AllConfigs.server().kinetics.maxRotationSpeed.get()) * (maxBob - minBob);
     }
 
     public void setRecipe(ExtractingRecipe recipe) {

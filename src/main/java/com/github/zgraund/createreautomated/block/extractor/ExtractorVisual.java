@@ -12,8 +12,6 @@ import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.model.Models;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import dev.engine_room.flywheel.lib.visual.SimpleDynamicVisual;
-import net.createmod.catnip.animation.AnimationTickHolder;
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.RandomSource;
 
 import javax.annotation.Nonnull;
@@ -41,17 +39,9 @@ public class ExtractorVisual<T extends ExtractorBlockEntity> extends SingleAxisR
 
     @Override
     public void beginFrame(@Nonnull DynamicVisual.Context ctx) {
-        float x = 0;
         float y = -blockEntity.getDrillOffset(ctx.partialTick());
-        float z = 0;
-        if (blockEntity.isExtracting() && !Minecraft.getInstance().isPaused() && AnimationTickHolder.getTicks() % 2 == 0) {
-            float factor = 1 / 32f;
-            x = (float) (x + (random.nextFloat() - 0.5) * factor);
-            y = (float) (y + (random.nextFloat() - 0.5) * factor);
-            z = (float) (z + (random.nextFloat() - 0.5) * factor);
-        }
         drill.setPosition(getVisualPosition())
-             .nudge(x, y, z)
+             .nudge(0, y, 0)
              .setChanged();
     }
 
@@ -64,11 +54,11 @@ public class ExtractorVisual<T extends ExtractorBlockEntity> extends SingleAxisR
     @Override
     public void tick(TickableVisual.Context context) {
         super.tick(context);
-        setRotatingModel();
-        setDrillModel();
+        updateInnerModel();
+        updateDrillModel();
     }
 
-    protected void setDrillModel() {
+    protected void updateDrillModel() {
         if (be.hasDrill()) {
             PartialModel newModel = be.getDrillModel();
             if (model != newModel) {
@@ -84,7 +74,7 @@ public class ExtractorVisual<T extends ExtractorBlockEntity> extends SingleAxisR
         }
     }
 
-    protected void setRotatingModel() {
+    protected void updateInnerModel() {
         if (be.hasDrill()) {
             setModel(rotatingModel, ModPartialModels.HALF_COG);
         } else {

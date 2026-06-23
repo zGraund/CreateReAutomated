@@ -13,6 +13,7 @@ import com.simibubi.create.AllParticleTypes;
 import com.simibubi.create.content.fluids.particle.FluidParticleData;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -20,6 +21,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -71,6 +73,7 @@ public class AdvancedExtractorBlockEntity extends ExtractorBlockEntity {
         AuxiliaryLightManager lightManager = level.getAuxLightManager(getBlockPos());
         if (lightManager != null)
             lightManager.setLightAt(getBlockPos(), fluid.getFluidType().getLightLevel());
+        notifyUpdate();
     }
 
     @Override
@@ -89,15 +92,25 @@ public class AdvancedExtractorBlockEntity extends ExtractorBlockEntity {
 
         super.spawnParticles();
 
-        FluidParticleData data = new FluidParticleData(AllParticleTypes.FLUID_PARTICLE.get(), getFluidStack());
-        float angle = level.random.nextFloat() * 360;
-        Vec3 offset = new Vec3(0, -getDrillOffset(1), 0.5f);
-        offset = VecHelper.rotate(offset, angle, Direction.Axis.Y);
-        float particlesSpeed = Math.abs(Math.clamp(getProcessingSpeed() / 2, 1, 10));
-        Vec3 rotation = VecHelper.rotate(offset, particlesSpeed, Direction.Axis.Y);
+        if (AnimationTickHolder.getTicks() % 10 != 0)
+            return;
 
-        Vec3 target = offset.add(Vec3.atBottomCenterOf(worldPosition));
-        level.addParticle(data, target.x, target.y, target.z, rotation.x, rotation.y + 0.2, rotation.z);
+        FluidParticleData data = new FluidParticleData(AllParticleTypes.FLUID_PARTICLE.get(), getFluidStack());
+        RandomSource random = level.getRandom();
+
+        float drillOffset = -getDrillOffset(1);
+        float offsetDeg = random.nextFloat() * 360;
+        Vec3 offset = VecHelper.rotate(new Vec3(0, drillOffset, 0.25f), offsetDeg, Direction.Axis.Y);
+
+        float particlesSpeed = Math.clamp(getProcessingSpeed() / 2, 1, 25);
+        float dirRot = getSpeed() < 0 ? -particlesSpeed : particlesSpeed;
+        Vec3 direction = VecHelper.rotate(offset, dirRot, Direction.Axis.Y)
+                                  .subtract(offset)
+                                  .offsetRandom(level.getRandom(), 1 / 32f);
+
+        Vec3 origin = offset.add(Vec3.atBottomCenterOf(worldPosition));
+
+        level.addParticle(data, origin.x, origin.y, origin.z, direction.x, direction.y + 0.2, direction.z);
     }
 
     public FluidStack getFluidStack() {

@@ -7,15 +7,11 @@ import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 import dev.engine_room.flywheel.api.visualization.VisualizationManager;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
-import net.createmod.catnip.animation.AnimationTickHolder;
-import net.createmod.catnip.math.VecHelper;
 import net.createmod.catnip.render.CachedBuffers;
 import net.createmod.catnip.render.SuperByteBuffer;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
@@ -41,12 +37,7 @@ public class ExtractorRenderer<T extends ExtractorBlockEntity> extends KineticBl
             float drillOffset = be.getDrillOffset(partialTicks);
             SuperByteBuffer drill = CachedBuffers.partial(be.getDrillModel(), blockState);
             // TODO: fix drill render when offset > 1
-            Vec3 offset = new Vec3(0, -drillOffset, 0);
-            if (be.getLevel() != null && be.isExtracting() && !Minecraft.getInstance().isPaused() && AnimationTickHolder.getTicks() % 2 == 0) {
-                RandomSource random = be.getLevel().getRandom();
-                offset = VecHelper.offsetRandomly(offset, random, 1 / 64f);
-            }
-            standardKineticRotationTransform(drill, be, light).translate(offset).renderInto(ms, vb);
+            standardKineticRotationTransform(drill, be, light).translate(new Vec3(0, -drillOffset, 0)).renderInto(ms, vb);
         }
     }
 
