@@ -30,13 +30,13 @@ public class Worldgen extends ConfigBase {
     }
 
     public enum NodeGroup implements StringRepresentable {
-        COPPER(3, 50, -16, 64),
+        COPPER(3, 30, -16, 64),
         ZINC(3, 50, -64, 64),
         IRON(3, 50, -64, 64),
-        GOLD(3, 50, -64, 32),
-        DIAMOND(3, 50, -64, 16),
+        GOLD(3, 40, -64, 32),
+        DIAMOND(3, 30, -64, 16),
         NETHER_GOLD(3, 60, 10, 118),
-        ANCIENT_DEBRIS(1, 100, 8, 24);
+        ANCIENT_DEBRIS(1, 300, 8, 24);
 
         public static final Codec<NodeGroup> CODEC = StringRepresentable.fromEnum(NodeGroup::values);
 
