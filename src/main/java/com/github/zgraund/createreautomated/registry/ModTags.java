@@ -39,7 +39,6 @@ public class ModTags {
 
     public static class Items {
         public static final TagKey<Item> ORE_NODES = mod("ore_nodes");
-        // TODO: not sure about the groups
         public static final TagKey<Item>
                 DRILLS = mod("drills"),
                 DRILL_TIER_1 = mod("drills/tier_1"),

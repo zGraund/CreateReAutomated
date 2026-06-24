@@ -4,7 +4,7 @@ Create ReAutomated 0.3.0
 #### New Content
 
 - New extractor type: Advanced Extractor
-    - Like the base Extractor but also require a fluid to function.
+    - Like the base Extractor but also requires a fluid to function.
 - New recipe type advanced_extracting.
 - New node: Ancient Debris
 
