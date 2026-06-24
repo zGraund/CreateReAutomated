@@ -1,0 +1,15 @@
+{
+  "feature": "createreautomated:zinc_node",
+  "placement": [
+    {
+      "type": "createreautomated:config_filter"
+    },
+    {
+      "type": "createreautomated:config_node_placement",
+      "group": "zinc"
+    },
+    {
+      "type": "minecraft:in_square"
+    }
+  ]
+}

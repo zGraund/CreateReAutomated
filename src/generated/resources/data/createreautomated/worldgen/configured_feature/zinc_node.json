@@ -1,0 +1,34 @@
+{
+  "type": "createreautomated:encased_node",
+  "config": {
+    "group": "zinc",
+    "targets": [
+      {
+        "state": {
+          "Name": "createreautomated:zinc_node",
+          "Properties": {
+            "depletion": "0",
+            "stable": "false"
+          }
+        },
+        "target": {
+          "block": "create:zinc_ore",
+          "predicate_type": "minecraft:block_match"
+        }
+      },
+      {
+        "state": {
+          "Name": "createreautomated:deepslate_zinc_node",
+          "Properties": {
+            "depletion": "0",
+            "stable": "false"
+          }
+        },
+        "target": {
+          "block": "create:deepslate_zinc_ore",
+          "predicate_type": "minecraft:block_match"
+        }
+      }
+    ]
+  }
+}

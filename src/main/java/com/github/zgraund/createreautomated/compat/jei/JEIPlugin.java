@@ -1,6 +1,7 @@
 package com.github.zgraund.createreautomated.compat.jei;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
+import com.github.zgraund.createreautomated.recipe.AdvancedExtractingRecipe;
 import com.github.zgraund.createreautomated.recipe.ExtractingRecipe;
 import com.github.zgraund.createreautomated.registry.ModBlocks;
 import com.github.zgraund.createreautomated.registry.ModRecipeTypes;
@@ -41,6 +42,14 @@ public class JEIPlugin implements IModPlugin {
                         .emptyBackground(178, 100)
                         .itemIcon(ModBlocks.EXTRACTOR)
                         .build(ModRecipeTypes.EXTRACTING.getId(), ExtractingCategory::new)
+        );
+        allCategories.add(
+                new CreateRecipeCategory.Builder<>(AdvancedExtractingRecipe.class)
+                        .addTypedRecipes(ModRecipeTypes.ADVANCED_EXTRACTING)
+                        .catalyst(() -> ModBlocks.ADVANCED_EXTRACTOR)
+                        .emptyBackground(178, 100)
+                        .itemIcon(ModBlocks.ADVANCED_EXTRACTOR)
+                        .build(ModRecipeTypes.ADVANCED_EXTRACTING.getId(), AdvancedExtractingCategory::new)
         );
 
         registration.addRecipeCategories(allCategories.toArray(new CreateRecipeCategory[0]));

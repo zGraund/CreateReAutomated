@@ -7,7 +7,6 @@ import com.simibubi.create.foundation.gui.AllGuiTextures;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
-import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.BlockItem;
@@ -22,15 +21,15 @@ import java.util.List;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class ExtractingCategory extends CreateRecipeCategory<ExtractingRecipe> {
-    private final AnimatedExtractor extractor = new AnimatedExtractor();
+public class ExtractingCategory<T extends ExtractingRecipe> extends CreateRecipeCategory<T> {
+    protected AnimatedExtractor extractor = new AnimatedExtractor();
 
-    public ExtractingCategory(Info<ExtractingRecipe> info) {
+    public ExtractingCategory(Info<T> info) {
         super(info);
     }
 
     @Override
-    protected void setRecipe(IRecipeLayoutBuilder builder, ExtractingRecipe recipe, IFocusGroup focuses) {
+    protected void setRecipe(IRecipeLayoutBuilder builder, T recipe, IFocusGroup focuses) {
         builder.addInputSlot(35, 30)
                .addIngredients(recipe.getDrill())
                .setBackground(getRenderedSlot(), -1, -1);
@@ -43,16 +42,16 @@ public class ExtractingCategory extends CreateRecipeCategory<ExtractingRecipe> {
             int xOffset = i % 2 == 0 ? 0 : 19;
             int yOffset = (i / 2) * 19;
             builder
-                    .addSlot(RecipeIngredientRole.OUTPUT, 121 + xOffset, 42 + yOffset)
+                    .addOutputSlot(121 + xOffset, 42 + yOffset)
                     .setBackground(getRenderedSlot(output.getChance()), -1, -1)
-                    .addItemStack(output.getStack())
+                    .addItemStack(recipe.applyOutputModifiers(output.getStack()))
                     .addRichTooltipCallback(addStochasticTooltip(output));
             i++;
         }
     }
 
     @Override
-    protected void draw(ExtractingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
+    protected void draw(T recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
         AllGuiTextures.JEI_DOWN_ARROW.render(graphics, 115, 25);
         AllGuiTextures.JEI_SHADOW.render(graphics, 61, 74);
         Block node = recipeSlotsView.getSlotViews()
@@ -67,6 +66,7 @@ public class ExtractingCategory extends CreateRecipeCategory<ExtractingRecipe> {
                                     .getDisplayedItemStack()
                                     .map(ItemStack::getItem)
                                     .orElse(Items.AIR);
-        extractor.draw(graphics, 72, 56, node, drill);
+        extractor.setNode(node).setDrill(drill);
+        extractor.draw(graphics, 72, 56);
     }
 }

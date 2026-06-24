@@ -1,0 +1,15 @@
+{
+  "feature": "createreautomated:iron_node",
+  "placement": [
+    {
+      "type": "createreautomated:config_filter"
+    },
+    {
+      "type": "createreautomated:config_node_placement",
+      "group": "iron"
+    },
+    {
+      "type": "minecraft:in_square"
+    }
+  ]
+}

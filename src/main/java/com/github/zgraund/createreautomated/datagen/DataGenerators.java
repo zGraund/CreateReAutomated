@@ -54,6 +54,7 @@ public class DataGenerators {
 
         generator.addProvider(event.includeServer(), new ModRecipeProvider(packOutput, lookupProvider));
         generator.addProvider(event.includeServer(), new ModExtractingRecipeGen(packOutput, lookupProvider));
+        generator.addProvider(event.includeServer(), new ModAdvancedExtractingRecipeGen(packOutput, lookupProvider));
         generator.addProvider(event.includeServer(), new ModMechanicalCraftingRecipeGen(packOutput, lookupProvider));
         generator.addProvider(event.includeServer(), new ModSequencedAssemblyRecipeGen(packOutput, lookupProvider));
         generator.addProvider(event.includeServer(), new ModCompactingRecipeGen(packOutput, lookupProvider));

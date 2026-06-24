@@ -1,6 +1,7 @@
 {
   "type": "createreautomated:encased_node",
   "config": {
+    "group": "nether_gold",
     "targets": [
       {
         "state": {

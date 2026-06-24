@@ -10,15 +10,10 @@ public class Client extends ConfigBase {
             "nodeParticles",
             "Enable/disable unstable Ore Node particles."
     );
-    public final ConfigBool debugOreNodeOverlay = b(
+    public final ConfigBool advancedExtractorInfo = b(
             false,
-            "debugOreNode",
-            "Whether to display debug information when an Ore Node is right-clicked."
-    );
-    public final ConfigBool debugExtractorOverlay = b(
-            false,
-            "debugExtractor",
-            "Whether to display debug information when looking at an extractor with the Engineer's Goggles equipped."
+            "advancedExtractorInfo",
+            "Whether to display advanced information when looking at an extractor with the Engineer's Goggles equipped."
     );
 
     @Nonnull

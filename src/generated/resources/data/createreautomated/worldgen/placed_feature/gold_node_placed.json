@@ -1,12 +1,12 @@
 {
-  "feature": "createreautomated:nether_ore_node",
+  "feature": "createreautomated:gold_node",
   "placement": [
     {
       "type": "createreautomated:config_filter"
     },
     {
       "type": "createreautomated:config_node_placement",
-      "dimension": "minecraft:the_nether"
+      "group": "gold"
     },
     {
       "type": "minecraft:in_square"

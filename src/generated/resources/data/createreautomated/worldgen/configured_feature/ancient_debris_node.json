@@ -1,0 +1,21 @@
+{
+  "type": "createreautomated:encased_node",
+  "config": {
+    "group": "ancient_debris",
+    "targets": [
+      {
+        "state": {
+          "Name": "createreautomated:ancient_debris_node",
+          "Properties": {
+            "depletion": "0",
+            "stable": "false"
+          }
+        },
+        "target": {
+          "block": "minecraft:ancient_debris",
+          "predicate_type": "minecraft:block_match"
+        }
+      }
+    ]
+  }
+}

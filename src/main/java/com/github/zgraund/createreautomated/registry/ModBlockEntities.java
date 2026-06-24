@@ -2,6 +2,9 @@ package com.github.zgraund.createreautomated.registry;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
 import com.github.zgraund.createreautomated.api.OreNodeBlockIndex;
+import com.github.zgraund.createreautomated.block.advancedextractor.AdvancedExtractorBlockEntity;
+import com.github.zgraund.createreautomated.block.advancedextractor.AdvancedExtractorRenderer;
+import com.github.zgraund.createreautomated.block.advancedextractor.AdvancedExtractorVisual;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorBlockEntity;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorRenderer;
 import com.github.zgraund.createreautomated.block.extractor.ExtractorVisual;
@@ -17,6 +20,12 @@ public class ModBlockEntities {
                       .visual(() -> ExtractorVisual::new, false)
                       .renderer(() -> ExtractorRenderer::new)
                       .validBlocks(ModBlocks.EXTRACTOR)
+                      .register();
+    public static final BlockEntityEntry<AdvancedExtractorBlockEntity> LC_EXTRACTOR_BE =
+            REGISTRATE.blockEntity("lc_extractor_be", AdvancedExtractorBlockEntity::new)
+                      .visual(() -> AdvancedExtractorVisual::new, true)
+                      .renderer(() -> AdvancedExtractorRenderer::new)
+                      .validBlocks(ModBlocks.ADVANCED_EXTRACTOR)
                       .register();
 
     public static final BlockEntityEntry<OreNodeEntity> ORE_NODE_BE =

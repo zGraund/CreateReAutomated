@@ -88,6 +88,11 @@ public class CRAKubeJSPlugin implements KubeJSPlugin {
                     ));
                     builder.mergeData(true, true, true, true);
                 });
+                add(ModRecipeTypes.ADVANCED_EXTRACTING.getId(), builder -> {
+                    builder.parent(ModRecipeTypes.EXTRACTING.getId());
+                    builder.mappings(ModRecipeTypes.ADVANCED_EXTRACTING.getId().getPath());
+                    builder.mergeData(true, true, true, true);
+                });
             }
         });
     }

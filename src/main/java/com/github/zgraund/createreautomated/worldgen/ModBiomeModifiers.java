@@ -31,7 +31,13 @@ public class ModBiomeModifiers {
                 ADD_ORE_NODE,
                 new BiomeModifiers.AddFeaturesBiomeModifier(
                         isOverworld,
-                        HolderSet.direct(placedFeature.getOrThrow(ModPlacedFeatures.OVERWORLD_ORE_NODE_PLACED_KEY)),
+                        HolderSet.direct(
+                                placedFeature.getOrThrow(ModPlacedFeatures.ZINC_NODE_PLACED_KEY),
+                                placedFeature.getOrThrow(ModPlacedFeatures.COPPER_NODE_PLACED_KEY),
+                                placedFeature.getOrThrow(ModPlacedFeatures.IRON_NODE_PLACED_KEY),
+                                placedFeature.getOrThrow(ModPlacedFeatures.GOLD_NODE_PLACED_KEY),
+                                placedFeature.getOrThrow(ModPlacedFeatures.DIAMOND_NODE_PLACED_KEY)
+                        ),
                         GenerationStep.Decoration.UNDERGROUND_DECORATION
                 )
         );
@@ -40,7 +46,10 @@ public class ModBiomeModifiers {
                 ADD_NETHER_ORE_NODE,
                 new BiomeModifiers.AddFeaturesBiomeModifier(
                         isNether,
-                        HolderSet.direct(placedFeature.getOrThrow(ModPlacedFeatures.NETHER_ORE_NODE_PLACED_KEY)),
+                        HolderSet.direct(
+                                placedFeature.getOrThrow(ModPlacedFeatures.NETHER_GOLD_NODE_PLACED_KEY),
+                                placedFeature.getOrThrow(ModPlacedFeatures.ANCIENT_DEBRIS_NODE_PLACED_KEY)
+                        ),
                         GenerationStep.Decoration.UNDERGROUND_DECORATION
                 )
         );

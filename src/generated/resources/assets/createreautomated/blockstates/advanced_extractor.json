@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "createreautomated:block/advanced_extractor/lower"
+    },
+    "half=upper": {
+      "model": "createreautomated:block/advanced_extractor/upper"
+    }
+  }
+}

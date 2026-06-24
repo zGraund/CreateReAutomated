@@ -21,6 +21,12 @@ import java.util.function.IntSupplier;
 public class NodeYields extends ConfigBase {
     private static final Object2IntMap<ResourceLocation> DEFAULT_VALUES = new Object2IntOpenHashMap<>();
 
+    public final ConfigBool infiniteNodes = b(
+            false,
+            "infiniteNodes",
+            "Override all nodes extraction values and make them infinite. Note that this will affect ALL nodes, even custom ones!"
+    );
+
     private final Map<ResourceLocation, ModConfigSpec.ConfigValue<Integer>> extractions = new HashMap<>();
 
     @Nonnull
@@ -37,6 +43,7 @@ public class NodeYields extends ConfigBase {
 
     @Override
     public void registerAll(@Nonnull ModConfigSpec.Builder builder) {
+        super.registerAll(builder);
         builder.comment("Configure how many times each node can be extracted before turning into its base rock").push("extraction");
         DEFAULT_VALUES.forEach((id, value) ->
                 extractions.put(id, builder.define(id.getPath(), value))

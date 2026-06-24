@@ -12,17 +12,20 @@ import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.model.Models;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import dev.engine_room.flywheel.lib.visual.SimpleDynamicVisual;
+import net.minecraft.util.RandomSource;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
-public class ExtractorVisual extends SingleAxisRotatingVisual<ExtractorBlockEntity> implements SimpleDynamicVisual {
-    private final RotatingInstance drill;
-    private final ExtractorBlockEntity be;
+public class ExtractorVisual<T extends ExtractorBlockEntity> extends SingleAxisRotatingVisual<T> implements SimpleDynamicVisual {
+    protected final RandomSource random = RandomSource.createNewThreadLocalInstance();
+    protected final RotatingInstance drill;
+    protected final T be;
     @Nullable
-    private PartialModel model;
+    protected PartialModel model;
 
-    public ExtractorVisual(VisualizationContext context, ExtractorBlockEntity blockEntity, float partialTick) {
+    public ExtractorVisual(VisualizationContext context, T blockEntity, float partialTick) {
         super(context, blockEntity, partialTick, Models.partial(blockEntity.hasDrill() ? ModPartialModels.HALF_COG : AllPartialModels.COGWHEEL));
         this.be = blockEntity;
         this.model = blockEntity.getDrillModel();
@@ -35,9 +38,10 @@ public class ExtractorVisual extends SingleAxisRotatingVisual<ExtractorBlockEnti
     }
 
     @Override
-    public void beginFrame(DynamicVisual.Context ctx) {
+    public void beginFrame(@Nonnull DynamicVisual.Context ctx) {
+        float y = -blockEntity.getDrillOffset(ctx.partialTick());
         drill.setPosition(getVisualPosition())
-             .nudge(0, -blockEntity.getDrillOffset(), 0)
+             .nudge(0, y, 0)
              .setChanged();
     }
 
@@ -50,24 +54,35 @@ public class ExtractorVisual extends SingleAxisRotatingVisual<ExtractorBlockEnti
     @Override
     public void tick(TickableVisual.Context context) {
         super.tick(context);
+        updateInnerModel();
+        updateDrillModel();
+    }
+
+    protected void updateDrillModel() {
         if (be.hasDrill()) {
             PartialModel newModel = be.getDrillModel();
             if (model != newModel) {
                 model = newModel;
                 drill.setVisible(true);
                 setModel(drill, model);
-                setModel(rotatingModel, ModPartialModels.HALF_COG);
             }
         } else {
             if (model != null) {
                 model = null;
                 drill.setVisible(false);
-                setModel(rotatingModel, AllPartialModels.COGWHEEL);
             }
         }
     }
 
-    private void setModel(RotatingInstance instance, PartialModel model) {
+    protected void updateInnerModel() {
+        if (be.hasDrill()) {
+            setModel(rotatingModel, ModPartialModels.HALF_COG);
+        } else {
+            setModel(rotatingModel, AllPartialModels.COGWHEEL);
+        }
+    }
+
+    protected void setModel(RotatingInstance instance, PartialModel model) {
         instancerProvider().instancer(AllInstanceTypes.ROTATING, Models.partial(model))
                            .stealInstance(instance);
     }

@@ -56,7 +56,7 @@ public class Config {
         for (Map.Entry<ModConfig.Type, ConfigBase> pair : CONFIGS.entrySet())
             container.registerConfig(pair.getKey(), pair.getValue().specification);
 
-        BlockStressValues.IMPACTS.registerProvider(server()::getExtractorImpact);
+        BlockStressValues.IMPACTS.registerProvider(server().extractorConfig::getExtractorImpact);
         OreNodeBlockIndex.NODE_YIELDS.registerProvider(server().nodeYields::getNodeValue);
     }
 

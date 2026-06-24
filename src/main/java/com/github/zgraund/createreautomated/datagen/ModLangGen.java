@@ -35,6 +35,7 @@ public class ModLangGen {
 
         // Recipes
         recipe("extracting", "Extracting");
+        recipe("advanced_extracting", "Advanced Extracting");
 
         // Misc
         add("itemGroup", "base", "Create Re-Automated");

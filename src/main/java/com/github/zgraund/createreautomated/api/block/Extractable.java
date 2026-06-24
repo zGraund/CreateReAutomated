@@ -1,5 +1,6 @@
 package com.github.zgraund.createreautomated.api.block;
 
+import com.github.zgraund.createreautomated.block.extractor.ExtractorBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 
@@ -11,6 +12,6 @@ public interface Extractable {
     default void extract(int quantity, BlockPos pos, BlockGetter level) {}
 
     default float getDrillOffset() {
-        return 0.85f;
+        return ExtractorBlockEntity.DEFAULT_DRILL_OFFSET;
     }
 }

@@ -1,0 +1,15 @@
+{
+  "feature": "createreautomated:diamond_node",
+  "placement": [
+    {
+      "type": "createreautomated:config_filter"
+    },
+    {
+      "type": "createreautomated:config_node_placement",
+      "group": "diamond"
+    },
+    {
+      "type": "minecraft:in_square"
+    }
+  ]
+}

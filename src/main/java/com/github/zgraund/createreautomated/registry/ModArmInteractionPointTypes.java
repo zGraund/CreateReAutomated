@@ -1,7 +1,7 @@
 package com.github.zgraund.createreautomated.registry;
 
 import com.github.zgraund.createreautomated.CreateReAutomated;
-import com.github.zgraund.createreautomated.block.extractor.ExtractorBlock;
+import com.github.zgraund.createreautomated.block.base.AbstractExtractorBlock;
 import com.simibubi.create.api.registry.CreateBuiltInRegistries;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPoint;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPointType;
@@ -36,7 +36,7 @@ public class ModArmInteractionPointTypes {
     public static class ExtractorType extends ArmInteractionPointType {
         @Override
         public boolean canCreatePoint(Level level, BlockPos pos, BlockState state) {
-            return ModBlocks.EXTRACTOR.has(state) && state.getValue(ExtractorBlock.HALF) == DoubleBlockHalf.UPPER;
+            return ModBlocks.EXTRACTOR.has(state) && state.getValue(AbstractExtractorBlock.HALF) == DoubleBlockHalf.UPPER;
         }
 
         @Override

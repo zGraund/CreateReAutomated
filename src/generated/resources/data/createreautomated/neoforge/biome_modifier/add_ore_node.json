@@ -1,6 +1,12 @@
 {
   "type": "neoforge:add_features",
   "biomes": "#minecraft:is_overworld",
-  "features": "createreautomated:ore_node_placed",
+  "features": [
+    "createreautomated:zinc_node_placed",
+    "createreautomated:copper_node_placed",
+    "createreautomated:iron_node_placed",
+    "createreautomated:gold_node_placed",
+    "createreautomated:diamond_node_placed"
+  ],
   "step": "underground_decoration"
 }

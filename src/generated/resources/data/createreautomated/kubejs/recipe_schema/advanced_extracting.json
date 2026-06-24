@@ -1,0 +1,13 @@
+{
+  "parent": "createreautomated:extracting",
+  "hidden": false,
+  "mappings": [
+    "advanced_extracting"
+  ],
+  "merge": {
+    "constructors": true,
+    "keys": true,
+    "post_processors": true,
+    "unique": true
+  }
+}

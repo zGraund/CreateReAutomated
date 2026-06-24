@@ -9,6 +9,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.compat.jei.category.animations.AnimatedKinetics;
+import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -17,16 +18,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import javax.annotation.Nonnull;
 
 public class AnimatedExtractor extends AnimatedKinetics {
-    private final BlockState top = ExtractorBlock.getTop();
-    private final BlockState bottom = ExtractorBlock.getBottom();
-    private Block node = ModBlocks.DIAMOND_NODE.get();
-    private Item drill = ModItems.DIAMOND_DRILL.get();
-
-    public void draw(GuiGraphics graphics, int xOffset, int yOffset, Block node, Item drill) {
-        this.node = node;
-        this.drill = drill;
-        draw(graphics, xOffset, yOffset);
-    }
+    protected BlockState top = ExtractorBlock.getTop();
+    protected BlockState bottom = ExtractorBlock.getBottom();
+    protected PartialModel cog = AllPartialModels.COGWHEEL;
+    protected Block node = ModBlocks.DIAMOND_NODE.get();
+    protected Item drill = ModItems.DIAMOND_DRILL.get();
 
     @Override
     public void draw(@Nonnull GuiGraphics graphics, int xOffset, int yOffset) {
@@ -45,7 +41,7 @@ public class AnimatedExtractor extends AnimatedKinetics {
                 .scale(scale)
                 .render(graphics);
 
-        blockElement(AllPartialModels.COGWHEEL)
+        blockElement(cog)
                 .atLocal(0, -1, 0)
                 .rotateBlock(0, getCurrentAngle() * 2, 0)
                 .scale(scale)
@@ -67,5 +63,15 @@ public class AnimatedExtractor extends AnimatedKinetics {
                 .render(graphics);
 
         matrixStack.popPose();
+    }
+
+    public AnimatedExtractor setNode(Block node) {
+        this.node = node;
+        return this;
+    }
+
+    public AnimatedExtractor setDrill(Item drill) {
+        this.drill = drill;
+        return this;
     }
 }

@@ -13,7 +13,7 @@ public class ModFeatures {
     private static final DeferredRegister<Feature<?>> FEATURES =
             DeferredRegister.create(BuiltInRegistries.FEATURE, CreateReAutomated.MOD_ID);
 
-    public static final DeferredHolder<Feature<?>, EncasedNodeFeature> ORE_NODE_FEATURE =
+    public static final DeferredHolder<Feature<?>, EncasedNodeFeature> ENCASED_NODE_FEATURE =
             FEATURES.register("encased_node", EncasedNodeFeature::new);
 
     @ApiStatus.Internal

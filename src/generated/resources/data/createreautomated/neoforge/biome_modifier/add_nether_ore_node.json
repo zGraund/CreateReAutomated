@@ -1,6 +1,9 @@
 {
   "type": "neoforge:add_features",
   "biomes": "#minecraft:is_nether",
-  "features": "createreautomated:nether_ore_node_placed",
+  "features": [
+    "createreautomated:nether_gold_node_placed",
+    "createreautomated:ancient_debris_node_placed"
+  ],
   "step": "underground_decoration"
 }

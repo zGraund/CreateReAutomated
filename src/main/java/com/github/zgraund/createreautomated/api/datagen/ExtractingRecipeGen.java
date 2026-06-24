@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.concurrent.CompletableFuture;
 
-public class ExtractingRecipeGen extends ProcessingRecipeGen<ExtractingRecipeParams, ExtractingRecipe, ExtractingRecipe.Builder> {
+public abstract class ExtractingRecipeGen extends ProcessingRecipeGen<ExtractingRecipeParams, ExtractingRecipe, ExtractingRecipe.Builder<ExtractingRecipe>> {
     public ExtractingRecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, String defaultNamespace) {
         super(output, registries, defaultNamespace);
     }
@@ -22,7 +22,7 @@ public class ExtractingRecipeGen extends ProcessingRecipeGen<ExtractingRecipePar
     }
 
     @Override
-    protected ExtractingRecipe.Builder getBuilder(ResourceLocation id) {
-        return new ExtractingRecipe.Builder(ExtractingRecipe::new, id);
+    protected ExtractingRecipe.Builder<ExtractingRecipe> getBuilder(ResourceLocation id) {
+        return new ExtractingRecipe.Builder<>(ExtractingRecipe::new, id);
     }
 }

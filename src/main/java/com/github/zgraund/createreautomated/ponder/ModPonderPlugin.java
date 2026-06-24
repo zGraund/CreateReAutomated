@@ -17,9 +17,13 @@ public class ModPonderPlugin implements PonderPlugin {
     }
 
     @Override
-    public void registerScenes(@Nonnull PonderSceneRegistrationHelper<ResourceLocation> helper) {
-        PonderSceneRegistrationHelper<DeferredHolder<?, ?>> HELPER = helper.withKeyFunction(DeferredHolder::getId);
+    public void registerScenes(@Nonnull PonderSceneRegistrationHelper<ResourceLocation> registrationHelper) {
+        PonderSceneRegistrationHelper<DeferredHolder<?, ?>> helper = registrationHelper.withKeyFunction(DeferredHolder::getId);
 
-        HELPER.forComponents(ModBlocks.EXTRACTOR).addStoryBoard("extractor", ExtractorScene::extractor);
+        helper.forComponents(ModBlocks.EXTRACTOR)
+              .addStoryBoard("extractor", ExtractorScenes::extractor)
+              .addStoryBoard("advanced_extractor", ExtractorScenes::advancedExtractor);
+        helper.forComponents(ModBlocks.ADVANCED_EXTRACTOR)
+              .addStoryBoard("advanced_extractor", ExtractorScenes::advancedExtractor);
     }
 }

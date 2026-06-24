@@ -7,6 +7,7 @@ public class ModPartialModels {
     public static final String PATH = "partial/";
 
     public static final PartialModel HALF_COG = create("half_shaft_cogwheel");
+    public static final PartialModel SHORT_SHAFT = create("short_vertical_shaft");
 
     public static final PartialModel STABILIZER = create("stabilizer");
 

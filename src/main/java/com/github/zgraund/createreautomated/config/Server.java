@@ -1,31 +1,20 @@
 package com.github.zgraund.createreautomated.config;
 
-import com.github.zgraund.createreautomated.registry.ModBlocks;
 import net.createmod.catnip.config.ConfigBase;
-import net.minecraft.world.level.block.Block;
 
 import javax.annotation.Nonnull;
-import java.util.function.DoubleSupplier;
 
 public class Server extends ConfigBase {
-    public final ConfigBool useDrillDurability = b(
-            true,
-            "useDrillDurability",
-            "When True the Extractor will consume the durability of the Drill when mining."
-    );
-    public final ConfigFloat extractorImpact = f(
-            64,
-            0,
-            "extractorImpact",
-            "[in Stress Units]",
-            "How much stress impact does the extractor generate. Note that this cost is doubled for every speed increase it receives."
-    );
-
+    public final ExtractorConfig extractorConfig = nested(1, ExtractorConfig::new, "Configure extractors stats.");
     public final NodeYields nodeYields = nested(1, NodeYields::new, "Configure each node extraction limit.");
-
-    public DoubleSupplier getExtractorImpact(Block block) {
-        return block == ModBlocks.EXTRACTOR.get() ? extractorImpact::get : null;
-    }
+    public final RecipeModifiers recipeModifiers = nested(
+            1,
+            RecipeModifiers::new,
+            "Configure global recipe modifiers.",
+            "The modifiers are multipliers that are applied to all Extracting recipes.",
+            " > 0.5 = 50%",
+            " > 2.0 = 200%"
+    );
 
     @Nonnull
     @Override

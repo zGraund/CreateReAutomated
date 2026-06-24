@@ -1,0 +1,38 @@
+{
+  "type": "create:compacting",
+  "heat_requirement": "superheated",
+  "ingredients": [
+    {
+      "item": "createreautomated:ancient_debris_bit"
+    },
+    {
+      "item": "createreautomated:ancient_debris_bit"
+    },
+    {
+      "item": "createreautomated:ancient_debris_bit"
+    },
+    {
+      "item": "createreautomated:ancient_debris_bit"
+    },
+    {
+      "item": "createreautomated:ancient_debris_bit"
+    },
+    {
+      "item": "createreautomated:ancient_debris_bit"
+    },
+    {
+      "item": "createreautomated:ancient_debris_bit"
+    },
+    {
+      "item": "createreautomated:ancient_debris_bit"
+    },
+    {
+      "item": "create:sturdy_sheet"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:netherite_scrap"
+    }
+  ]
+}
