@@ -4,8 +4,9 @@ Create ReAutomated 0.3.0
 #### New Content
 
 - New extractor type: Advanced Extractor
-    - Like the base Extractor but also require a liquid to function.
+    - Like the base Extractor but also require a fluid to function.
 - New recipe type advanced_extracting.
+- New node: Ancient Debris
 
 #### Changes
 
@@ -17,6 +18,8 @@ Create ReAutomated 0.3.0
     - Added option to set all nodes infinite.
     - Added option to modify both Extractors stats (Stress / Speed required).
     - Added Extracting recipe global modifiers to change various recipe values without a datapack.
+- Common:
+    - Expanded worldgen configs to allow for per-node configuration.
 
 #### Art Changes
 
