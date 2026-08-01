@@ -3,6 +3,7 @@
   "biomes": "#minecraft:is_nether",
   "features": [
     "createreautomated:nether_gold_node_placed",
+    "createreautomated:nether_quartz_node_placed",
     "createreautomated:ancient_debris_node_placed"
   ],
   "step": "underground_decoration"

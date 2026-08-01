@@ -28,6 +28,7 @@ public class ModConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> DIAMOND_NODE_KEY = registerKey("diamond_node");
 
     public static final ResourceKey<ConfiguredFeature<?, ?>> NETHER_GOLD_NODE_KEY = registerKey("nether_gold_node");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> NETHER_QUARTZ_NODE_KEY = registerKey("nether_quartz_node");
     public static final ResourceKey<ConfiguredFeature<?, ?>> ANCIENT_DEBRIS_NODE_KEY = registerKey("ancient_debris_node");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
@@ -60,6 +61,10 @@ public class ModConfiguredFeatures {
                 OreConfiguration.target(new BlockMatchTest(Blocks.NETHER_GOLD_ORE), ModBlocks.NETHER_GOLD_NODE.get().unstable())
         );
 
+        List<OreConfiguration.TargetBlockState> netherQuartz = List.of(
+                OreConfiguration.target(new BlockMatchTest(Blocks.NETHER_QUARTZ_ORE), ModBlocks.NETHER_QUARTZ_NODE.get().unstable())
+        );
+
         List<OreConfiguration.TargetBlockState> ancientDebris = List.of(
                 OreConfiguration.target(new BlockMatchTest(Blocks.ANCIENT_DEBRIS), ModBlocks.ANCIENT_DEBRIS_NODE.get().unstable())
         );
@@ -73,6 +78,7 @@ public class ModConfiguredFeatures {
         register(context, DIAMOND_NODE_KEY, nodeFeature, EncasedNodeConfiguration.of(diamond, Worldgen.NodeGroup.DIAMOND));
 
         register(context, NETHER_GOLD_NODE_KEY, nodeFeature, EncasedNodeConfiguration.of(netherGold, Worldgen.NodeGroup.NETHER_GOLD));
+        register(context, NETHER_QUARTZ_NODE_KEY, nodeFeature, EncasedNodeConfiguration.of(netherQuartz, Worldgen.NodeGroup.NETHER_QUARTZ));
 
         register(context, ANCIENT_DEBRIS_NODE_KEY, nodeFeature, EncasedNodeConfiguration.of(ancientDebris, Worldgen.NodeGroup.ANCIENT_DEBRIS));
     }

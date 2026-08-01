@@ -36,6 +36,7 @@ public class Worldgen extends ConfigBase {
         GOLD(3, 40, -64, 32),
         DIAMOND(3, 30, -64, 16),
         NETHER_GOLD(3, 60, 10, 118),
+        NETHER_QUARTZ(3, 50, 7, 117),
         ANCIENT_DEBRIS(1, 300, 8, 24);
 
         public static final Codec<NodeGroup> CODEC = StringRepresentable.fromEnum(NodeGroup::values);

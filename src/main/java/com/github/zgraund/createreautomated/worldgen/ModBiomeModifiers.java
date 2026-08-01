@@ -48,6 +48,7 @@ public class ModBiomeModifiers {
                         isNether,
                         HolderSet.direct(
                                 placedFeature.getOrThrow(ModPlacedFeatures.NETHER_GOLD_NODE_PLACED_KEY),
+                                placedFeature.getOrThrow(ModPlacedFeatures.NETHER_QUARTZ_NODE_PLACED_KEY),
                                 placedFeature.getOrThrow(ModPlacedFeatures.ANCIENT_DEBRIS_NODE_PLACED_KEY)
                         ),
                         GenerationStep.Decoration.UNDERGROUND_DECORATION

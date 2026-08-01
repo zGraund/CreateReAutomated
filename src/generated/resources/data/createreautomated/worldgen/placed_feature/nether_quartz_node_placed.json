@@ -1,0 +1,15 @@
+{
+  "feature": "createreautomated:nether_quartz_node",
+  "placement": [
+    {
+      "type": "createreautomated:config_filter"
+    },
+    {
+      "type": "createreautomated:config_node_placement",
+      "group": "nether_quartz"
+    },
+    {
+      "type": "minecraft:in_square"
+    }
+  ]
+}

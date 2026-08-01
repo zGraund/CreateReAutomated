@@ -1,0 +1,21 @@
+{
+  "type": "createreautomated:encased_node",
+  "config": {
+    "group": "nether_quartz",
+    "targets": [
+      {
+        "state": {
+          "Name": "createreautomated:nether_quartz_node",
+          "Properties": {
+            "depletion": "0",
+            "stable": "false"
+          }
+        },
+        "target": {
+          "block": "minecraft:nether_quartz_ore",
+          "predicate_type": "minecraft:block_match"
+        }
+      }
+    ]
+  }
+}

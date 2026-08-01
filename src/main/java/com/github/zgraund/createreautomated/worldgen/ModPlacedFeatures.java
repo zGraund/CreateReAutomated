@@ -28,6 +28,7 @@ public class ModPlacedFeatures {
     public static final ResourceKey<PlacedFeature> DIAMOND_NODE_PLACED_KEY = registerKey("diamond_node_placed");
 
     public static final ResourceKey<PlacedFeature> NETHER_GOLD_NODE_PLACED_KEY = registerKey("nether_gold_node_placed");
+    public static final ResourceKey<PlacedFeature> NETHER_QUARTZ_NODE_PLACED_KEY = registerKey("nether_quartz_node_placed");
     public static final ResourceKey<PlacedFeature> ANCIENT_DEBRIS_NODE_PLACED_KEY = registerKey("ancient_debris_node_placed");
 
     public static void bootstrap(@Nonnull BootstrapContext<PlacedFeature> context) {
@@ -40,6 +41,7 @@ public class ModPlacedFeatures {
         register(context, DIAMOND_NODE_PLACED_KEY, cf.getOrThrow(ModConfiguredFeatures.DIAMOND_NODE_KEY), placement(Worldgen.NodeGroup.DIAMOND));
 
         register(context, NETHER_GOLD_NODE_PLACED_KEY, cf.getOrThrow(ModConfiguredFeatures.NETHER_GOLD_NODE_KEY), placement(Worldgen.NodeGroup.NETHER_GOLD));
+        register(context, NETHER_QUARTZ_NODE_PLACED_KEY, cf.getOrThrow(ModConfiguredFeatures.NETHER_QUARTZ_NODE_KEY), placement(Worldgen.NodeGroup.NETHER_QUARTZ));
         register(context, ANCIENT_DEBRIS_NODE_PLACED_KEY, cf.getOrThrow(ModConfiguredFeatures.ANCIENT_DEBRIS_NODE_KEY),
                 placement(Worldgen.NodeGroup.ANCIENT_DEBRIS));
     }
