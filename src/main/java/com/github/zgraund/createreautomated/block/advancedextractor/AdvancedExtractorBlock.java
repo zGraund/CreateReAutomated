@@ -47,7 +47,7 @@ public class AdvancedExtractorBlock extends AbstractExtractorBlock<AdvancedExtra
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand,
                                               BlockHitResult hitResult) {
-        if (!GenericItemEmptying.canItemBeEmptied(level, stack) && !GenericItemFilling.canItemBeFilled(level, stack))
+        if (!player.isCreative() || (!GenericItemEmptying.canItemBeEmptied(level, stack) && !GenericItemFilling.canItemBeFilled(level, stack)))
             return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
 
         return onBlockEntityUseItemOn(level, pos, be -> {
