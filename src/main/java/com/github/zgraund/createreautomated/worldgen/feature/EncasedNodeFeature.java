@@ -1,5 +1,8 @@
 package com.github.zgraund.createreautomated.worldgen.feature;
 
+import com.mojang.datafixers.util.Pair;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
+import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.WorldGenLevel;
@@ -9,7 +12,9 @@ import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguratio
 import net.neoforged.neoforge.common.util.TriState;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.List;
 
 public class EncasedNodeFeature extends Feature<EncasedNodeConfiguration> {
     public EncasedNodeFeature() {
@@ -61,25 +66,24 @@ public class EncasedNodeFeature extends Feature<EncasedNodeConfiguration> {
         WorldGenLevel level = context.level();
         BlockPos originPos = context.origin();
 
-        Set<BlockPos> visited = new HashSet<>(List.of(originPos));
-        Deque<BlockPos> deque = new ArrayDeque<>(List.of(originPos));
+        LongSet visited = new LongOpenHashSet(List.of(originPos.asLong()));
+        Deque<Pair<BlockPos, Integer>> deque = new ArrayDeque<>();
+        deque.add(Pair.of(originPos, 0));
 
         while (!deque.isEmpty()) {
-            BlockPos currentPos = deque.pop();
-            BlockPos.MutableBlockPos nextPos = new BlockPos.MutableBlockPos();
+            Pair<BlockPos, Integer> pair = deque.pop();
+            BlockPos currentPos = pair.getFirst();
+            int depth = pair.getSecond();
             for (Direction direction : Direction.values()) {
-                nextPos.setWithOffset(currentPos, direction);
+                BlockPos nextPos = currentPos.relative(direction);
 
                 for (OreConfiguration.TargetBlockState targetState : encasedNodeConfiguration.targetStates) {
                     if (level.getBlockState(nextPos).is(targetState.state.getBlock())) {
                         return TriState.TRUE;
                     }
 
-                    if (targetState.target.test(level.getBlockState(nextPos), level.getRandom()) && !visited.contains(nextPos) &&
-                        nextPos.distManhattan(originPos) <= maxDepth) {
-                        BlockPos nextCopy = nextPos.immutable();
-                        deque.add(nextCopy);
-                        visited.add(nextCopy);
+                    if (targetState.target.test(level.getBlockState(nextPos), level.getRandom()) && visited.add(nextPos.asLong()) && depth <= maxDepth) {
+                        deque.add(Pair.of(nextPos, depth + 1));
                         break;
                     }
                 }
