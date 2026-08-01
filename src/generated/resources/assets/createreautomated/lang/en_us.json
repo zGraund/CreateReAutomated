@@ -15,6 +15,7 @@
   "block.createreautomated.infinite_gold_node": "Infinite Gold Node",
   "block.createreautomated.infinite_iron_node": "Infinite Iron Node",
   "block.createreautomated.infinite_node.tooltip.summary": "A node that emanates _powerful_ energy, it could be extracted for a very long time.",
+  "block.createreautomated.infinite_quartz_node": "Infinite Quartz Node",
   "block.createreautomated.infinite_zinc_node": "Infinite Zinc Node",
   "block.createreautomated.iron_node": "Iron Node",
   "block.createreautomated.nether_gold_node": "Nether Gold Node",

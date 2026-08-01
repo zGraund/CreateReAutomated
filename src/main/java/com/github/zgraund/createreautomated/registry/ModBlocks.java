@@ -70,6 +70,7 @@ public class ModBlocks {
                       .register();
 
     public static final BlockEntry<InfiniteNodeBlock>
+            INFINITE_QUARTZ_NODE = infiniteNode("infinite_quartz_node", ModTags.Blocks.QUARTZ_NODES),
             INFINITE_COPPER_NODE = infiniteNode("infinite_copper_node", ModTags.Blocks.COPPER_NODES),
             INFINITE_ZINC_NODE = infiniteNode("infinite_zinc_node", ModTags.Blocks.ZINC_NODES),
             INFINITE_IRON_NODE = infiniteNode("infinite_iron_node", ModTags.Blocks.IRON_NODES),
