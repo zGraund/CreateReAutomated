@@ -136,8 +136,9 @@ public abstract class AbstractExtractorBlock<T extends ExtractorBlockEntity> ext
 
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-        level.setBlock(pos.above(), state.setValue(HALF, DoubleBlockHalf.UPPER), 3);
         super.setPlacedBy(level, pos.above(), state, placer, stack);
+        if (!level.isClientSide())
+            level.setBlock(pos.above(), state.setValue(HALF, DoubleBlockHalf.UPPER), 3);
     }
 
     @Nullable
