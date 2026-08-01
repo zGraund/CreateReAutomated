@@ -28,12 +28,16 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
+@EventBusSubscriber
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class OreNodeBlock extends Block implements IBE<OreNodeEntity>, Extractable {
@@ -48,6 +52,17 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity>, Extractab
         super(properties);
         this.baseRock = turnsInto;
         this.registerDefaultState(this.defaultBlockState().setValue(DEPLETION, 0).setValue(STABLE, true));
+    }
+
+    @SubscribeEvent
+    public static void getBreakSpeed(PlayerEvent.BreakSpeed event) {
+        if (!isStable(event.getState())) {
+            event.setNewSpeed(3);
+        }
+    }
+
+    public static boolean isStable(BlockState state) {
+        return state.getBlock() instanceof OreNodeBlock && state.hasProperty(STABLE) && state.getValue(STABLE);
     }
 
     @Override
