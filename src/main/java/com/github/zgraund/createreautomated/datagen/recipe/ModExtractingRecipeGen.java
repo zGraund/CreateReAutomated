@@ -61,6 +61,13 @@ public final class ModExtractingRecipeGen extends ExtractingRecipeGen {
                            .secAtMaxSpeed(5)
                            .output(ModItems.ZINC_BIT, 8)
                            .defaultFragments()
+            ),
+            QUARTZ_BITS = create("quartz_bits", builder ->
+                    builder.require(ModTags.Items.AT_LEAST_TIER_1)
+                           .nodes(ModTags.Blocks.QUARTZ_NODES)
+                           .secAtMaxSpeed(5)
+                           .output(ModItems.QUARTZ_BIT, 8)
+                           .defaultFragments()
             );
 
     public ModExtractingRecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {

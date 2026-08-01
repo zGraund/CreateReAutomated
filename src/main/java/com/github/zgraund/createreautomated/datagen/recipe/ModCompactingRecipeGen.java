@@ -25,7 +25,8 @@ public final class ModCompactingRecipeGen extends CompactingRecipeGen {
             RAW_COPPER = compactBits(ModItems.COPPER_BIT, Items.RAW_COPPER, HeatCondition.NONE),
             RAW_ZINC = compactBits(ModItems.ZINC_BIT, AllItems.RAW_ZINC, HeatCondition.NONE),
             RAW_IRON = compactBits(ModItems.IRON_BIT, Items.RAW_IRON, HeatCondition.NONE),
-            RAW_GOLD = compactBits(ModItems.GOLD_BIT, Items.RAW_GOLD, HeatCondition.HEATED);
+            RAW_GOLD = compactBits(ModItems.GOLD_BIT, Items.RAW_GOLD, HeatCondition.HEATED),
+            QUARTZ = compactBits(ModItems.QUARTZ_BIT, Items.QUARTZ, HeatCondition.HEATED);
 
     GeneratedRecipe SCRAPS = create("netherite_scraps_from_bits", builder -> {
                 for (int i = 0; i < 8; i++)

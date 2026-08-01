@@ -1,0 +1,25 @@
+{
+  "type": "createreautomated:advanced_extracting",
+  "ingredients": [
+    {
+      "tag": "createreautomated:drills/at_least_tier_2"
+    },
+    {
+      "type": "neoforge:single",
+      "amount": 1,
+      "fluid": "minecraft:water"
+    }
+  ],
+  "node": "createreautomated:nether_gold_node",
+  "processing_time": 40960,
+  "results": [
+    {
+      "count": 6,
+      "id": "createreautomated:gold_bit"
+    },
+    {
+      "chance": 0.01,
+      "id": "createreautomated:node_fragment"
+    }
+  ]
+}

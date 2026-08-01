@@ -91,7 +91,8 @@ public class ModBlocks {
             DEEPSLATE_DIAMOND_NODE = deepslateNode("deepslate_diamond_node", 135, Tags.Blocks.ORES_DIAMOND, ModTags.Blocks.DIAMOND_NODES);
 
     public static final BlockEntry<OreNodeBlock>
-            NETHER_GOLD_NODE = netherrackNode("nether_gold_node", 180, Tags.Blocks.ORES_GOLD);
+            NETHER_GOLD_NODE = netherrackNode("nether_gold_node", 180, Tags.Blocks.ORES_GOLD),
+            NETHER_QUARTZ_NODE = netherrackNode("nether_quartz_node", 250, Tags.Blocks.ORES_QUARTZ, ModTags.Blocks.QUARTZ_NODES);
 
     public static final BlockEntry<OreNodeBlock> ANCIENT_DEBRIS_NODE =
             node(

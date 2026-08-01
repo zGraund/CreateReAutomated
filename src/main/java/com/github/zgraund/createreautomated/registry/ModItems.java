@@ -32,6 +32,7 @@ public class ModItems {
             NETHERITE_DRILL = drill("netherite_drill", 8000, ModTags.Items.DRILL_TIER_3, ModPartialModels.NETHERITE_DRILL);
 
     public static final ItemEntry<Item>
+            QUARTZ_BIT = simple("quartz_bit"),
             COPPER_BIT = simple("copper_bit"),
             ZINC_BIT = simple("zinc_bit"),
             IRON_BIT = simple("iron_bit"),

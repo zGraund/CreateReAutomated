@@ -48,6 +48,7 @@ public class ModLangGen {
         tag(ModTags.Blocks.IRON_NODES);
         tag(ModTags.Blocks.ZINC_NODES);
         tag(ModTags.Blocks.COPPER_NODES);
+        tag(ModTags.Blocks.QUARTZ_NODES);
 
         // Item tags
         tag(ModTags.Items.DRILLS);

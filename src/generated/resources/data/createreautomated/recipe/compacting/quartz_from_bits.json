@@ -1,0 +1,38 @@
+{
+  "type": "create:compacting",
+  "heat_requirement": "heated",
+  "ingredients": [
+    {
+      "item": "createreautomated:quartz_bit"
+    },
+    {
+      "item": "createreautomated:quartz_bit"
+    },
+    {
+      "item": "createreautomated:quartz_bit"
+    },
+    {
+      "item": "createreautomated:quartz_bit"
+    },
+    {
+      "item": "createreautomated:quartz_bit"
+    },
+    {
+      "item": "createreautomated:quartz_bit"
+    },
+    {
+      "item": "createreautomated:quartz_bit"
+    },
+    {
+      "item": "createreautomated:quartz_bit"
+    },
+    {
+      "item": "createreautomated:quartz_bit"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:quartz"
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 {
   "values": [
-    "createreautomated:nether_gold_node"
+    "createreautomated:nether_gold_node",
+    "createreautomated:nether_quartz_node"
   ]
 }
