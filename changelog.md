@@ -1,3 +1,23 @@
+Create ReAutomated 0.3.1
+------------------------------------------------------
+
+#### New Content
+
+- New node, infinite node and bits: Quartz
+- New quartz recipes
+- New Advanced Extracting recipes:
+    - regular extracting recipe are now available on the advanced extractor, with an added fluid and reduced craft time
+
+#### Gameplay changes
+
+- Unstable Ore Nodes now ignore efficiency enchantment on tools
+- Both extractors are now movable by Create contraptions
+- Fluids cannot be inserted or extracted manually from the Advanced Extractor in survivor mode anymore
+
+#### Other
+
+- Bumped Create version to 6.0.10
+
 Create ReAutomated 0.3.0
 ------------------------------------------------------
 
