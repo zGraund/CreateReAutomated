@@ -56,7 +56,7 @@ public class OreNodeBlock extends Block implements IBE<OreNodeEntity>, Extractab
 
     @SubscribeEvent
     public static void getBreakSpeed(PlayerEvent.BreakSpeed event) {
-        if (!isStable(event.getState())) {
+        if (event.getState().getBlock() instanceof OreNodeBlock && !event.getState().getValue(STABLE)) {
             event.setNewSpeed(3);
         }
     }
