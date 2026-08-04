@@ -1,3 +1,10 @@
+Create ReAutomated 0.3.2
+------------------------------------------------------
+
+#### Fixes
+
+- Fixed Unstable Ore Nodes' Efficiency enchantment behavior being applied to all blocks
+
 Create ReAutomated 0.3.1
 ------------------------------------------------------
 
